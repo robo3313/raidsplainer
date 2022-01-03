@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Raidleading</title>
+    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <div class="container">
+    <canvas id="myCanvas" width="700" height="700"></canvas>
+    <div id="text">Start</div>
+    </div>
+    <img src="images/plan.png" id="plan" class="floating" alt="Map" style="display:none;">
+    <img src="images/druid.png" id="druid" class="floating" alt="druid" style="display:none;">
+  </body>
+  <script>
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    let planImage = null;
+    let items = {
+      druid: {image: null, position: {x: 350, y: 350}, speed: 20, target: null}
+    };
+    let events = [
+      {time: 0, name: 'Start'},
+      {time: 5, name: 'Test d\'event', positions:
+        {
+          druid: {x: 100, y: 100}
+        }
+      },
+      {time: 15, name: 'Test d\'event 2', positions:
+        {
+          druid: {x: 550, y: 550}
+        }
+      },
+      {time: 100, name: 'Dead'}
+    ];
+    currentEvent = 0;
+    const time = 10;  //ms
+    const timeConstant = time * 10;
+    let currentTimer = null;
+    let lastTimer = null;
+    let elapsedTimer = null;
+    let interval = null;
+
+    function update() {
+      currentTimer = performance.now();
+			elapsedTimer = currentTimer - lastTimer;
+			lastTimer = currentTimer;
+      if (currentEvent >= events.length - 1) {
+        clearInterval(interval);
+        return ;
+      }
+      calcEvent(currentTimer);
+      calcPositions(elapsedTimer);
+      drawIcons(ctx);
+
+    }
+
+    function calcEvent(currentTimer) {
+      const secondsSinceStart = Math.floor(currentTimer / 1000);
+      if (events[currentEvent].time < secondsSinceStart) {
+        currentEvent += 1;
+        triggerEvent(events[currentEvent]);
+      }
+    }
+
+    function triggerEvent(event) {
+      document.getElementById("text").innerHTML = event.name;
+      calcTargets(event);
+    }
+
+
+    function calcTargets(event) {
+      console.log(event);
+      if (event.positions !== null) {
+        items.druid.target = event.positions.druid;
+      }
+    }
+
+    function calcPositions(elapsedTimer) {
+      elapsedTimer /= timeConstant;
+      let druid = items.druid;
+      if (druid.target !== null) {
+        let d = distance(druid.position.x, druid.position.y, druid.target.x, druid.target.y);
+        if (d < druid.speed * elapsedTimer) {
+          items.druid.position.x = druid.target.x;
+          items.druid.position.y = druid.target.y;
+          items.druid.target = null;
+        } else {
+          items.druid.position.x += druid.speed * elapsedTimer * (druid.target.x - druid.position.x) / d;
+          items.druid.position.y += druid.speed * elapsedTimer * (druid.target.y - druid.position.y) / d;
+        }
+      }
+    }
+
+    function drawIcons(ctx) {
+      ctx.drawImage(planImage, 0, 0);
+      ctx.drawImage(items.druid.image, items.druid.position.x - items.druid.image.width / 2, items.druid.position.y - items.druid.image.height / 2);
+    }
+
+    function insertImages() {
+      planImage = document.getElementById("plan");
+      items.druid.image = document.getElementById("druid");
+    }
+
+    window.onload = function() {
+      insertImages();
+      update();
+      interval = setInterval(update, time);
+    };
+
+    function distance(startX, startY, endX, endY) {
+      const dx = endX - startX;
+      const dy = endY - startY;
+      return Math.sqrt(dx * dx + dy * dy)
+    }
+
+    function drawRectangle(ctx, x, y, length, height) {
+      ctx.fillStyle = "#FF0000";
+      ctx.fillRect(x, y, length, height);
+    }
+
+    function drawLine(ctx, start, end) {
+      ctx.moveTo(0, 0);
+      ctx.lineTo(start, end);
+      ctx.stroke();
+    }
+
+    function drawCircle(ctx, x, y, r) {
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, 2 * Math.PI);
+      ctx.stroke();
+    }
+
+    function writeText(ctx, text, x, y) {
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "black";
+      ctx.textAlign = "center";
+      ctx.fillText(text, x, y);
+    }
+    </script>
+</html>
