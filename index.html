@@ -3,140 +3,188 @@
   <head>
     <title>Raidleading</title>
     <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" src="js/rl.js"></script>
     <meta charset="UTF-8">
   </head>
   <body>
     <div class="container">
-    <canvas id="myCanvas" width="700" height="700"></canvas>
-    <div id="text">Start</div>
+      <canvas id="myCanvas" width="700" height="700"></canvas>
+      <div class="text">
+        <div id="event-title" class="title">
+          Plate-forme 1
+        </div>
+        <div id="event-description" class="description">
+        </div>
+      </div>
     </div>
-    <img src="images/plan.png" id="plan" class="floating" alt="Map" style="display:none;">
-    <img src="images/druid.png" id="druid" class="floating" alt="druid" style="display:none;">
+    <div class="images">
+      <img src="images/plan.png" id="plan" class="floating" alt="Map" style="display:none;">
+      <img src="images/deathknight.png" id="deathknight" class="floating" alt="deathknight" style="display:none;">
+      <img src="images/demonhunter.png" id="demonhunter" class="floating" alt="demonhunter" style="display:none;">
+      <img src="images/druid.png" id="druid" class="floating" alt="druid" style="display:none;">
+      <img src="images/hunter.png" id="hunter" class="floating" alt="hunter" style="display:none;">
+      <img src="images/mage.png" id="mage" class="floating" alt="mage" style="display:none;">
+      <img src="images/monk.png" id="monk" class="floating" alt="monk" style="display:none;">
+      <img src="images/paladin.png" id="paladin" class="floating" alt="paladin" style="display:none;">
+      <img src="images/priest.png" id="priest" class="floating" alt="priest" style="display:none;">
+      <img src="images/rogue.png" id="rogue" class="floating" alt="rogue" style="display:none;">
+      <img src="images/shaman.png" id="shaman" class="floating" alt="shaman" style="display:none;">
+      <img src="images/warlock.png" id="warlock" class="floating" alt="warlock" style="display:none;">
+      <img src="images/warrior.png" id="warrior" class="floating" alt="warrior" style="display:none;">
+    </div>
   </body>
   <script>
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
-    let planImage = null;
-    let items = {
-      druid: {image: null, position: {x: 350, y: 350}, speed: 20, target: null}
-    };
-    let events = [
-      {time: 0, name: 'Start'},
-      {time: 5, name: 'Test d\'event', positions:
-        {
-          druid: {x: 100, y: 100}
-        }
-      },
-      {time: 15, name: 'Test d\'event 2', positions:
-        {
-          druid: {x: 550, y: 550}
-        }
-      },
-      {time: 100, name: 'Dead'}
-    ];
-    currentEvent = 0;
     const time = 10;  //ms
-    const timeConstant = time * 10;
-    let currentTimer = null;
-    let lastTimer = null;
-    let elapsedTimer = null;
-    let interval = null;
 
-    function update() {
-      currentTimer = performance.now();
-			elapsedTimer = currentTimer - lastTimer;
-			lastTimer = currentTimer;
-      if (currentEvent >= events.length - 1) {
-        clearInterval(interval);
-        return ;
-      }
-      calcEvent(currentTimer);
-      calcPositions(elapsedTimer);
-      drawIcons(ctx);
-
-    }
-
-    function calcEvent(currentTimer) {
-      const secondsSinceStart = Math.floor(currentTimer / 1000);
-      if (events[currentEvent].time < secondsSinceStart) {
-        currentEvent += 1;
-        triggerEvent(events[currentEvent]);
-      }
-    }
-
-    function triggerEvent(event) {
-      document.getElementById("text").innerHTML = event.name;
-      calcTargets(event);
-    }
-
-
-    function calcTargets(event) {
-      console.log(event);
-      if (event.positions !== null) {
-        items.druid.target = event.positions.druid;
-      }
-    }
-
-    function calcPositions(elapsedTimer) {
-      elapsedTimer /= timeConstant;
-      let druid = items.druid;
-      if (druid.target !== null) {
-        let d = distance(druid.position.x, druid.position.y, druid.target.x, druid.target.y);
-        if (d < druid.speed * elapsedTimer) {
-          items.druid.position.x = druid.target.x;
-          items.druid.position.y = druid.target.y;
-          items.druid.target = null;
-        } else {
-          items.druid.position.x += druid.speed * elapsedTimer * (druid.target.x - druid.position.x) / d;
-          items.druid.position.y += druid.speed * elapsedTimer * (druid.target.y - druid.position.y) / d;
+    const rl = new RaidLeading(ctx, time);
+    const items = {
+      "stonk": {image: null, imageId: "druid", position: {x: 200, y: 200}, speed: 20, target: null},
+      "mongo": {image: null, imageId: "monk", position: {x: 200, y: 250}, speed: 20, target: null},
+      "azuli": {image: null, imageId: "druid", position: {x: 200, y: 300}, speed: 20, target: null},
+      "bak": {image: null, imageId: "paladin", position: {x: 200, y: 350}, speed: 20, target: null},
+      "brins": {image: null, imageId: "paladin", position: {x: 200, y: 400}, speed: 20, target: null},
+      "shamya": {image: null, imageId: "shaman", position: {x: 250, y: 200}, speed: 20, target: null},
+      "cirdan": {image: null, imageId: "druid", position: {x: 250, y: 250}, speed: 20, target: null},
+      "laukta": {image: null, imageId: "druid", position: {x: 250, y: 300}, speed: 20, target: null},
+      "abrams": {image: null, imageId: "demonhunter", position: {x: 250, y: 350}, speed: 20, target: null},
+      "dumys": {image: null, imageId: "demonhunter", position: {x: 250, y: 400}, speed: 20, target: null},
+      "zaarg": {image: null, imageId: "warrior", position: {x: 300, y: 200}, speed: 20, target: null},
+      "giin": {image: null, imageId: "rogue", position: {x: 300, y: 250}, speed: 20, target: null},
+      "lyriel": {image: null, imageId: "hunter", position: {x: 300, y: 300}, speed: 20, target: null},
+      "tyttu": {image: null, imageId: "hunter", position: {x: 300, y: 350}, speed: 20, target: null},
+      "owist": {image: null, imageId: "hunter", position: {x: 300, y: 400}, speed: 20, target: null},
+      "kailu": {image: null, imageId: "shaman", position: {x: 350, y: 200}, speed: 20, target: null},
+      "kehil": {image: null, imageId: "warlock", position: {x: 350, y: 250}, speed: 20, target: null},
+      "dedra": {image: null, imageId: "priest", position: {x: 350, y: 300}, speed: 20, target: null},
+      "morsia": {image: null, imageId: "mage", position: {x: 350, y: 350}, speed: 20, target: null},
+      "shakk": {image: null, imageId: "mage", position: {x: 350, y: 400}, speed: 20, target: null}
+    };
+    const events = [
+      {time: 0, name: 'Plate-forme 1', description: 'Spread en attendant le veil'
+      },
+      {time: 3, name: 'Spread', description: 'Positions assignées individuellement',
+        positions:
+        {
+          "azuli": {x: 80, y: 150},
+          "kehil": {x: 200, y: 50},
+          "shamya": {x: 400, y: 50},
+          "dumys": {x: 500, y: 150},
+          "cirdan": {x: 600, y: 50},
+          "dedra": {x: 100, y: 280},
+          "stonk": {x: 210, y: 240},
+          "mongo": {x: 330, y: 330},
+          "zaarg": {x: 425, y: 250},
+          "giin": {x: 500, y: 350},
+          "laukta": {x: 580, y: 200},
+          "kailu": {x: 100, y: 430},
+          "abrams": {x: 230, y: 400},
+          "brins": {x: 350, y: 450},
+          "bak": {x: 500, y: 450},
+          "tyttu": {x: 600, y: 400},
+          "owist": {x: 120, y: 550},
+          "lyriel": {x: 250, y: 600},
+          "morsia": {x: 450, y: 600},
+          "shakk": {x: 580, y: 580},
         }
+      },
+      {time: 6, name: 'Veil', description: 'On veut pas toucher les copains avec le veil'
+      },
+      {time: 8, name: 'Stack', description: 'Pour simplifier le heal des veils et de la furie',
+      positions:
+        {
+          "azuli": {x: 350, y: 350},
+          "kehil": {x: 350, y: 350},
+          "shamya": {x: 350, y: 350},
+          "dumys": {x: 350, y: 350},
+          "cirdan": {x: 350, y: 350},
+          "dedra": {x: 350, y: 350},
+          "stonk": {x: 350, y: 350},
+          "mongo": {x: 350, y: 350},
+          "zaarg": {x: 350, y: 350},
+          "giin": {x: 350, y: 350},
+          "laukta": {x: 350, y: 350},
+          "kailu": {x: 350, y: 350},
+          "abrams": {x: 350, y: 350},
+          "brins": {x: 350, y: 350},
+          "bak": {x: 350, y: 350},
+          "tyttu": {x: 350, y: 350},
+          "owist": {x: 350, y: 350},
+          "lyriel": {x: 350, y: 350},
+          "morsia": {x: 350, y: 350},
+          "shakk": {x: 350, y: 350},
+        }
+      },
+      {time: 10, name: 'Furie', description: 'Oof big damage, heal me up'
+      },
+      {time: 12, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
+        positions:
+        {
+          "azuli": {x: 350, y: 100},
+          "kehil": {x: 350, y: 100},
+          "shamya": {x: 350, y: 100},
+          "dumys": {x: 350, y: 100},
+          "cirdan": {x: 350, y: 100},
+          "dedra": {x: 350, y: 100},
+          "stonk": {x: 350, y: 100},
+          "mongo": {x: 350, y: 100},
+          "zaarg": {x: 350, y: 100},
+          "giin": {x: 350, y: 100},
+          "laukta": {x: 350, y: 100},
+          "kailu": {x: 350, y: 100},
+          "abrams": {x: 350, y: 100},
+          "brins": {x: 350, y: 100},
+          "bak": {x: 350, y: 100},
+          "tyttu": {x: 350, y: 100},
+          "owist": {x: 350, y: 100},
+          "lyriel": {x: 350, y: 100},
+          "morsia": {x: 350, y: 100},
+          "shakk": {x: 350, y: 100},
+        }
+      },
+      {time: 15, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
+        drawings:
+          [
+            {type: "circle", x: 350, y: 100, r: 100}
+          ]
+      },
+      {time: 20, name: 'Raze & Dispell de masse',
+      positions:
+        {
+          "azuli": {x: 350, y: 0},
+          "kehil": {x: 350, y: 0},
+          "shamya": {x: 350, y: 0},
+          "dumys": {x: 350, y: 0},
+          "cirdan": {x: 350, y: 0},
+          "dedra": {x: 350, y: 0},
+          "stonk": {x: 350, y: 0},
+          "mongo": {x: 350, y: 0},
+          "zaarg": {x: 350, y: 0},
+          "giin": {x: 350, y: 0},
+          "laukta": {x: 350, y: 0},
+          "kailu": {x: 350, y: 0},
+          "abrams": {x: 350, y: 0},
+          "brins": {x: 350, y: 0},
+          "bak": {x: 350, y: 0},
+          "tyttu": {x: 350, y: 0},
+          "owist": {x: 350, y: 0},
+          "lyriel": {x: 350, y: 0},
+          "morsia": {x: 350, y: 0},
+          "shakk": {x: 350, y: 0},
+        }
+      },
+      {time: 20, name: 'Plate-forme 2'
       }
-    }
+    ];
 
-    function drawIcons(ctx) {
-      ctx.drawImage(planImage, 0, 0);
-      ctx.drawImage(items.druid.image, items.druid.position.x - items.druid.image.width / 2, items.druid.position.y - items.druid.image.height / 2);
-    }
-
-    function insertImages() {
-      planImage = document.getElementById("plan");
-      items.druid.image = document.getElementById("druid");
-    }
+    rl.setEvents(events);
 
     window.onload = function() {
-      insertImages();
-      update();
-      interval = setInterval(update, time);
+      rl.setPlan(document.getElementById("plan"));
+      rl.setItems(items);
+      rl.animate();
     };
 
-    function distance(startX, startY, endX, endY) {
-      const dx = endX - startX;
-      const dy = endY - startY;
-      return Math.sqrt(dx * dx + dy * dy)
-    }
-
-    function drawRectangle(ctx, x, y, length, height) {
-      ctx.fillStyle = "#FF0000";
-      ctx.fillRect(x, y, length, height);
-    }
-
-    function drawLine(ctx, start, end) {
-      ctx.moveTo(0, 0);
-      ctx.lineTo(start, end);
-      ctx.stroke();
-    }
-
-    function drawCircle(ctx, x, y, r) {
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, 2 * Math.PI);
-      ctx.stroke();
-    }
-
-    function writeText(ctx, text, x, y) {
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "black";
-      ctx.textAlign = "center";
-      ctx.fillText(text, x, y);
-    }
     </script>
 </html>

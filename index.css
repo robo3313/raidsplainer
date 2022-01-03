@@ -1,3 +1,21 @@
 .container {
     display: flex;
+    justify-content: space-around;
+}
+
+.text {
+    width: 500px;
+}
+
+.title {
+    font-size: xx-large;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.description {
+    font-size: medium;
+    display: flex;
+    justify-content: space-around;
 }
