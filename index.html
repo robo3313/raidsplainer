@@ -10,6 +10,9 @@
     <div class="container">
       <canvas id="myCanvas" width="700" height="700"></canvas>
       <div class="text">
+        <button type="button" onClick="rl.resume()">Play</button> 
+        <button type="button" onClick="rl.pause()">Pause</button> 
+        <span id="timer"></span>
         <div id="event-title" class="title">
           Plate-forme 1
         </div>
@@ -31,6 +34,9 @@
       <img src="images/shaman.png" id="shaman" class="floating" alt="shaman" style="display:none;">
       <img src="images/warlock.png" id="warlock" class="floating" alt="warlock" style="display:none;">
       <img src="images/warrior.png" id="warrior" class="floating" alt="warrior" style="display:none;">
+
+      <img src="images/abilities/fury.jpg" id="fury" class="floating" alt="fury" style="display:none;">
+      <img src="images/abilities/veil.jpg" id="veil" class="floating" alt="veil" style="display:none;">
     </div>
   </body>
   <script>
@@ -61,10 +67,250 @@
       "morsia": {image: null, imageId: "mage", position: {x: 350, y: 350}, speed: 20, target: null},
       "shakk": {image: null, imageId: "mage", position: {x: 350, y: 400}, speed: 20, target: null}
     };
+    const abilities = { 
+      "fury": {},
+      "veil": {}
+    }
     const events = [
       {time: 0, name: 'Plate-forme 1', description: 'Spread en attendant le veil'
       },
-      {time: 3, name: 'Spread', description: 'Positions assignées individuellement',
+      {time: 2, name: 'Plate-forme 1 : Spread', description: 'Positions assignées individuellement',
+        positions:
+        {
+          "azuli": {x: 80, y: 150},
+          "kehil": {x: 200, y: 50},
+          "shamya": {x: 400, y: -50},
+          "dumys": {x: 500, y: 150},
+          "cirdan": {x: 600, y: 50},
+          "dedra": {x: 100, y: 280},
+          "stonk": {x: -100, y: -50},
+          "mongo": {x: 330, y: 330},
+          "zaarg": {x: 425, y: 250},
+          "giin": {x: 500, y: 350},
+          "laukta": {x: 580, y: 200},
+          "kailu": {x: 100, y: 430},
+          "abrams": {x: 230, y: 400},
+          "brins": {x: 350, y: 450},
+          "bak": {x: 500, y: 450},
+          "tyttu": {x: 600, y: 400},
+          "owist": {x: 120, y: 550},
+          "lyriel": {x: 250, y: 600},
+          "morsia": {x: 450, y: 600},
+          "shakk": {x: 580, y: 580},
+        }
+      },
+      {time: 6, name: 'Plate-forme 1 : Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
+        drawings:
+        [
+          {type: "circle", x: 350, y: 150, r: 60, color: "#400040"},
+          {type: "circle", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "circle", x: 350, y: 550, r: 60, color: "#400040"},
+        ]
+      },
+      {time: 9, name: 'Plate-forme 1 : Veil', description: 'On veut pas toucher les copains avec le veil',
+        positions:
+        {
+          "stonk": {x: -100, y: 660}
+        },
+        abilities:
+        [
+          {id: "veil", name: "Veil", x: 100, y: 430},
+          {id: "veil", name: "Veil", x: 425, y: 250},
+        ],
+        drawings:
+        [
+          {type: "circle", x: 350, y: 150, r: 60, color: "#400040"},
+          {type: "circle", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "circle", x: 350, y: 550, r: 60, color: "#400040"},
+        ]
+      },
+      {time: 11, name: 'Plate-forme 1 : Mongoliste clear la plate-forme', description: 'Le placement des flaques est aléatoire',
+        positions: {
+          "mongo": {x: 350, y: 150}
+        },
+        drawings:
+        [
+          {type: "circle", x: 350, y: 150, r: 60, color: "#400040"},
+          {type: "circle", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "circle", x: 350, y: 550, r: 60, color: "#400040"},
+        ]
+      },
+      {time: 13, name: 'Plate-forme 1 : Mongoliste clear la plate-forme', description: 'Le placement des flaques est aléatoire',
+        positions: {
+          "mongo": {x: 630, y: 330}
+        },
+        drawings:
+        [
+          {type: "circle", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "circle", x: 350, y: 550, r: 60, color: "#400040"},
+        ]
+      },
+      {time: 15, name: 'Plate-forme 1 : Mongoliste clear la plate-forme', description: 'Le placement des flaques est aléatoire',
+        positions: {
+          "mongo": {x: 350, y: 550}
+        },
+        drawings:
+        [
+          {type: "circle", x: 350, y: 550, r: 60, color: "#400040"},
+        ]
+      },
+      {time: 18, name: 'Plate-forme 1 : Stack & placement Stonks & Shamyaleau', description: 'Pour simplifier le heal des veils et de la furie.<br>Shamyaleau se place coin intérieur, Stonks coin côté',
+        positions:
+        {
+          "azuli": {x: 350, y: 350},
+          "kehil": {x: 350, y: 350},
+          "shamya": {x: 40, y: 40},
+          "dumys": {x: 350, y: 350},
+          "cirdan": {x: 350, y: 350},
+          "dedra": {x: 350, y: 350},
+          "stonk": {x: 40, y: 660},
+          "mongo": {x: 350, y: 350},
+          "zaarg": {x: 350, y: 350},
+          "giin": {x: 350, y: 350},
+          "laukta": {x: 350, y: 350},
+          "kailu": {x: 350, y: 350},
+          "abrams": {x: 350, y: 350},
+          "brins": {x: 350, y: 350},
+          "bak": {x: 350, y: 350},
+          "tyttu": {x: 350, y: 350},
+          "owist": {x: 350, y: 350},
+          "lyriel": {x: 350, y: 350},
+          "morsia": {x: 350, y: 350},
+          "shakk": {x: 350, y: 350},
+        }
+      },
+      {time: 21, name: 'Plate-forme 1 : Dispell Stonks & Shamyaleau', description : "Shamy se dispell, un healer dispell Stonks, ils se stack.<br>Mongoliste se place coin extérieur.",
+        positions: {
+          "stonk": {x: 350, y: 350},
+          "shamya": {x: 350, y: 350},
+          "mongo": {x: 660, y: 660},
+        },
+        drawings:
+        [
+          {type: "circle", x: 40, y: 40, r: 240, color: "#400040"},
+          {type: "circle", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 25, name: 'Plate-forme 1 : Dispell Mongoliste', description : "Un healer dispell Mongoliste.<br>Vu le timing cela arrivera très probablement pendant la furie",
+        positions: {
+          "mongo": {x: 350, y: 350},
+        },
+        drawings:
+        [
+          {type: "circle", x: 40, y: 40, r: 240, color: "#400040"},
+          {type: "circle", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "circle", x: 660, y: 660, r: 240, color: "#400040"},
+        ]
+      },
+      {time: 30, name: 'Plate-forme 1 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+        abilities:
+        [
+          {id: "fury", name: "Furie", x: 350, y: 350}
+        ],
+        drawings:
+        [
+          {type: "circle", x: 40, y: 40, r: 240, color: "#400040"},
+          {type: "circle", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "circle", x: 660, y: 660, r: 240, color: "#400040"},
+        ]
+      },
+      {time: 33, name: 'Plate-forme 1 : Déplacement', description: 'On se prépare à quitter la plate-forme',
+        positions:
+        {
+          "azuli": {x: 350, y: 100},
+          "kehil": {x: 350, y: 100},
+          "shamya": {x: 350, y: 100},
+          "dumys": {x: 350, y: 100},
+          "cirdan": {x: 350, y: 100},
+          "dedra": {x: 350, y: 100},
+          "stonk": {x: 350, y: 100},
+          "mongo": {x: 350, y: 100},
+          "zaarg": {x: 350, y: 100},
+          "giin": {x: 350, y: 100},
+          "laukta": {x: 350, y: 100},
+          "kailu": {x: 350, y: 100},
+          "abrams": {x: 350, y: 100},
+          "brins": {x: 350, y: 100},
+          "bak": {x: 350, y: 100},
+          "tyttu": {x: 350, y: 100},
+          "owist": {x: 350, y: 100},
+          "lyriel": {x: 350, y: 100},
+          "morsia": {x: 350, y: 100},
+          "shakk": {x: 350, y: 100},
+        },
+        drawings:
+        [
+          {type: "circle", x: 40, y: 40, r: 240, color: "#400040"},
+          {type: "circle", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "circle", x: 660, y: 660, r: 240, color: "#400040"},
+        ]
+      },
+      {time: 38, name: 'Plate-forme 1 : Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
+        drawings:
+          [
+            {type: "circle", x: 350, y: 100, r: 100, color: "#FFFFFF"},
+            {type: "circle", x: 40, y: 40, r: 240, color: "#400040"},
+            {type: "circle", x: 40, y: 660, r: 360, color: "#400040"},
+            {type: "circle", x: 660, y: 660, r: 240, color: "#400040"},
+          ]
+      },
+      {time: 43, name: 'Plate-forme 1 : Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
+        positions:
+        {
+          "azuli": {x: 350, y: 0},
+          "kehil": {x: 350, y: 0},
+          "shamya": {x: 350, y: 0},
+          "dumys": {x: 350, y: 0},
+          "cirdan": {x: 350, y: 0},
+          "dedra": {x: 350, y: 0},
+          "stonk": {x: 350, y: 0},
+          "mongo": {x: 350, y: 0},
+          "zaarg": {x: 350, y: 0},
+          "giin": {x: 350, y: 0},
+          "laukta": {x: 350, y: 0},
+          "kailu": {x: 350, y: 0},
+          "abrams": {x: 350, y: 0},
+          "brins": {x: 350, y: 0},
+          "bak": {x: 350, y: 0},
+          "tyttu": {x: 350, y: 0},
+          "owist": {x: 350, y: 0},
+          "lyriel": {x: 350, y: 0},
+          "morsia": {x: 350, y: 0},
+          "shakk": {x: 350, y: 0},
+        },
+        drawings:
+        [
+          {type: "circle", x: 40, y: 40, r: 240, color: "#400040"},
+          {type: "circle", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "circle", x: 660, y: 660, r: 240, color: "#400040"},
+        ]
+      },
+      {time: 44, name: 'Plate-forme 2', description: '',
+        teleport:
+        {
+          "azuli": {x: 350, y: 600},
+          "kehil": {x: 350, y: 600},
+          "shamya": {x: 350, y: 600},
+          "dumys": {x: 350, y: 600},
+          "cirdan": {x: 350, y: 600},
+          "dedra": {x: 350, y: 600},
+          "stonk": {x: 350, y: 600},
+          "mongo": {x: 350, y: 600},
+          "zaarg": {x: 350, y: 600},
+          "giin": {x: 350, y: 600},
+          "laukta": {x: 350, y: 600},
+          "kailu": {x: 350, y: 600},
+          "abrams": {x: 350, y: 600},
+          "brins": {x: 350, y: 600},
+          "bak": {x: 350, y: 600},
+          "tyttu": {x: 350, y: 600},
+          "owist": {x: 350, y: 600},
+          "lyriel": {x: 350, y: 600},
+          "morsia": {x: 350, y: 600},
+          "shakk": {x: 350, y: 600},
+        }
+      },
+      {time: 47, name: 'Plate-forme 2 : Spread', description: 'Positions assignées individuellement',
         positions:
         {
           "azuli": {x: 80, y: 150},
@@ -89,93 +335,8 @@
           "shakk": {x: 580, y: 580},
         }
       },
-      {time: 6, name: 'Veil', description: 'On veut pas toucher les copains avec le veil'
+      {time: 600, name: 'Plate-forme 4 : The end', description: 'Tuer ou être tué'
       },
-      {time: 8, name: 'Stack', description: 'Pour simplifier le heal des veils et de la furie',
-      positions:
-        {
-          "azuli": {x: 350, y: 350},
-          "kehil": {x: 350, y: 350},
-          "shamya": {x: 350, y: 350},
-          "dumys": {x: 350, y: 350},
-          "cirdan": {x: 350, y: 350},
-          "dedra": {x: 350, y: 350},
-          "stonk": {x: 350, y: 350},
-          "mongo": {x: 350, y: 350},
-          "zaarg": {x: 350, y: 350},
-          "giin": {x: 350, y: 350},
-          "laukta": {x: 350, y: 350},
-          "kailu": {x: 350, y: 350},
-          "abrams": {x: 350, y: 350},
-          "brins": {x: 350, y: 350},
-          "bak": {x: 350, y: 350},
-          "tyttu": {x: 350, y: 350},
-          "owist": {x: 350, y: 350},
-          "lyriel": {x: 350, y: 350},
-          "morsia": {x: 350, y: 350},
-          "shakk": {x: 350, y: 350},
-        }
-      },
-      {time: 10, name: 'Furie', description: 'Oof big damage, heal me up'
-      },
-      {time: 12, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
-        positions:
-        {
-          "azuli": {x: 350, y: 100},
-          "kehil": {x: 350, y: 100},
-          "shamya": {x: 350, y: 100},
-          "dumys": {x: 350, y: 100},
-          "cirdan": {x: 350, y: 100},
-          "dedra": {x: 350, y: 100},
-          "stonk": {x: 350, y: 100},
-          "mongo": {x: 350, y: 100},
-          "zaarg": {x: 350, y: 100},
-          "giin": {x: 350, y: 100},
-          "laukta": {x: 350, y: 100},
-          "kailu": {x: 350, y: 100},
-          "abrams": {x: 350, y: 100},
-          "brins": {x: 350, y: 100},
-          "bak": {x: 350, y: 100},
-          "tyttu": {x: 350, y: 100},
-          "owist": {x: 350, y: 100},
-          "lyriel": {x: 350, y: 100},
-          "morsia": {x: 350, y: 100},
-          "shakk": {x: 350, y: 100},
-        }
-      },
-      {time: 15, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
-        drawings:
-          [
-            {type: "circle", x: 350, y: 100, r: 100}
-          ]
-      },
-      {time: 20, name: 'Raze & Dispell de masse',
-      positions:
-        {
-          "azuli": {x: 350, y: 0},
-          "kehil": {x: 350, y: 0},
-          "shamya": {x: 350, y: 0},
-          "dumys": {x: 350, y: 0},
-          "cirdan": {x: 350, y: 0},
-          "dedra": {x: 350, y: 0},
-          "stonk": {x: 350, y: 0},
-          "mongo": {x: 350, y: 0},
-          "zaarg": {x: 350, y: 0},
-          "giin": {x: 350, y: 0},
-          "laukta": {x: 350, y: 0},
-          "kailu": {x: 350, y: 0},
-          "abrams": {x: 350, y: 0},
-          "brins": {x: 350, y: 0},
-          "bak": {x: 350, y: 0},
-          "tyttu": {x: 350, y: 0},
-          "owist": {x: 350, y: 0},
-          "lyriel": {x: 350, y: 0},
-          "morsia": {x: 350, y: 0},
-          "shakk": {x: 350, y: 0},
-        }
-      },
-      {time: 20, name: 'Plate-forme 2'
-      }
     ];
 
     rl.setEvents(events);
@@ -183,7 +344,8 @@
     window.onload = function() {
       rl.setPlan(document.getElementById("plan"));
       rl.setItems(items);
-      rl.animate();
+      rl.setAbilities(abilities);
+      rl.start();
     };
 
     </script>
