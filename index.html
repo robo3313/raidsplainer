@@ -290,7 +290,7 @@
       */
 
       //PF 2
-
+/*
       {time: 0, name: 'Plate-forme 2', description: '',
         teleport:
         {
@@ -620,7 +620,9 @@
           {type: "disc", x: 350, y: 100, r: 50, color: "#400040"},
         ]
       },
-      {time: 75, name: 'Plate-forme 3', description: '',
+*/
+      // PF 3
+      {time: 0, name: 'Plate-forme 3', description: '',
         teleport:
         {
           "azuli": {x: 350, y: 600},
@@ -645,6 +647,274 @@
           "shakk": {x: 350, y: 600},
         }
       },      
+      {time: 3, name: 'Plate-forme 3 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+        abilities:
+        [
+          {id: "fury", name: "Furie", x: 350, y: 350}
+        ],
+        drawings:
+        [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 6, name: 'Plate-forme 3 : Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+        positions: {
+          "dedra": {x: 100, y: 280},
+          "giin": {x: 500, y: 350},
+          "morsia": {x: 450, y: 600},
+        }, drawings:
+        [
+            {type:"line", x1:0, y1:150, x2:400, y2:700},
+            {type:"line", x1:0, y1:400, x2:350, y2:0},
+            {type:"line", x1:0, y1:600, x2:700, y2:600},
+            {type:"line", x1:450, y1:0, x2:450, y2:700},
+            {type:"line", x1:0, y1:0, x2:700, y2:500},
+            {type:"line", x1:150, y1:700, x2:700, y2:150},
+            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 9, name: 'Plate-forme 3 : Cri', description: "D'ou l'intérêt de se placer dès l'arrivée sur la plate-forme",
+        drawings :
+        [
+          {type: "circle", x: 80, y: 150, r: 70, color: "grey"},
+          {type: "circle", x: 200, y: 50, r: 70, color: "grey"},
+          {type: "circle", x: 400, y: 50, r: 70, color: "grey"},
+          {type: "circle", x: 500, y: 150, r: 70, color: "grey"},
+          {type: "circle", x: 600, y: 50, r: 70, color: "grey"},
+          {type: "circle", x: 100, y: 280, r: 70, color: "grey"},
+          {type: "circle", x: 210, y: 240, r: 70, color: "grey"},
+          {type: "circle", x: 330, y: 330, r: 70, color: "grey"},
+          {type: "circle", x: 425, y: 250, r: 70, color: "grey"},
+          {type: "circle", x: 500, y: 350, r: 70, color: "grey"},
+          {type: "circle", x: 650, y: 230, r: 70, color: "grey"},
+          {type: "circle", x: 100, y: 430, r: 70, color: "grey"},
+          {type: "circle", x: 230, y: 400, r: 70, color: "grey"},
+          {type: "circle", x: 350, y: 450, r: 70, color: "grey"},
+          {type: "circle", x: 500, y: 450, r: 70, color: "grey"},
+          {type: "circle", x: 600, y: 400, r: 70, color: "grey"},
+          {type: "circle", x: 120, y: 550, r: 70, color: "grey"},
+          {type: "circle", x: 250, y: 600, r: 70, color: "grey"},
+          {type: "circle", x: 450, y: 600, r: 70, color: "grey"},
+          {type: "circle", x: 580, y: 580, r: 70, color: "grey"},
+        ]
+      },
+      {time: 12, name: 'Plate-forme 3 : Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
+        abilities :
+        [
+          {id:"soak", name:"Soak", x:610, y: 40},
+          {id:"soak", name:"Soak", x:660, y: 220}
+        ],
+        positions:
+        {
+          "azuli": {x: 350, y: 350},
+          "kehil": {x: 350, y: 350},
+          "shamya": {x: 350, y: 350},
+          "dumys": {x: 350, y: 350},
+          "dedra": {x: 350, y: 350},
+          "stonk": {x: 40, y: 660},
+          "mongo": {x: 350, y: 350},
+          "zaarg": {x: 350, y: 350},
+          "giin": {x: 350, y: 350},
+          "kailu": {x: 350, y: 350},
+          "abrams": {x: 350, y: 350},
+          "brins": {x: 350, y: 350},
+          "bak": {x: 350, y: 350},
+          "tyttu": {x: 350, y: 350},
+          "owist": {x: 350, y: 350},
+          "lyriel": {x: 350, y: 350},
+          "morsia": {x: 350, y: 350},
+          "shakk": {x: 350, y: 350},
+        }
+      },
+      {time: 15, name: 'Plate-forme 3 : Veil', description: 'On veut pas toucher les copains avec le veil',
+        abilities:
+        [
+          {id: "veil", name: "Veil", x: 200, y: 50},
+          {id: "veil", name: "Veil", x: 500, y: 450},
+        ]
+      },
+      {time: 17, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        positions :
+        {
+          "mongo": {x:330, y: -50},
+          "giin": {x: 350, y: 350},
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+        ]
+      },
+      {time: 19, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        positions :
+        {
+          "kailu": {x: 680, y: 20},
+          "bak" : {x: 20, y: 20}
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+        ]
+      },
+      {time: 22, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        positions :
+        {
+          "mongo": {x: 330, y: 330},
+          "kailu": {x: 680, y: -50}
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+        ]
+      },
+      {time: 25, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        positions :
+        {
+          "kailu": {x: 680, y: 20},
+          "bak" : {x: 20, y: -50}
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+        ]
+      },
+      {time: 28, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        positions :
+        {
+          "kailu": {x: 350, y: 100},
+          "bak": {x: 20, y: 20},
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+        ]
+      },
+      {time: 31, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        positions :
+        {
+          "bak": {x: 350, y: 350},
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+        ]
+      },
+      {time: 40, name: 'Plate-forme 3 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+        abilities:
+        [
+          {id: "fury", name: "Furie", x: 350, y: 350}
+        ],
+        drawings:
+        [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 43, name: 'Plate-forme 3 : Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
+        abilities :
+        [
+          {id:"soak", name:"Soak", x:610, y: 40},
+          {id:"soak", name:"Soak", x:660, y: 220}
+        ],
+        positions:
+        {
+          "azuli": {x: 350, y: 350},
+          "kehil": {x: 350, y: 350},
+          "shamya": {x: 350, y: 350},
+          "dumys": {x: 350, y: 350},
+          "dedra": {x: 350, y: 350},
+          "stonk": {x: 40, y: 660},
+          "mongo": {x: 350, y: 350},
+          "zaarg": {x: 350, y: 350},
+          "giin": {x: 350, y: 350},
+          "kailu": {x: 350, y: 350},
+          "abrams": {x: 350, y: 350},
+          "brins": {x: 350, y: 350},
+          "bak": {x: 350, y: 350},
+          "tyttu": {x: 350, y: 350},
+          "owist": {x: 350, y: 350},
+          "lyriel": {x: 350, y: 350},
+          "morsia": {x: 350, y: 350},
+          "shakk": {x: 350, y: 350},
+        }
+      },
+      {time: 46, name: 'Plate-forme 3 : Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+        positions: {
+          "dedra": {x: 100, y: 280},
+          "giin": {x: 500, y: 350},
+          "morsia": {x: 450, y: 600},
+        }, drawings:
+        [
+            {type:"line", x1:0, y1:150, x2:400, y2:700},
+            {type:"line", x1:0, y1:400, x2:350, y2:0},
+            {type:"line", x1:0, y1:600, x2:700, y2:600},
+            {type:"line", x1:450, y1:0, x2:450, y2:700},
+            {type:"line", x1:0, y1:0, x2:700, y2:500},
+            {type:"line", x1:150, y1:700, x2:700, y2:150},
+            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 49, name: 'Plate-forme 3 : Veil', description: 'On veut pas toucher les copains avec le veil',
+        abilities:
+        [
+          {id: "veil", name: "Veil", x: 200, y: 50},
+          {id: "veil", name: "Veil", x: 500, y: 450},
+        ]
+      },
+      {time: 52, name: 'Plate-forme 3 : Déplacement', description: 'On se prépare à quitter la plate-forme',
+        positions:
+        {
+          "azuli": {x: 350, y: 100},
+          "kehil": {x: 350, y: 100},
+          "shamya": {x: 350, y: 100},
+          "dumys": {x: 350, y: 100},
+          "cirdan": {x: 350, y: 100},
+          "dedra": {x: 350, y: 100},
+          "stonk": {x: 350, y: 100},
+          "mongo": {x: 350, y: 100},
+          "zaarg": {x: 350, y: 100},
+          "giin": {x: 350, y: 100},
+          "laukta": {x: 350, y: 100},
+          "kailu": {x: 350, y: 100},
+          "abrams": {x: 350, y: 100},
+          "brins": {x: 350, y: 100},
+          "bak": {x: 350, y: 100},
+          "tyttu": {x: 350, y: 100},
+          "owist": {x: 350, y: 100},
+          "lyriel": {x: 350, y: 100},
+          "morsia": {x: 350, y: 100},
+          "shakk": {x: 350, y: 100},
+        },
+        drawings:
+        [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 55, name: 'Plate-forme 3 : Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
+        drawings:
+          [
+            {type: "disc", x: 350, y: 100, r: 100, color: "#FFFFFF"},
+            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          ]
+      },
+      {time: 58, name: 'Plate-forme 3 : Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
+        positions:
+        {
+          "azuli": {x: 350, y: 0},
+          "kehil": {x: 350, y: 0},
+          "shamya": {x: 350, y: 0},
+          "dumys": {x: 350, y: 0},
+          "cirdan": {x: 350, y: 0},
+          "dedra": {x: 350, y: 0},
+          "stonk": {x: 350, y: 0},
+          "mongo": {x: 350, y: 0},
+          "zaarg": {x: 350, y: 0},
+          "giin": {x: 350, y: 0},
+          "laukta": {x: 350, y: 0},
+          "kailu": {x: 350, y: 0},
+          "abrams": {x: 350, y: 0},
+          "brins": {x: 350, y: 0},
+          "bak": {x: 350, y: 0},
+          "tyttu": {x: 350, y: 0},
+          "owist": {x: 350, y: 0},
+          "lyriel": {x: 350, y: 0},
+          "morsia": {x: 350, y: 0},
+          "shakk": {x: 350, y: 0},
+        },
+        drawings:
+        [
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", x: 350, y: 100, r: 50, color: "#400040"},
+        ]
+      },
+
+
 
       {time: 600, name: 'Plate-forme 4 : The end', description: 'Tuer ou être tué'
       },
