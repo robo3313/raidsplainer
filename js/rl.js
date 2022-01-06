@@ -36,7 +36,6 @@ function RaidLeading (ctx, time) {
         for (const i in abilities) {
             abilities[i].image = document.getElementById(i);
         }
-        console.log(abilities);
     }
     
     _myLibraryObject.setEvents = function (newEvents) {
@@ -124,9 +123,16 @@ function RaidLeading (ctx, time) {
         if (event.drawings !== undefined) {
             for (const i in event.drawings) {
                 const drawing = event.drawings[i];            
+                if (drawing.type === "disc") {
+                    const color = drawing.color !== undefined ? drawing.color : "black";
+                    drawDisc(ctx, drawing.x, drawing.y, drawing.r, color);
+                }
                 if (drawing.type === "circle") {
                     const color = drawing.color !== undefined ? drawing.color : "black";
                     drawCircle(ctx, drawing.x, drawing.y, drawing.r, color);
+                }
+                if (drawing.type === "line") {
+                    drawLine(ctx, drawing.x1, drawing.y1, drawing.x2, drawing.y2);
                 }
             }
         }
@@ -150,9 +156,9 @@ function RaidLeading (ctx, time) {
       ctx.fillRect(x, y, length, height);
     }
 
-    function drawLine(ctx, start, end) {
-      ctx.moveTo(0, 0);
-      ctx.lineTo(start, end);
+    function drawLine(ctx, x1, y1, x2, y2) {
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
       ctx.stroke();
     }
 
@@ -160,11 +166,18 @@ function RaidLeading (ctx, time) {
       ctx.beginPath();
       ctx.arc(x, y, r, 0, 2 * Math.PI);
       ctx.fillStyle = color; 
-      ctx.fill();
       ctx.stroke();
     }
 
-    function drawGradiant(x, y, r, x1, y1, r1) {
+    function drawDisc(ctx, x, y, r, color) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.fillStyle = color; 
+        ctx.fill();
+        ctx.stroke();
+    }
+
+      function drawGradiant(x, y, r, x1, y1, r1) {
         // Create gradient
         var grd = ctx.createRadialGradient(75,50,5,90,60,100);
         grd.addColorStop(0,"black");
