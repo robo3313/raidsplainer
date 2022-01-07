@@ -106,7 +106,6 @@ function RaidLeading (ctx, time) {
 
     function calcPositions(elapsedTimer) {
         elapsedTimer /= timeConstant;
-
         for (const i in items) {
             if (items[i].target != undefined && items[i].target !== null) {
               let d = distance(items[i].x, items[i].y, items[i].target.x, items[i].target.y);
@@ -133,11 +132,11 @@ function RaidLeading (ctx, time) {
             for (const i in event.drawings) {
                 const drawing = event.drawings[i];
                 if (drawing.type === "disc") {
-                    const color = drawing.color !== undefined ? drawing.color : "black";
+                    const color = drawing.color !== undefined ? drawing.color : "red";
                     drawDisc(ctx, drawing.x, drawing.y, drawing.r, color);
                 }
                 if (drawing.type === "circle") {
-                    const color = drawing.color !== undefined ? drawing.color : "black";
+                    const color = drawing.color !== undefined ? drawing.color : "red";
                     drawCircle(ctx, drawing.x, drawing.y, drawing.r, color);
                 }
                 if (drawing.type === "line") {
