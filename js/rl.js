@@ -8,7 +8,7 @@ function RaidLeading (ctx, time) {
     let events = null;
 
     //To keep track of time
-    let currentEvent = 0;
+    let currentEvent = 15;
     let currentTimer = null;
     let elapsedTimer = null;
     let lastTimer = null;
@@ -122,7 +122,7 @@ function RaidLeading (ctx, time) {
         const event = events[currentEvent];
         if (event.drawings !== undefined) {
             for (const i in event.drawings) {
-                const drawing = event.drawings[i];            
+                const drawing = event.drawings[i];
                 if (drawing.type === "disc") {
                     const color = drawing.color !== undefined ? drawing.color : "black";
                     drawDisc(ctx, drawing.x, drawing.y, drawing.r, color);
