@@ -8,11 +8,14 @@ function RaidLeading (ctx, time) {
     let events = null;
 
     //To keep track of time
-    let currentEvent = 15;
+    let currentEvent = 0;
     let currentTimer = null;
     let elapsedTimer = null;
     let lastTimer = null;
     let animation = true;
+    let secondsSinceStart = Math.floor(currentTimer / 1000);
+    let timeSinceLastEvent = 0;
+
 
     //Internal js shenanigans
     let interval = null;
@@ -59,6 +62,7 @@ function RaidLeading (ctx, time) {
         elapsedTimer = performance.now() - lastTimer;
         if (animation) {
             currentTimer += elapsedTimer;
+            timeSinceLastEvent += elapsedTimer;
         }
         lastTimer = performance.now();
         if (currentEvent >= events.length - 1) {
@@ -71,12 +75,13 @@ function RaidLeading (ctx, time) {
     }
 
     function calcEvent(currentTimer) {
-      const secondsSinceStart = Math.floor(currentTimer / 1000);
-      document.getElementById("timer").innerHTML = secondsSinceStart;
-      if (events[currentEvent].time < secondsSinceStart) {
-        currentEvent += 1;
-        triggerEvent(events[currentEvent]);
-      }
+        secondsSinceStart = Math.floor(currentTimer / 1000);
+        document.getElementById("timer").innerHTML = secondsSinceStart;
+        if (timeSinceLastEvent / 1000 > events[currentEvent].time) {
+            timeSinceLastEvent = 0;
+            currentEvent += 1;
+            triggerEvent(events[currentEvent]);
+        }
     }
 
     function triggerEvent(event) {
@@ -84,13 +89,17 @@ function RaidLeading (ctx, time) {
         document.getElementById("event-description").innerHTML = event.description;
         if (event.positions !== undefined) {
             for (const i in items) {
-                items[i].target = event.positions[i];
+                if (typeof event.positions[i] == "string") {
+                    items[i].target = items[i].positions[event.positions[i]];
+                } else {
+                    items[i].target = event.positions[i];
+                }
             }
         }
         if (event.teleport !== undefined) {
             for (const i in items) {
-                items[i].position.x = event.teleport[i].x;
-                items[i].position.y = event.teleport[i].y;
+                items[i].x = event.teleport[i].x;
+                items[i].y = event.teleport[i].y;
             }
         }
     }
@@ -100,14 +109,14 @@ function RaidLeading (ctx, time) {
 
         for (const i in items) {
             if (items[i].target != undefined && items[i].target !== null) {
-              let d = distance(items[i].position.x, items[i].position.y, items[i].target.x, items[i].target.y);
+              let d = distance(items[i].x, items[i].y, items[i].target.x, items[i].target.y);
               if (d < items[i].speed * elapsedTimer) {
-                items[i].position.x = items[i].target.x;
-                items[i].position.y = items[i].target.y;
+                items[i].x = items[i].target.x;
+                items[i].y = items[i].target.y;
                 items[i].target = null;
               } else {
-                items[i].position.x += items[i].speed * elapsedTimer * (items[i].target.x - items[i].position.x) / d;
-                items[i].position.y += items[i].speed * elapsedTimer * (items[i].target.y - items[i].position.y) / d;
+                items[i].x += items[i].speed * elapsedTimer * (items[i].target.x - items[i].x) / d;
+                items[i].y += items[i].speed * elapsedTimer * (items[i].target.y - items[i].y) / d;
               }
             }
         }
@@ -116,8 +125,8 @@ function RaidLeading (ctx, time) {
     function drawIcons(ctx) {
         ctx.drawImage(planImage, 0, 0);
         for (const i in items) {
-            ctx.drawImage(items[i].image, items[i].position.x - items[i].image.width / 2, items[i].position.y - items[i].image.height / 2);
-            writeText(ctx, i, items[i].position.x, items[i].position.y);
+            ctx.drawImage(items[i].image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
+            writeText(ctx, i, items[i].x, items[i].y);
         }
         const event = events[currentEvent];
         if (event.drawings !== undefined) {
