@@ -6,6 +6,8 @@ function RaidLeading (ctx, time) {
     let items = null;
     let abilities = null;
     let events = null;
+    let phases = null;
+    let currentPhase = null;
 
     //To keep track of time
     let currentEvent = 0;
@@ -43,6 +45,15 @@ function RaidLeading (ctx, time) {
     
     _myLibraryObject.setEvents = function (newEvents) {
         events = newEvents;
+        for (const i in events) {
+            if (events[i].phase !== undefined) {
+                phases[events[i].phase].events.push(i);
+            }
+        }
+    }
+
+    _myLibraryObject.setPhases = function (newPhases) {
+        phases = newPhases;
     }
 
     _myLibraryObject.start = function() {
@@ -56,6 +67,11 @@ function RaidLeading (ctx, time) {
     _myLibraryObject.resume = function() {
         lastTimer = performance.now();
         animation = true;
+    }
+
+    _myLibraryObject.goToEvent = function(newCurrentEvent) {
+        currentEvent = newCurrentEvent;
+        triggerEvent(events[currentEvent]);
     }
 
     function loop() {
@@ -102,6 +118,36 @@ function RaidLeading (ctx, time) {
                 items[i].y = event.teleport[i].y;
             }
         }
+        displayPhase();
+        displayTimeline();
+    }
+
+    function displayPhase() {
+        currentPhase = events[currentEvent].phase !== undefined ?  events[currentEvent].phase : '';
+        document.getElementById("phase").innerHTML = phases[currentPhase].name+' ('+currentEvent+')';
+    }
+
+    function displayTimeline() {
+        const timelineDiv = document.getElementById("timeline");
+        timelineDiv.innerHTML = '';
+        let lastEvent = null;
+        let tmpEvent = null;
+        for (const i in phases[currentPhase].events) {
+            const event = phases[currentPhase].events[i]
+            const div = document.createElement('span');
+            tmpEvent = events[event].name.split(" ")[0];
+            if (lastEvent != tmpEvent) {
+                lastEvent = tmpEvent;
+                div.innerHTML = lastEvent;
+                if (lastEvent === events[currentEvent].name.split(" ")[0]) {
+                    div.className = 'event selected';
+                } else {
+                    div.className = 'event';
+                }
+                div.setAttribute("onclick", "rl.goToEvent("+event+");");
+                timelineDiv.appendChild(div);    
+            }
+        }
     }
 
     function calcPositions(elapsedTimer) {
@@ -123,10 +169,6 @@ function RaidLeading (ctx, time) {
 
     function drawIcons(ctx) {
         ctx.drawImage(planImage, 0, 0);
-        for (const i in items) {
-            ctx.drawImage(items[i].image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
-            writeText(ctx, i, items[i].x, items[i].y);
-        }
         const event = events[currentEvent];
         if (event.drawings !== undefined) {
             for (const i in event.drawings) {
@@ -148,8 +190,12 @@ function RaidLeading (ctx, time) {
             for (const i in event.abilities) {            
                 const ability = event.abilities[i];
                 ctx.drawImage(abilities[ability.id].image, ability.x - abilities[ability.id].image.width / 2, ability.y - abilities[ability.id].image.height / 2);
-                writeText(ctx, ability.name, ability.x, ability.y);
+                writeText(ctx, ability.name, ability.x, ability.y + abilities[ability.id].image.height / 2);
             }
+        }
+        for (const i in items) {
+            ctx.drawImage(items[i].image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
+            writeText(ctx, i, items[i].x, items[i].y);
         }
     }
 

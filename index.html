@@ -13,6 +13,12 @@
         <button type="button" onClick="rl.resume()">Play</button> 
         <button type="button" onClick="rl.pause()">Pause</button> 
         <span id="timer"></span>
+        <button type="button" onClick="rl.goToEvent(0)">PF 1</button> 
+        <button type="button" onClick="rl.goToEvent(14)">PF 2</button> 
+        <button type="button" onClick="rl.goToEvent(37)">PF 3</button> 
+        <button type="button" onClick="rl.goToEvent(55)">PF 4</button> 
+        <div id="timeline"></div>
+        <div id="phase" class="title"></div>
         <div id="event-title" class="title">
           Plate-forme 1
         </div>
@@ -83,13 +89,22 @@
       "arrowPos2" : {x:680, y: -50},
       "arrowPrepPos3" : {x:20, y: 20},
       "arrowPos3" : {x:20, y: -50},
+      "arrowSimplePrePos" : {x: 350, y:20},
+      "arrowSimplePos" : {x: 350, y:-50},
     };
+
+    const phases = {
+      1: {name: "Plate-forme 1", events: []},
+      2: {name: "Plate-forme 2", events: []},
+      3: {name: "Plate-forme 3", events: []},
+      4: {name: "Plate-forme 4", events: []},
+    }
 
     const events = [
       //PF 1 : 14 events
-      {time: 1, name: 'Plate-forme 1', description: ''
+      {time: 1, phase: 1, name: '', description: ''
       },
-      {time: 3, name: 'Plate-forme 1 : Spread', description: 'On se place en préparation du veil. <br>Positions assignées individuellement',
+      {time: 3, phase: 1, name: 'Spread', description: 'On se place en préparation du veil. <br>Positions assignées individuellement',
         positions:
         {
           "azuli": "spread",
@@ -114,7 +129,7 @@
           "shakk": "spread",
         }
       },
-      {time: 2, name: 'Plate-forme 1 : Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
+      {time: 2, phase: 1, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
         drawings:
         [
           {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
@@ -122,7 +137,7 @@
           {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
         ]
       },
-      {time: 3, name: 'Plate-forme 1 : Veil', description: 'On veut pas toucher les copains avec le veil',
+      {time: 3, phase: 1, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
         positions:
         {
           "stonk": {x: -100, y: 660}
@@ -139,7 +154,7 @@
           {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
         ]
       },
-      {time: 2, name: 'Plate-forme 1 : Mongoliste clear la plate-forme', description: 'Le placement des flaques est aléatoire',
+      {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
         positions: {
           "mongo": {x: 350, y: 150}
         },
@@ -150,7 +165,7 @@
           {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
         ]
       },
-      {time: 2, name: 'Plate-forme 1 : Mongoliste clear la plate-forme', description: 'Le placement des flaques est aléatoire',
+      {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
         positions: {
           "mongo": {x: 630, y: 330}
         },
@@ -160,7 +175,7 @@
           {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
         ]
       },
-      {time: 2, name: 'Plate-forme 1 : Mongoliste clear la plate-forme', description: 'Le placement des flaques est aléatoire',
+      {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
         positions: {
           "mongo": {x: 350, y: 550}
         },
@@ -169,7 +184,7 @@
           {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
         ]
       },
-      {time: 3, name: 'Plate-forme 1 : Stack & placement Stonks & Shamyaleau', description: 'Pour simplifier le heal des veils et de la furie.<br>Shamyaleau se place coin intérieur, Stonks coin côté',
+      {time: 3, phase: 1, name: 'Stack + placement Stonks & Shamyaleau', description: 'Pour simplifier le heal des veils et de la furie.<br>Shamyaleau se place coin intérieur, Stonks coin côté',
         positions:
         {
           "azuli": "stacked",
@@ -194,7 +209,7 @@
           "shakk": "stacked",
         }
       },
-      {time: 3, name: 'Plate-forme 1 : Dispell Stonks & Shamyaleau', description : "Shamy se dispell, un healer dispell Stonks, ils se stack.<br>Mongoliste se place coin extérieur.",
+      {time: 3, phase: 1, name: 'Dispell Stonks & Shamyaleau', description : "Shamy se dispell, un healer dispell Stonks, ils se stack.<br>Mongoliste se place coin extérieur.",
         positions: {
           "stonk": "stacked",
           "shamya": "stacked",
@@ -206,7 +221,7 @@
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 4, name: 'Plate-forme 1 : Dispell Mongoliste', description : "Un healer dispell Mongoliste.<br>Vu le timing cela arrivera très probablement pendant la furie",
+      {time: 4, phase: 1, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste.<br>Vu le timing cela arrivera très probablement pendant la furie",
         positions: {
           "mongo": {x: 350, y: 350},
         },
@@ -217,7 +232,7 @@
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
-      {time: 5, name: 'Plate-forme 1 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+      {time: 5, phase: 1, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities:
         [
           {id: "fury", name: "Furie", x: 350, y: 350}
@@ -229,7 +244,7 @@
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
-      {time: 3, name: 'Plate-forme 1 : Déplacement', description: 'On se prépare à quitter la plate-forme',
+      {time: 3, phase: 1, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
         positions:
         {
           "azuli": positions["preparingNextPlatform"],
@@ -260,7 +275,7 @@
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
-      {time: 4, name: 'Plate-forme 1 : Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
+      {time: 4, phase: 1, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         drawings:
           [
             {type: "disc", x: 350, y: 100, r: 100, color: "#FFFFFF"},
@@ -269,7 +284,7 @@
             {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
           ]
       },
-      {time: 2, name: 'Plate-forme 1 : Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
+      {time: 2, phase: 1, name: 'Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
         positions:
         {
           "azuli": positions["nextPlatform"],
@@ -302,8 +317,7 @@
       },
 
       //PF 2 : 25 events
-
-      {time: 1, name: 'Plate-forme 2', description: '',
+      {time: 1, phase: 2, name: '', description: '',
         teleport:
         {
           "azuli": positions["platformStart"],
@@ -328,7 +342,7 @@
           "shakk": positions["platformStart"],
         }
       },
-      {time: 3, name: 'Plate-forme 2 : Spread', description: 'Positions assignées individuellement',
+      {time: 3, phase: 2, name: 'Spread', description: 'Positions assignées individuellement',
         positions:
         {
           "azuli": "spread",
@@ -353,20 +367,20 @@
           "shakk": "spread",
         }
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
         positions :
         {
           "mongo": positions["arrowPos1"]
         }
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
         positions :
         {
           "abrams": positions["arrowPrepPos2"],
           "tyttu" : positions["arrowPrepPos3"],
         }
       },
-      {time: 5, name: 'Plate-forme 2 : Arrow complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
         positions :
         {
           "mongo": "spread",
@@ -374,25 +388,25 @@
           "tyttu" : positions["arrowPos3"]
         }
       },
-      {time: 2, name: 'Plate-forme 2 : Arrow complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
+      {time: 2, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
         positions :
         {
           "abrams": positions["arrowPrepPos2"],
         }
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
         positions :
         {
           "abrams": "spread",
         }
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
         positions :
         {
           "tyttu": "spread",
         }
       },
-      {time: 4, name: 'Plate-forme 2 : Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+      {time: 3, phase: 2, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
         drawings :
         [
           {type:"line", x1:0, y1:150, x2:400, y2:700},
@@ -403,7 +417,7 @@
           {type:"line", x1:150, y1:700, x2:700, y2:150},
         ]
       },
-      {time: 5, name: 'Plate-forme 2 : Cri', description: "D'ou l'intérêt de se placer dès l'arrivée sur la plate-forme",
+      {time: 3, phase: 2, name: 'Cri', description: "D'ou l'intérêt de se placer dès l'arrivée sur la plate-forme",
         drawings :
         [
           {type: "circle", x: items["azuli"].positions["spread"].x, y: items["azuli"].positions["spread"].y, r: 70, color: "grey"},
@@ -428,14 +442,14 @@
           {type: "circle", x: items["shakk"].positions["spread"].x, y: items["shakk"].positions["spread"].y, r: 70, color: "grey"},
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Veil', description: 'On veut pas toucher les copains avec le veil',
+      {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
         abilities:
         [
           {id: "veil", name: "Veil", x: items["owist"].positions["spread"].x, y: items["owist"].positions["spread"].y},
           {id: "veil", name: "Veil", x: items["kehil"].positions["spread"].x, y: items["kehil"].positions["spread"].y},
         ]
       },
-      {time: 5, name: 'Plate-forme 2 : Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
+      {time: 5, phase: 2, name: 'Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
         abilities :
         [
           {id:"soak", name:"Soak", x:610, y: 40},
@@ -448,7 +462,7 @@
           "shamya": "stacked",
           "dumys": "stacked",
           "dedra": "stacked",
-          "stonk": "stacked",
+          "stonk": "dispell",
           "mongo": "stacked",
           "zaarg": "stacked",
           "giin": "stacked",
@@ -463,7 +477,7 @@
           "shakk": "stacked",
         }
       },
-      {time: 2, name: "Plate-forme 2 : Dispell Stonks", description : "Un healer dispell Stonks avant la Furie",
+      {time: 2, phase: 2, name: "Dispell Stonks", description : "Un healer dispell Stonks avant la Furie<br> Les joueurs qui ont fait le soak se stack",
         positions: {
           "stonk": "stacked",
           "cirdan": "stacked",
@@ -474,7 +488,7 @@
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 2, name: 'Plate-forme 2 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+      {time: 2, phase: 2, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities:
         [
           {id: "fury", name: "Furie", x: 350, y: 350}
@@ -484,8 +498,51 @@
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+      {time: 2, phase: 2, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
+        drawings:
+        [
+          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         positions: {
+          "stonk": {x: 350, y: 150}
+        },
+        drawings:
+        [
+          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
+        positions: {
+          "stonk": {x: 630, y: 330}
+        },
+        drawings:
+        [
+          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
+        positions: {
+          "stonk": {x: 350, y: 550}
+        },
+        drawings:
+        [
+          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+        ]
+      },
+      {time: 3, phase: 2, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+        positions: {
+          "stonk": "stacked",
           "dedra": {x: 100, y: 280},
           "giin": {x: 500, y: 350},
           "morsia": {x: 450, y: 600},
@@ -497,77 +554,99 @@
             {type:"line", x1:450, y1:0, x2:450, y2:700},
             {type:"line", x1:0, y1:0, x2:700, y2:500},
             {type:"line", x1:150, y1:700, x2:700, y2:150},
-            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+            {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "mongo": {x:330, y: -50},
-          "giin": {x: 350, y: 350},
+          "mongo": positions["arrowSimplePrePos"],
+          "giin": "spread",
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "kailu": {x: 680, y: 20},
-          "bak" : {x: 20, y: 20}
+          "mongo": positions["arrowSimplePos"],
+          "kailu": positions["arrowSimplePrePos"],
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
         ]
       },
-      {time: 2, name: 'Plate-forme 2 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "mongo": {x: 330, y: 330},
-          "kailu": {x: 680, y: -50}
+          "mongo": "spread",
+          "kailu": positions["arrowSimplePos"],
+          "bak" : positions["arrowSimplePrePos"],
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
         ]
       },
-      {time: 2, name: 'Plate-forme 2 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "kailu": {x: 680, y: 20},
-          "bak" : {x: 20, y: -50}
+          "kailu": "spread",
+          "bak" : positions["arrowSimplePos"]
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 2, name: 'Arrow&nbsp;simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "kailu": {x: 350, y: 100},
-          "bak": {x: 20, y: 20},
+          "bak" : "spread"
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "bak": {x: 350, y: 350},
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
-      },
-      {time: 6, name: 'Plate-forme 2 : Soaks simples', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
+      {time: 3, phase: 2, name: 'Spread', description: 'Positions assignées individuellement',
         positions:
         {
+          "azuli": "spread",
+          "kehil": "spread",
+          "shamya": "spread",
+          "dumys": "spread",
           "cirdan": "spread",
-          "laukta": "spread"
-        },
+          "dedra": "spread",
+          "stonk": "spread",
+          "mongo": "spread",
+          "zaarg": "spread",
+          "giin": "spread",
+          "laukta": "spread",
+          "kailu": "spread",
+          "abrams": "spread",
+          "brins": "spread",
+          "bak": "spread",
+          "tyttu": "spread",
+          "owist": "spread",
+          "lyriel": "spread",
+          "morsia": "spread",
+          "shakk": "spread",
+        }
+      },
+      {time: 5, phase: 2, name: 'Soaks simples', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
         abilities :
         [
           {id:"soak", name:"Soak", x:610, y: 40},
           {id:"soak", name:"Soak", x:660, y: 220}
         ], drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Déplacement', description: 'On se prépare à quitter la plate-forme',
+      {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
+        abilities:
+        [
+          {id: "veil", name: "Veil", x: items["owist"].positions["spread"].x, y: items["owist"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: items["kehil"].positions["spread"].x, y: items["kehil"].positions["spread"].y},
+        ], drawings: [
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
+        ]
+      },
+
+      {time: 3, phase: 2, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
         positions:
         {
           "azuli": positions["preparingNextPlatform"],
@@ -593,17 +672,17 @@
         },
         drawings:
         [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
         ]
       },
-      {time: 3, name: 'Plate-forme 2 : Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
+      {time: 3, phase: 2, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         drawings:
           [
             {type: "disc", x: 350, y: 100, r: 100, color: "#FFFFFF"},
-            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+            {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
           ]
       },
-      {time: 2, name: 'Plate-forme  : Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
+      {time: 2, phase: 2, name: 'Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
         positions:
         {
           "azuli": positions["nextPlatform"],
@@ -629,14 +708,13 @@
         },
         drawings:
         [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-          {type: "disc", x: 350, y: 100, r: 50, color: "#400040"},
+          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
+          {type: "disc", x: 350, y: 100, r: 200, color: "#400040"},
         ]
       },
 
-      /*
-      // PF 3
-      {time: 0, name: 'Plate-forme 3', description: '',
+      // PF 3 : 20 events
+      {time: 0, phase: 3, name: 'Plate-forme 3', description: '',
         teleport:
         {
           "azuli": positions["platformStart"],
@@ -661,17 +739,63 @@
           "shakk": positions["platformStart"],
         }
       },      
-      {time: 3, name: 'Plate-forme 3 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+      {time: 3, phase: 3, name: 'Stack', description: "En prévision de la furie qui arrive",
+        positions:
+        {
+          "azuli": "stacked",
+          "kehil": "stacked",
+          "shamya": "stacked",
+          "dumys": "stacked",
+          "cirdan": "stacked",
+          "dedra": "stacked",
+          "stonk": "stacked",
+          "mongo": "stacked",
+          "zaarg": "stacked",
+          "giin": "stacked",
+          "laukta": "stacked",
+          "kailu": "stacked",
+          "abrams": "stacked",
+          "brins": "stacked",
+          "bak": "stacked",
+          "tyttu": "stacked",
+          "owist": "stacked",
+          "lyriel": "stacked",
+          "morsia": "stacked",
+          "shakk": "stacked",
+        }
+      },
+      {time: 3, phase: 3, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities:
         [
           {id: "fury", name: "Furie", x: 350, y: 350}
         ],
-        drawings:
-        [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-        ]
       },
-      {time: 6, name: 'Plate-forme 3 : Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+      {time: 3, phase: 3, name: 'Spread', description: 'Positions assignées individuellement',
+        positions:
+        {
+          "azuli": "spread",
+          "kehil": "spread",
+          "shamya": "spread",
+          "dumys": "spread",
+          "cirdan": "spread",
+          "dedra": "spread",
+          "stonk": "spread",
+          "mongo": "spread",
+          "zaarg": "spread",
+          "giin": "spread",
+          "laukta": "spread",
+          "kailu": "spread",
+          "abrams": "spread",
+          "brins": "spread",
+          "bak": "spread",
+          "tyttu": "spread",
+          "owist": "spread",
+          "lyriel": "spread",
+          "morsia": "spread",
+          "shakk": "spread",
+        }
+      },
+      {time: 3, phase: 3, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
         positions: {
           "dedra": {x: 100, y: 280},
           "giin": {x: 500, y: 350},
@@ -684,10 +808,9 @@
             {type:"line", x1:450, y1:0, x2:450, y2:700},
             {type:"line", x1:0, y1:0, x2:700, y2:500},
             {type:"line", x1:150, y1:700, x2:700, y2:150},
-            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 9, name: 'Plate-forme 3 : Cri', description: "D'ou l'intérêt de se placer dès l'arrivée sur la plate-forme",
+      {time: 3, phase: 3, name: 'Cri', description: "Distanciation sociale",
         drawings :
         [
           {type: "circle", x: 80, y: 150, r: 70, color: "grey"},
@@ -712,95 +835,82 @@
           {type: "circle", x: 580, y: 580, r: 70, color: "grey"},
         ]
       },
-      {time: 12, name: 'Plate-forme 3 : Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
+      {time: 3, phase: 3, name: 'Soaks movement', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
         abilities :
         [
-          {id:"soak", name:"Soak", x:610, y: 40},
-          {id:"soak", name:"Soak", x:660, y: 220}
+          {id:"soak", name:"Soak", x:410, y: 600},
+          {id:"soak", name:"Soak", x:510, y: 600},
+          {id:"soak", name:"Soak", x:610, y: 600},
+          {id:"soak", name:"Soak", x:610, y: 500}
         ],
-        positions:
-        {
-          "azuli": {x: 350, y: 350},
-          "kehil": {x: 350, y: 350},
-          "shamya": {x: 350, y: 350},
-          "dumys": {x: 350, y: 350},
-          "dedra": {x: 350, y: 350},
-          "stonk": {x: 40, y: 660},
-          "mongo": {x: 350, y: 350},
-          "zaarg": {x: 350, y: 350},
-          "giin": {x: 350, y: 350},
-          "kailu": {x: 350, y: 350},
-          "abrams": {x: 350, y: 350},
-          "brins": {x: 350, y: 350},
-          "bak": {x: 350, y: 350},
-          "tyttu": {x: 350, y: 350},
-          "owist": {x: 350, y: 350},
-          "lyriel": {x: 350, y: 350},
-          "morsia": {x: 350, y: 350},
-          "shakk": {x: 350, y: 350},
-        }
       },
-      {time: 15, name: 'Plate-forme 3 : Veil', description: 'On veut pas toucher les copains avec le veil',
+      {time: 3, phase: 3, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
         abilities:
         [
           {id: "veil", name: "Veil", x: 200, y: 50},
           {id: "veil", name: "Veil", x: 500, y: 450},
         ]
       },
-      {time: 17, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 3, name: 'Arrow simples', shortname: "Arrow simples", description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "mongo": {x:330, y: -50},
-          "giin": {x: 350, y: 350},
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
+          "stonk": positions["arrowSimplePrePos"],
+        },
       },
-      {time: 19, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 3, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "kailu": {x: 680, y: 20},
-          "bak" : {x: 20, y: 20}
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
+          "stonk": positions["arrowSimplePos"],
+          "morsia": positions["arrowSimplePrePos"],
+        },
       },
-      {time: 22, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 3, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "mongo": {x: 330, y: 330},
-          "kailu": {x: 680, y: -50}
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
+          "stonk": "stacked",
+          "morsia": positions["arrowSimplePos"],
+          "owist" : positions["arrowSimplePrePos"],
+        },
       },
-      {time: 25, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 3, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "kailu": {x: 680, y: 20},
-          "bak" : {x: 20, y: -50}
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
+          "morsia": "stacked",
+          "owist" : positions["arrowSimplePos"]
+        },
       },
-      {time: 28, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+      {time: 3, phase: 3, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         positions :
         {
-          "kailu": {x: 350, y: 100},
-          "bak": {x: 20, y: 20},
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
+          "owist" : "stacked"
+        }
       },
-      {time: 31, name: 'Plate-forme 3 : Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
+      {time: 3, phase: 3, name: 'Stack', description: "En prévision de la furie qui arrive",
+        positions:
         {
-          "bak": {x: 350, y: 350},
-        }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"}
-        ]
+          "azuli": "stacked",
+          "kehil": "stacked",
+          "shamya": "stacked",
+          "dumys": "stacked",
+          "cirdan": "stacked",
+          "dedra": "stacked",
+          "stonk": "stacked",
+          "mongo": "stacked",
+          "zaarg": "stacked",
+          "giin": "stacked",
+          "laukta": "stacked",
+          "kailu": "stacked",
+          "abrams": "stacked",
+          "brins": "stacked",
+          "bak": "stacked",
+          "tyttu": "stacked",
+          "owist": "stacked",
+          "lyriel": "stacked",
+          "morsia": "stacked",
+          "shakk": "stacked",
+        }
       },
-      {time: 40, name: 'Plate-forme 3 : Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
+      {time: 3, phase: 3, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities:
         [
           {id: "fury", name: "Furie", x: 350, y: 350}
@@ -810,7 +920,7 @@
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 43, name: 'Plate-forme 3 : Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
+      {time: 3, phase: 3, name: 'Soaks immune', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br><br>Ici il ne faut pas hésiter a utiliser des immunes mobiles, comme la cape d'ombre, bubulle, turtle, pour éviter de ramasser les débuffs de flaques.",
         abilities :
         [
           {id:"soak", name:"Soak", x:610, y: 40},
@@ -838,7 +948,7 @@
           "shakk": {x: 350, y: 350},
         }
       },
-      {time: 46, name: 'Plate-forme 3 : Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
+      {time: 3, phase: 3, name: 'Couteaux', phase: 3, description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
         positions: {
           "dedra": {x: 100, y: 280},
           "giin": {x: 500, y: 350},
@@ -854,14 +964,14 @@
             {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 49, name: 'Plate-forme 3 : Veil', description: 'On veut pas toucher les copains avec le veil',
+      {time: 3, phase: 3, name: 'Veil', phase: 3, description: 'On veut pas toucher les copains avec le veil',
         abilities:
         [
           {id: "veil", name: "Veil", x: 200, y: 50},
           {id: "veil", name: "Veil", x: 500, y: 450},
         ]
       },
-      {time: 52, name: 'Plate-forme 3 : Déplacement', description: 'On se prépare à quitter la plate-forme',
+      {time: 3, phase: 3, name: 'Déplacement', phase: 3, description: 'On se prépare à quitter la plate-forme',
         positions:
         {
           "azuli": {x: 350, y: 100},
@@ -890,14 +1000,14 @@
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
-      {time: 55, name: 'Plate-forme 3 : Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
+      {time: 3, phase: 3, name: 'Raze & Dispell de masse', phase: 3, description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         drawings:
           [
             {type: "disc", x: 350, y: 100, r: 100, color: "#FFFFFF"},
             {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
           ]
       },
-      {time: 58, name: 'Plate-forme 3 : Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
+      {time: 3, phase: 3, name: 'Raze', phase: 3, description: "On a une période de grâce à la fin du cast de Raze pour partir", 
         positions:
         {
           "azuli": positions["nextPlatform"],
@@ -927,13 +1037,13 @@
           {type: "disc", x: 350, y: 100, r: 50, color: "#400040"},
         ]
       },
-*/
 
 
       {time: 600, name: 'Plate-forme 4 : The end', description: 'Tuer ou être tué'
       },
     ];
 
+    rl.setPhases(phases);
     rl.setEvents(events);
 
     window.onload = function() {

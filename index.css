@@ -4,7 +4,7 @@
 }
 
 .text {
-    width: 500px;
+    width: 800px;
 }
 
 .title {
@@ -18,4 +18,13 @@
     font-size: medium;
     display: flex;
     justify-content: space-around;
+}
+
+.event {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.event.selected {
+    font-weight: bold;
 }
