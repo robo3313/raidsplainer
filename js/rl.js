@@ -173,16 +173,13 @@ function RaidLeading (ctx, time) {
         if (event.drawings !== undefined) {
             for (const i in event.drawings) {
                 const drawing = event.drawings[i];
+                const color = drawing.color !== undefined ? drawing.color : "black";
                 if (drawing.type === "disc") {
-                    const color = drawing.color !== undefined ? drawing.color : "red";
                     drawDisc(ctx, drawing.x, drawing.y, drawing.r, color);
-                }
-                if (drawing.type === "circle") {
-                    const color = drawing.color !== undefined ? drawing.color : "red";
+                } else if (drawing.type === "circle") {
                     drawCircle(ctx, drawing.x, drawing.y, drawing.r, color);
-                }
-                if (drawing.type === "line") {
-                    drawLine(ctx, drawing.x1, drawing.y1, drawing.x2, drawing.y2);
+                } else if (drawing.type === "line") {
+                    drawLine(ctx, drawing.x1, drawing.y1, drawing.x2, drawing.y2, color);
                 }
             }
         }
@@ -193,8 +190,14 @@ function RaidLeading (ctx, time) {
                 writeText(ctx, ability.name, ability.x, ability.y + abilities[ability.id].image.height / 2);
             }
         }
+        let image;
         for (const i in items) {
-            ctx.drawImage(items[i].image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
+            if (event.items !== undefined && event.items[i] !== undefined && event.items[i].image !== undefined) {
+                image = abilities[event.items[i].image].image;
+            } else {
+                image = items[i].image;
+            }
+            ctx.drawImage(image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
             writeText(ctx, i, items[i].x, items[i].y);
         }
     }
@@ -210,17 +213,19 @@ function RaidLeading (ctx, time) {
       ctx.fillRect(x, y, length, height);
     }
 
-    function drawLine(ctx, x1, y1, x2, y2) {
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.stroke();
+    function drawLine(ctx, x1, y1, x2, y2, color) {
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
     }
 
     function drawCircle(ctx, x, y, r, color) {
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, 2 * Math.PI);
-      ctx.fillStyle = color; 
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.fillStyle = color; 
+        ctx.stroke();
     }
 
     function drawDisc(ctx, x, y, r, color) {
