@@ -21,10 +21,15 @@
 }
 
 .event {
+    display: inline-block;
     margin-right: 5px;
     cursor: pointer;
 }
 
 .event.selected {
     font-weight: bold;
+}
+
+.timeline {
+    width: 700px;
 }
