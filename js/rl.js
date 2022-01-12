@@ -70,6 +70,7 @@ function RaidLeading (ctx, time) {
     }
 
     _myLibraryObject.goToEvent = function(newCurrentEvent) {
+        timeSinceLastEvent = 0;
         currentEvent = newCurrentEvent;
         triggerEvent(events[currentEvent]);
     }
@@ -81,10 +82,10 @@ function RaidLeading (ctx, time) {
             timeSinceLastEvent += elapsedTimer;
         }
         lastTimer = performance.now();
-        if (currentEvent >= events.length - 1) {
+        /*if (currentEvent >= events.length - 1) {
             clearInterval(interval);
             return ;
-        }
+        }*/
         calcEvent(currentTimer);
         calcPositions(elapsedTimer);
         drawIcons(ctx);
@@ -191,14 +192,20 @@ function RaidLeading (ctx, time) {
             }
         }
         let image;
+        let text;
         for (const i in items) {
             if (event.items !== undefined && event.items[i] !== undefined && event.items[i].image !== undefined) {
                 image = abilities[event.items[i].image].image;
             } else {
                 image = items[i].image;
             }
+            if (event.items !== undefined && event.items[i] !== undefined && event.items[i].text !== undefined) {
+                text = event.items[i].text;
+            } else {
+                text = i;
+            }
             ctx.drawImage(image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
-            writeText(ctx, i, items[i].x, items[i].y);
+            writeText(ctx, text, items[i].x, items[i].y);
         }
     }
 
