@@ -1,0 +1,62 @@
+{
+    "tank1": {"name":"stonk", "x": 200, "y": 200, "speed": 30, "imageId": "druid", "groups": "melee", "image": null, "target": null, 
+        "positions": {
+            "stacked": {"x": 350, "y": 350},
+            "spread": {"x": 190, "y": 210},
+            "melee": {"x": 300, "y": 300},
+            "dispell": {"x": 40, "y": 660},
+            "dispellP4": {"x": 40, "y": 660},
+        }
+    },
+    "tank2": {"name":"mongo", "x": 200, "y": 250, "speed": 30, "imageId": "monk", "groups": "melee", "image": null, "target": null,
+        "positions":{
+            "stacked": {"x": 350, "y": 350},
+            "spread": {"x": 350, "y": 310},
+            "melee": {"x": 350, "y": 350},
+            "dispell": {"x": 660, "y": 660},
+            "dispellP4": {"x": 660, "y": 40},
+        }
+    },
+    "heal1": {"name":"azuli", "x": 200, "y": 300, "speed": 30, "imageId": "druid", "image": null, "target": null,
+        "positions":{
+            "stacked": {"x": 350, "y": 350},
+            "spread": {"x": 30, "y": 130}
+        }
+    },
+    "heal2": {"name":"shamy", "x": 250, "y": 200, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 510, "y": 20}, "dispell": {"x":40, "y":40}},
+    "heal3": {"name":"brins", "x": 200, "y": 400, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 510, "y": 390}, "melee": {"x": 400, "y": 400}}, "imageId": "paladin", "groups": "melee", "image": null, "target": null},
+    "heal4": {"name":"bak",   "x": 200, "y": 350, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 670, "y": 490}, "melee": {"x": 400, "y": 350}}, "imageId": "paladin", "groups": "melee", "image": null, "target": null},
+
+    "melee1": {"name":"giin",  "x": 300, "y": 250, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 190, "y": 390}, "melee": {"x": 300, "y": 400}}, "imageId": "rogue", "groups": "melee", "image": null, "target": null},
+    "melee2": {"name":"faymz", "x": 250, "y": 350, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 350, "y": 490}, "melee": {"x": 350, "y": 400}}, "imageId": "deathknight", "groups": "melee", "image": null, "target": null},
+    "melee3": {"name":"zaarg", "x": 300, "y": 200, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 510, "y": 210}, "melee": {"x": 400, "y": 300}}, "imageId": "warrior", "groups": "melee", "image": null, "target": null},
+    "melee4": {"name":"dumys", "x": 250, "y": 400, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 350, "y": 130}, "melee": {"x": 350, "y": 300}}, "imageId": "demonhunter", "groups": "melee", "image": null, "target": null},
+
+    "ranged1": {"name":"kehil", "x": 350, "y": 250, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 190, "y": 20}}, "imageId": "warlock", "image": null, "target": null},
+    "ranged2": {"name":"cirda", "x": 250, "y": 250, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 670, "y": 130}}, "imageId": "druid", "image": null, "target": null},
+    "ranged3": {"name":"dedra", "x": 350, "y": 300, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 30, "y": 310}}, "imageId": "priest", "image": null, "target": null},
+    "ranged4": {"name":"laukt", "x": 250, "y": 300, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 670, "y": 310}}, "imageId": "druid", "image": null, "target": null},
+    "ranged5": {"name":"kailu", "x": 350, "y": 200, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 30, "y": 490}}, "imageId": "shaman", "image": null, "target": null},
+    "ranged6": {"name":"tyttu", "x": 300, "y": 350, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 30, "y": 670}}, "imageId": "hunter", "image": null, "target": null},
+    "ranged7": {"name":"lyrie", "x": 300, "y": 300, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 190, "y": 575}}, "imageId": "hunter", "image": null, "target": null},
+    "ranged8": {"name":"owist", "x": 300, "y": 400, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 350, "y": 670}}, "imageId": "hunter", "image": null, "target": null},
+    "ranged9": {"name":"morsi", "x": 350, "y": 350, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 510, "y": 575}}, "imageId": "mage", "image": null, "target": null},
+    "ranged10": {"name":"shakk", "x": 350, "y": 400, "speed": 30, "imageId": "shaman", "image": null, "target": null},
+        "positions":{"stacked": {"x": 350, "y": 350}, "spread": {"x": 670, "y": 670}}, "imageId": "mage", "image": null, "target": null}
+  }
