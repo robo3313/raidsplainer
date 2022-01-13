@@ -4,6 +4,7 @@
     <title>Raidleading</title>
     <link rel="stylesheet" href="index.css">
     <script type="text/javascript" src="js/rl.js"></script>
+    <!--<script type="text/javascript" src="data/players.json"></script>-->
     <meta charset="UTF-8">
   </head>
   <body>
@@ -19,11 +20,8 @@
         <button type="button" onClick="rl.goToEvent(78)">PF 4</button> 
         <div id="timeline"></div>
         <div id="phase" class="title"></div>
-        <div id="event-title" class="title">
-          Plate-forme 1
-        </div>
-        <div id="event-description" class="description">
-        </div>
+        <div id="event-title" class="title"></div>
+        <div id="event-description" class="description"></div>
       </div>
     </div>
     <div class="images" style="display:none;">
@@ -73,11 +71,19 @@
       "turtle": {},
       "knives": {},
     }
+    const poolRadius = 60;
+    const smallPoolRadius = 120;
+    const mediumPoolRadius = 240;
+    const bigPoolRadius = 360;
 
     const positions = {
       "preparingNextPlatform": {x: 350, y: 100},
+      "stacked": {x: 350, y: 350},
       "nextPlatform": {x: 350, y: -50},
       "platformStart": {x: 50, y: 350},
+      "pool1": {x: 350, y: 150},
+      "pool2": {x: 650, y: 250},
+      "pool3": {x: 350, y: 550},
       "arrowPos1" : {x:330, y: -50},
       "arrowPrepPos2" : {x:680, y: 20},
       "arrowPos2" : {x:680, y: -50},
@@ -96,183 +102,225 @@
       4: {name: "Plate-forme 4", events: []},
     }
 
+    const players = {
+        "1": {"name":"Stonks", "x": 200, "y": 200, "speed": 30, "imageId": "druid", "groups": "melee tank all",
+            "positions": {
+                "spread": {"x": 190, "y": 210},
+                "melee": {"x": 300, "y": 300},
+                "dispell": {"x": 40, "y": 660},
+                "dispellP4": {"x": 40, "y": 660}
+            }
+        },
+        "2": {"name":"Mongoliste", "x": 200, "y": 250, "speed": 30, "imageId": "monk", "groups": "melee tank all",
+            "positions": {
+                "spread": {"x": 350, "y": 310},
+                "melee": {"x": 350, "y": 350},
+                "dispell": {"x": 660, "y": 660},
+                "dispellP4": {"x": 660, "y": 40}
+            }
+        },
+        "3": {"name":"Azulis", "x": 200, "y": 300, "speed": 30, "imageId": "druid", "groups": "ranged healer all",
+            "positions": {
+                "spread": {"x": 30, "y": 130}
+            }
+        },
+        "4": {"name":"Shamyaleau", "x": 250, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged healer all",
+            "positions": {
+                "spread": {"x": 510, "y": 20},
+                "dispell": {"x":40, "y":40}
+            }
+        },
+        "5": {"name":"Brinsop", "x": 200, "y": 400, "speed": 30, "imageId": "paladin", "groups": "melee healer all",
+            "positions": {
+                "spread": {"x": 510, "y": 390},
+                "melee": {"x": 400, "y": 400}
+            }
+        },
+        "6": {"name":"Bak", "x": 200, "y": 350, "speed": 30, "imageId": "paladin", "groups": "melee healer all",
+            "positions": {
+                "spread": {"x": 670, "y": 490},
+                "melee": {"x": 400, "y": 350}
+            }
+        },
+        "7": {"name":"Giin",  "x": 300, "y": 250, "speed": 30, "imageId": "rogue", "groups": "melee dps all",
+            "positions": {
+                "spread": {"x": 190, "y": 390},
+                "melee": {"x": 300, "y": 400}
+            }
+        },
+        "8": {"name":"Faymz", "x": 250, "y": 350, "speed": 30, "imageId": "deathknight", "groups": "melee dps all",
+            "positions": {
+                "spread": {"x": 350, "y": 490},
+                "melee": {"x": 350, "y": 400}
+            }
+        },
+        "9": {"name":"Zaarg", "x": 300, "y": 200, "speed": 30, "imageId": "warrior", "groups": "melee dps all",
+            "positions": {
+                "spread": {"x": 510, "y": 210},
+                "melee": {"x": 400, "y": 300}
+            }
+        },
+        "10": {"name":"Dumys", "x": 250, "y": 400, "speed": 30, "imageId": "demonhunter", "groups": "melee dps all",
+            "positions": {
+                "spread": {"x": 350, "y": 130},
+                "melee": {"x": 350, "y": 300}
+            }
+        },
+        "11": {"name":"Kehilde", "x": 350, "y": 250, "speed": 30, "imageId": "warlock", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 190, "y": 20}
+            }
+        },
+        "12": {"name":"Cirdan", "x": 250, "y": 250, "speed": 30, "imageId": "druid", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 670, "y": 130}
+            }
+        },
+        "13": {"name":"Dedramomo", "x": 350, "y": 300, "speed": 30, "imageId": "priest", "groups": "ranged dps all",
+            "positions":{
+                "spread": {"x": 30, "y": 310}
+            }
+        },
+        "14": {"name":"Lauktar", "x": 250, "y": 300, "speed": 30, "imageId": "druid", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 670, "y": 310}
+            }
+        },
+        "15": {"name":"Kailu", "x": 350, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 30, "y": 490}
+            }
+        },
+        "16": {"name":"Tyttuss", "x": 300, "y": 350, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 30, "y": 670}
+            }
+        },
+        "17": {"name":"Lyriel", "x": 300, "y": 300, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 190, "y": 575}
+            }
+        },
+        "18": {"name":"Owiste", "x": 300, "y": 400, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 350, "y": 670}
+            }
+        },
+        "19": {"name":"Morsiat", "x": 350, "y": 350, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 510, "y": 575}
+            }
+        },
+        "20": {"name":"Shakkaliste", "x": 350, "y": 400, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
+            "positions": {
+                "spread": {"x": 670, "y": 670}
+            }
+        }
+    };
+
     const events = [
       //PF 1 : 14 events
       {time: 1, phase: 1, name: '', description: ''},
       {time: 3, phase: 1, name: 'Placement', description: "On prend les places de base, spread pour les ranged, melee pour ceux qui doivent l'être. <br>Positions assignées individuellement",
-        items: [
-          "": {position: "spread"},
-          "kehil": "spread",
-          "shamy": {x: 400, y: -50},
-          "dumys": "melee",
-          "cirda": "spread",
-          "dedra": "spread",
-          "stonk": {x: -100, y: -50},
-          "mongo": "melee",
-          "zaarg": "melee",
-          "giin": "melee",
-          "laukt": "spread",
-          "kailu": "spread",
-          "faymz": "melee",
-          "brins": "melee",
-          "bak": "melee",
-          "tyttu": "spread",
-          "owist": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
-        ]
+        groups: {
+          "melee": {position: "melee"},
+          "ranged": {position: "spread"}
+        },
+        players: {
+          "1": {position: {x: -100, y: -50}},
+          "4": {position: {x: 400, y: -50}},
+        }
       },
       {time: 2, phase: 1, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
-        positions: {
-          "laukt": {x: 670, y: 400},
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "14": {position: {x: 670, y: 400}},
+        }, drawings: [
+          {type: "disc", x: positions["pool1"].x, y: positions["pool1"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", x: positions["pool2"].x, y: positions["pool2"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "mongo": {x: 350, y: 150}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "2": {position: positions["pool1"]},
+        }, drawings: [
+          {type: "disc", x: positions["pool1"].x, y: positions["pool1"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", x: positions["pool2"].x, y: positions["pool2"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "mongo": {x: 630, y: 300}
-        },
-        drawings:
-        [
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "2": {position: positions["pool2"]},
+        }, drawings: [
+          {type: "disc", x: positions["pool2"].x, y: positions["pool2"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "mongo": {x: 350, y: 550}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "2": {position: positions["pool3"]},
+        }, drawings: [
+          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 1, name: 'Spread', description: "Les melees se placent.<br>Les rangeds se replacent si besoin.<br>Positions assignées individuellement",
-        positions:
-        {
-          "dumys": "spread",
-          "mongo": "spread",
-          "zaarg": "spread",
-          "giin":  "spread",
-          "faymz": "spread",
-          "brins": "spread",
-          "bak":   "spread",
-          "laukt": "spread",
+        groups: {
+          "melee": {position: "spread"},
+        }, players: {
+          "1": {position: {x: -100, y: -50}},
+          "14": {position: "spread"}
         }
       },
       {time: 3, phase: 1, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
-        positions: {
-          "stonk": {x: -100, y: 660}
-        },
-        abilities: [
-          {id: "veil", name: "Veil", x: items["kailu"].positions["spread"].x, y: items["kailu"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["zaarg"].positions["spread"].x, y: items["zaarg"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["faymz"].positions["spread"].x, y: items["faymz"].positions["spread"].y},
+        players: {
+          "1": {position: {x: -100, y: 660}},
+        }, abilities: [
+          {id: "veil", name: "Veil", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y},
         ]
       },
       {time: 3, phase: 1, name: 'Stack + placement Stonks & Shamyaleau', description: 'Pour simplifier le heal des veils et de la furie.<br>Shamyaleau se place coin intérieur, Stonks coin côté',
-        positions:
-        {
-          "azuli": "stacked",
-          "kehil": "stacked",
-          "shamy": "dispell",
-          "dumys": "stacked",
-          "cirda": "stacked",
-          "dedra": "stacked",
-          "stonk": "dispell",
-          "mongo": "stacked",
-          "zaarg": "stacked",
-          "giin": "stacked",
-          "laukt": "stacked",
-          "kailu": "stacked",
-          "faymz": "stacked",
-          "brins": "stacked",
-          "bak": "stacked",
-          "tyttu": "stacked",
-          "owist": "stacked",
-          "lyrie": "stacked",
-          "morsi": "stacked",
-          "shakk": "stacked",
+        groups: {
+          "all": {position: positions["stacked"]}
+        }, players: {
+          "1": {position: "dispell"},
+          "4": {position: "dispell"},
         }
       },
-      {time: 3, phase: 1, name: 'Dispell Stonks & Shamyaleau', description : "Shamy se dispell, un healer dispell Stonks, ils se stack.<br>Mongoliste se place coin extérieur.",
-        positions: {
-          "stonk": "stacked",
-          "shamy": "stacked",
-          "mongo": "dispell",
-        },
-        drawings:
-        [
+      {time: 3, phase: 1, name: 'Dispell Stonks & Shamyaleau', description : "3 se dispell, un healer dispell Stonks, ils se stack.<br>Mongoliste se place coin extérieur.",
+        players: {
+          "1": {position: positions["stacked"]},
+          "2": {position: "dispell"},
+          "4": {position: positions["stacked"]},
+        }, drawings: [
           {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
       {time: 4, phase: 1, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste.<br>Vu le timing cela arrivera très probablement pendant la furie",
-        positions: {
-          "mongo": {x: 350, y: 350},
-        },
-        drawings:
-        [
+        players: {
+          "2": {position: positions["stacked"]},
+        }, drawings: [
           {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 4, phase: 1, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
-        abilities:
-        [
+        abilities: [
           {id: "fury", name: "Furie", x: 350, y: 350}
-        ],
-        drawings:
-        [
+        ], drawings: [
           {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 1, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
-        positions:
-        {
-          "azuli": positions["preparingNextPlatform"],
-          "kehil": positions["preparingNextPlatform"],
-          "shamy": positions["preparingNextPlatform"],
-          "dumys": positions["preparingNextPlatform"],
-          "cirda": positions["preparingNextPlatform"],
-          "dedra": positions["preparingNextPlatform"],
-          "stonk": positions["preparingNextPlatform"],
-          "mongo": positions["preparingNextPlatform"],
-          "zaarg": positions["preparingNextPlatform"],
-          "giin": positions["preparingNextPlatform"],
-          "laukt": positions["preparingNextPlatform"],
-          "kailu": positions["preparingNextPlatform"],
-          "faymz": positions["preparingNextPlatform"],
-          "brins": positions["preparingNextPlatform"],
-          "bak": positions["preparingNextPlatform"],
-          "tyttu": positions["preparingNextPlatform"],
-          "owist": positions["preparingNextPlatform"],
-          "lyrie": positions["preparingNextPlatform"],
-          "morsi": positions["preparingNextPlatform"],
-          "shakk": positions["preparingNextPlatform"],
-        },
-        drawings:
-        [
+        groups: {
+          "all": {position: positions["preparingNextPlatform"]}
+        }, drawings: [
           {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
@@ -281,37 +329,16 @@
       {time: 3, phase: 1, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         abilities: [
           {id: "massdispell", name:"Mass Dispell", x: positions["preparingNextPlatform"].x, y: positions["preparingNextPlatform"].y},
-        ],
-        drawings: [
+        ], drawings: [
             {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
             {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
             {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
           ]
       },
       {time: 1, phase: 1, name: 'Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
-        positions: {
-          "azuli": positions["nextPlatform"],
-          "kehil": positions["nextPlatform"],
-          "shamy": positions["nextPlatform"],
-          "dumys": positions["nextPlatform"],
-          "cirda": positions["nextPlatform"],
-          "dedra": positions["nextPlatform"],
-          "stonk": positions["nextPlatform"],
-          "mongo": positions["nextPlatform"],
-          "zaarg": positions["nextPlatform"],
-          "giin": positions["nextPlatform"],
-          "laukt": positions["nextPlatform"],
-          "kailu": positions["nextPlatform"],
-          "faymz": positions["nextPlatform"],
-          "brins": positions["nextPlatform"],
-          "bak": positions["nextPlatform"],
-          "tyttu": positions["nextPlatform"],
-          "owist": positions["nextPlatform"],
-          "lyrie": positions["nextPlatform"],
-          "morsi": positions["nextPlatform"],
-          "shakk": positions["nextPlatform"],
-        },
-        drawings: [
+        groups: {
+          "all": {position: positions["nextPlatform"]}
+        }, drawings: [
           {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
@@ -320,409 +347,249 @@
 
       //PF 2 : 32 events
       {time: 1, phase: 2, name: '', description: '',
-        teleport: {
-          "azuli": positions["platformStart"],
-          "kehil": positions["platformStart"],
-          "shamy": positions["platformStart"],
-          "dumys": positions["platformStart"],
-          "cirda": positions["platformStart"],
-          "dedra": positions["platformStart"],
-          "stonk": positions["platformStart"],
-          "mongo": positions["platformStart"],
-          "zaarg": positions["platformStart"],
-          "giin": positions["platformStart"],
-          "laukt": positions["platformStart"],
-          "kailu": positions["platformStart"],
-          "faymz": positions["platformStart"],
-          "brins": positions["platformStart"],
-          "bak": positions["platformStart"],
-          "tyttu": positions["platformStart"],
-          "owist": positions["platformStart"],
-          "lyrie": positions["platformStart"],
-          "morsi": positions["platformStart"],
-          "shakk": positions["platformStart"],
+        groups: {
+          "all": {teleport: positions["platformStart"]},
         }
       },
       {time: 3, phase: 2, name: 'Placement', description: 'Positions assignées individuellement',
-        positions: {
-          "azuli": "stacked",
-          "kehil": "stacked",
-          "shamy": "stacked",
-          "dumys": "stacked",
-          "cirda": "stacked",
-          "dedra": "stacked",
-          "stonk": "stacked",
-          "mongo": "stacked",
-          "zaarg": "stacked",
-          "giin":  "stacked",
-          "laukt": "stacked",
-          "kailu": "stacked",
-          "faymz": "stacked",
-          "brins": "stacked",
-          "bak":   "stacked",
-          "tyttu": "stacked",
-          "owist": "stacked",
-          "lyrie": "stacked",
-          "morsi": "stacked",
-          "shakk": "stacked",
+        groups: {
+          "all": {position: positions["stacked"]},
         }
       },
       {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
-        positions : {
-          "mongo": positions["arrowPos1"]
-        }, items : {
-          "mongo": {image: "blackarrow", text: "1"},
+        players : {
+          "2": {image: "blackarrow", text: "1", position: positions["arrowPos1"]},
         }
       },
       {time: 3, phase: 2, name: 'Arrow&nbsp;complexes 1', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
-        positions : {
-          "faymz": positions["arrowPrepPos2"],
-          "tyttu" : positions["arrowPrepPos3"],
-        }, items : {
-          "faymz": {image: "blackarrow", text: "2"},
-          "tyttu": {image: "blackarrow", text: "3"},
+        players : {
+          "8": {image: "blackarrow", text: "2", position: positions["arrowPrepPos2"]},
+          "16": {image: "blackarrow", text: "3", position: positions["arrowPrepPos3"]},
         }
       },
       {time: 3, phase: 2, name: 'Arrow&nbsp;complexes 2', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
-        positions : {
-          "mongo": "stacked",
-          "faymz": positions["arrowPos2"],
-          "tyttu" : positions["arrowPos3"]
-        }, items : {
-          "faymz": {image: "blackarrow", text: "2"},
-          "tyttu": {image: "blackarrow", text: "3"},
+        players : {
+          "2": {position: positions["stacked"]},
+          "8": {position: positions["arrowPos2"], image: "blackarrow", text: "2"},
+          "16" : {position: positions["arrowPos3"], image: "blackarrow", text: "3"}
         }
       },
       {time: 2, phase: 2, name: 'Arrow&nbsp;complexes 3', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
-        positions : {
-          "faymz": positions["arrowPrepPos2"],
-        }, items : {
-          "tyttu": {image: "blackarrow", text: "3"},
+        players : {
+          "8": {position: positions["arrowPrepPos2"]},
+          "16": {image: "blackarrow", text: "3"},
         }
       },
       {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
-        positions : {
-          "faymz": "stacked",
-        }, items : {
-          "tyttu": {image: "blackarrow", text: "3"},
+        players : {
+          "8": {position: positions["stacked"]},
+          "16": {image: "blackarrow", text: "3"},
         }
       },
       {time: 3, phase: 2, name: 'Arrow&nbsp;complexes', description: "Le moment spécial du combat, il n'y aura que ce set d'Arrow qui sera joué comme ça, les autres seront joués normalement, comme en héro, un joueur a la fois.<br> Ici le tank (joueur 1) part, quand on arrow a explosé, le joueur 2 part en étant le plus possible à l'extérieur et revient dès que son arrow a explosé, le joueur 3 le plus possible à l'intérieur et part sur la prochaine plate-forme dès que possible, il revient quand son arrow a explosé",
-        positions : {
-          "tyttu": "stacked",
+        players : {
+          "16": {position: positions["stacked"]},
         }
       },
       {time: 3, phase: 2, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
-        positions: {
-          "dedra": {x: 100, y: 280},
-          "brins": {x: 500, y: 350},
-          "morsi": {x: 450, y: 600},
-        },
-        drawings: [
+        players: {
+          "13": {position: {x: 100, y: 280}, image: "knives"},
+          "5": {position: {x: 500, y: 350}, image: "knives"},
+          "19": {position: {x: 450, y: 600}, image: "knives"},
+        }, drawings: [
           {type:"line", x1:0, y1:150, x2:400, y2:700},
           {type:"line", x1:0, y1:400, x2:350, y2:0},
           {type:"line", x1:0, y1:600, x2:700, y2:600},
           {type:"line", x1:450, y1:0, x2:450, y2:700},
           {type:"line", x1:0, y1:0, x2:700, y2:500},
           {type:"line", x1:150, y1:700, x2:700, y2:150},
-        ], items: {
-          "dedra": {image: "knives"},
-          "brins": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
-      {time: 3, phase: 2, name: 'Placement', description: 'Positions assignées individuellement',
-        positions: {
-          "azuli": "spread",
-          "kehil": "spread",
-          "shamy": "spread",
-          "dumys": "spread",
-          "cirda": "spread",
-          "dedra": "spread",
-          "stonk": "spread",
-          "mongo": "spread",
-          "zaarg": "spread",
-          "giin":  "spread",
-          "laukt": "spread",
-          "kailu": "spread",
-          "faymz": "spread",
-          "brins": "spread",
-          "bak":   "spread",
-          "tyttu": "spread",
-          "owist": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
+      {time: 3, phase: 2, name: 'Spread', description: 'Positions assignées individuellement',
+        groups: {
+          "all": {position: "spread"},
         }
       },
       {time: 3, phase: 2, name: 'Cri', description: "On veut pas prendre de dégâts inutiles ici",
-        drawings :
-        [
-          {type: "circle", x: items["azuli"].positions["spread"].x, y: items["azuli"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["kehil"].positions["spread"].x, y: items["kehil"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["shamy"].positions["spread"].x, y: items["shamy"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["dumys"].positions["spread"].x, y: items["dumys"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["cirda"].positions["spread"].x, y: items["cirda"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["dedra"].positions["spread"].x, y: items["dedra"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["stonk"].positions["spread"].x, y: items["stonk"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["mongo"].positions["spread"].x, y: items["mongo"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["zaarg"].positions["spread"].x, y: items["zaarg"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["giin"].positions["spread"].x, y: items["giin"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["laukt"].positions["spread"].x, y: items["laukt"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["kailu"].positions["spread"].x, y: items["kailu"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["faymz"].positions["spread"].x, y: items["faymz"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["brins"].positions["spread"].x, y: items["brins"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["bak"].positions["spread"].x, y: items["bak"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["tyttu"].positions["spread"].x, y: items["tyttu"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["owist"].positions["spread"].x, y: items["owist"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["lyrie"].positions["spread"].x, y: items["lyrie"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["morsi"].positions["spread"].x, y: items["morsi"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["shakk"].positions["spread"].x, y: items["shakk"].positions["spread"].y, r: 140, color: "grey"},
-        ]
+        drawings : [
+          {type: "circle", x: players["1"].positions["spread"].x, y: players["1"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["4"].positions["spread"].x, y: players["4"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["6"].positions["spread"].x, y: players["6"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["7"].positions["spread"].x, y: players["7"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["17"].positions["spread"].x, y: players["17"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["19"].positions["spread"].x, y: players["19"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y, r: 140, color: "grey"},
+        ],
       },
       {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
-        abilities:
-        [
-          {id: "veil", name: "Veil", x: items["cirda"].positions["spread"].x, y: items["cirda"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["owist"].positions["spread"].x, y: items["owist"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["kehil"].positions["spread"].x, y: items["kehil"].positions["spread"].y},
+        abilities: [
+          {id: "veil", name: "Veil", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y},
         ]
       },
       {time: 5, phase: 2, name: 'Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
-        abilities : [
+        groups: {
+          "all": {position: positions["stacked"]}
+        }, players: {
+          "1": {position: "dispell"},
+          "12": {position: {x: 580, y: 70}},
+          "14": {position: {x: 620, y: 240}},
+        }, abilities : [
           {id:"soak", name:"Soak", x:610, y: 40},
           {id:"soak", name:"Soak", x:660, y: 220}
-        ],
-        positions: {
-          "azuli": "stacked",
-          "kehil": "stacked",
-          "shamy": "stacked",
-          "dumys": "stacked",
-          "cirda": {x: 580, y: 70},
-          "dedra": "stacked",
-          "stonk": "dispell",
-          "mongo": "stacked",
-          "zaarg": "stacked",
-          "giin":  "stacked",
-          "laukt": {x: 620, y: 240},
-          "kailu": "stacked",
-          "faymz": "stacked",
-          "brins": "stacked",
-          "bak":  "stacked",
-          "tyttu": "stacked",
-          "owist": "stacked",
-          "lyrie": "stacked",
-          "morsi": "stacked",
-          "shakk": "stacked",
-        }
+        ]
       },
       {time: 2, phase: 2, name: "Dispell Stonks", description : "Un healer dispell Stonks avant la Furie<br> Les joueurs qui ont fait le soak se stack",
-        positions: {
-          "stonk": "stacked",
-          "cirda": "stacked",
-          "laukt": "stacked",
-        },
-        drawings:
-        [
+        players: {
+          "1": {position: positions["stacked"]},
+          "12": {position: positions["stacked"]},
+          "14": {position: positions["stacked"]},
+        }, drawings: [
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
 
       {time: 2, phase: 2, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
-        abilities:
-        [
+        abilities: [
           {id: "fury", name: "Furie", x: 350, y: 350}
-        ],
-        drawings:
-        [
+        ], drawings: [
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        drawings: [
+          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 350, y: 150}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 350, y: 150}}
+        }, drawings: [
+          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 630, y: 330}
-        },
-        drawings:
-        [
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 630, y: 330}}
+        }, drawings: [
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 350, y: 550}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 350, y: 550}}
+        }, drawings: [
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
       },
       {time: 3, phase: 2, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
-        positions: {
-          "stonk": "stacked",
-          "dedra": {x: 100, y: 280},
-          "bak":   {x: 500, y: 350},
-          "morsi": {x: 450, y: 600},
+        players: {
+          "1": {position: positions["stacked"]},
+          "5": {position: {x: 500, y: 350}, image: "knives"},
+          "13": {position: {x: 100, y: 280}, image: "knives"},
+          "19": {position: {x: 450, y: 600}, image: "knives"},
         }, drawings: [
-            {type:"line", x1:0, y1:150, x2:400, y2:700},
-            {type:"line", x1:0, y1:400, x2:350, y2:0},
-            {type:"line", x1:0, y1:600, x2:700, y2:600},
-            {type:"line", x1:450, y1:0, x2:450, y2:700},
-            {type:"line", x1:0, y1:0, x2:700, y2:500},
-            {type:"line", x1:150, y1:700, x2:700, y2:150},
-            {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+          {type: "line", x1:0, y1:150, x2:400, y2:700},
+          {type: "line", x1:0, y1:400, x2:350, y2:0},
+          {type: "line", x1:0, y1:600, x2:700, y2:600},
+          {type: "line", x1:450, y1:0, x2:450, y2:700},
+          {type: "line", x1:0, y1:0, x2:700, y2:500},
+          {type: "line", x1:150, y1:700, x2:700, y2:150},
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"},
+        ]
       },
       {time: 3, phase: 2, name: 'Arrow + Soaks', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions : {
-          "mongo": positions["arrowSimplePrePos"],
-          "bak": "melee"
+        players: {
+          "2": {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "1"},
+          "5": {position: "melee"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
-        ], items : {
-          "mongo": {image: "blackarrow", text: "1"},
-        }
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+        ]
       },
       {time: 3, phase: 2, name: 'Arrow 1 ', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "mongo": positions["arrowSimplePos"],
-          "kailu": positions["arrowSimplePrePos"],
+        players : {
+          "2": {position: positions["arrowSimplePos"], image: "blackarrow", text: "1"},
+          "15": {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "2"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
-        ], items : {
-          "mongo": {image: "blackarrow", text: "1"},
-          "kailu": {image: "blackarrow", text: "2"},
-        }
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+        ]
       },
       {time: 3, phase: 2, name: 'Arrow 2 ', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "mongo": "spread",
-          "kailu": positions["arrowSimplePos"],
-          "bak" : positions["arrowSimplePrePos"],
+        players: {
+          "2": {position: "spread"},
+          "15": {position: positions["arrowSimplePos"], image: "blackarrow", text: "2"},
+          "5" : {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "3"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
-        ], items : {
-          "kailu": {image: "blackarrow", text: "2"},
-          "bak": {image: "blackarrow", text: "3"},
-        }
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+        ]
       },
       {time: 3, phase: 2, name: 'Arrow 3 ', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions : {
-          "kailu": "spread",
-          "bak" : positions["arrowSimplePos"]
+        players : {
+          "15": {position: "spread"},
+          "5" : {position: positions["arrowSimplePos"], image: "blackarrow", text: "3"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
-        ], items : {
-          "bak": {image: "blackarrow", text: "3"},
-        }
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+        ]
       },
       {time: 3, phase: 2, name: 'Arrow', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "bak" : "spread"
+        players: {
+          "5" : {position: "spread"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 3, phase: 2, name: 'Spread', description: 'Positions assignées individuellement',
-        positions:
-        {
-          "azuli": "spread",
-          "kehil": "spread",
-          "shamy": "spread",
-          "dumys": "spread",
-          "cirda": "spread",
-          "dedra": "spread",
-          "stonk": "spread",
-          "mongo": "spread",
-          "zaarg": "spread",
-          "giin": "spread",
-          "laukt": "spread",
-          "kailu": "spread",
-          "faymz": "spread",
-          "brins": "spread",
-          "bak": "spread",
-          "tyttu": "spread",
-          "owist": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
+        groups: {
+          "all": {position: "spread"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"}
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 5, phase: 2, name: 'Soaks', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
-        abilities : [
+        players: {
+          "12": {position: {x: 580, y: 70}},
+          "14": {position: {x: 620, y: 240}},
+        }, abilities : [
           {id:"soak", name:"Soak", x:610, y: 40},
           {id:"soak", name:"Soak", x:660, y: 220}
-        ], positions: {
-          "cirda": {x: 580, y: 70},
-          "laukt": {x: 620, y: 240},
-        }
+        ]
       },
       {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
-        abilities:
-        [
-          {id: "veil", name: "Veil", x: items["tyttu"].positions["spread"].x, y: items["tyttu"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["dedra"].positions["spread"].x, y: items["dedra"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["dumys"].positions["spread"].x, y: items["dumys"].positions["spread"].y},
-        ], positions: {
-          "cirda": "spread",
-          "laukt": "spread",
-        }
+        players: {
+          "12": {position: "spread"},
+          "14": {position: "spread"}
+        }, abilities: [
+          {id: "veil", name: "Veil", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y},
+        ]
       },
       {time: 3, phase: 2, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
-        positions:
-        {
-          "azuli": positions["preparingNextPlatform"],
-          "kehil": positions["preparingNextPlatform"],
-          "shamy": positions["preparingNextPlatform"],
-          "dumys": positions["preparingNextPlatform"],
-          "cirda": positions["preparingNextPlatform"],
-          "dedra": positions["preparingNextPlatform"],
-          "stonk": positions["preparingNextPlatform"],
-          "mongo": positions["preparingNextPlatform"],
-          "zaarg": positions["preparingNextPlatform"],
-          "giin": positions["preparingNextPlatform"],
-          "laukt": positions["preparingNextPlatform"],
-          "kailu": positions["preparingNextPlatform"],
-          "faymz": positions["preparingNextPlatform"],
-          "brins": positions["preparingNextPlatform"],
-          "bak": positions["preparingNextPlatform"],
-          "tyttu": positions["preparingNextPlatform"],
-          "owist": positions["preparingNextPlatform"],
-          "lyrie": positions["preparingNextPlatform"],
-          "morsi": positions["preparingNextPlatform"],
-          "shakk": positions["preparingNextPlatform"],
+        groups: {
+          "all": {position: positions["preparingNextPlatform"]}
         }
       },
       {time: 3, phase: 2, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
@@ -731,175 +598,84 @@
         ]
       },
       {time: 2, phase: 2, name: 'Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
-        positions: {
-          "azuli": positions["nextPlatform"],
-          "kehil": positions["nextPlatform"],
-          "shamy": positions["nextPlatform"],
-          "dumys": positions["nextPlatform"],
-          "cirda": positions["nextPlatform"],
-          "dedra": positions["nextPlatform"],
-          "stonk": positions["nextPlatform"],
-          "mongo": positions["nextPlatform"],
-          "zaarg": positions["nextPlatform"],
-          "giin": positions["nextPlatform"],
-          "laukt": positions["nextPlatform"],
-          "kailu": positions["nextPlatform"],
-          "faymz": positions["nextPlatform"],
-          "brins": positions["nextPlatform"],
-          "bak": positions["nextPlatform"],
-          "tyttu": positions["nextPlatform"],
-          "owist": positions["nextPlatform"],
-          "lyrie": positions["nextPlatform"],
-          "morsi": positions["nextPlatform"],
-          "shakk": positions["nextPlatform"],
-        },
-        drawings: [
+        groups: {
+          "all": {position: positions["nextPlatform"]}
+        }, drawings: [
           {type: "disc", x: 350, y: 100, r: 300, color: "#400040"},
         ]
       },
 
       // PF 3 : 20 events
       {time: 1, phase: 3, name: '', description: '',
-        teleport:
-        {
-          "azuli": positions["platformStart"],
-          "kehil": positions["platformStart"],
-          "shamy": positions["platformStart"],
-          "dumys": positions["platformStart"],
-          "cirda": positions["platformStart"],
-          "dedra": positions["platformStart"],
-          "stonk": positions["platformStart"],
-          "mongo": positions["platformStart"],
-          "zaarg": positions["platformStart"],
-          "giin": positions["platformStart"],
-          "laukt": positions["platformStart"],
-          "kailu": positions["platformStart"],
-          "faymz": positions["platformStart"],
-          "brins": positions["platformStart"],
-          "bak": positions["platformStart"],
-          "tyttu": positions["platformStart"],
-          "owist": positions["platformStart"],
-          "lyrie": positions["platformStart"],
-          "morsi": positions["platformStart"],
-          "shakk": positions["platformStart"],
+        groups: {
+          "all": {teleport: positions["platformStart"]},
         }
       },      
       {time: 3, phase: 3, name: 'Stack', description: "En prévision de la furie qui arrive",
-        positions:
-        {
-          "azuli": "stacked",
-          "kehil": "stacked",
-          "shamy": "stacked",
-          "dumys": "stacked",
-          "cirda": "stacked",
-          "dedra": "stacked",
-          "stonk": "stacked",
-          "mongo": "stacked",
-          "zaarg": "stacked",
-          "giin": "stacked",
-          "laukt": "stacked",
-          "kailu": "stacked",
-          "faymz": "stacked",
-          "brins": "stacked",
-          "bak": "stacked",
-          "tyttu": "stacked",
-          "owist": "stacked",
-          "lyrie": "stacked",
-          "morsi": "stacked",
-          "shakk": "stacked",
+        groups: {
+          "all": {position: positions["stacked"]}
         }
       },
 
       {time: 3, phase: 3, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
-        abilities:
-        [
+        abilities: [
           {id: "fury", name: "Furie", x: 350, y: 350}
         ],
       },
       {time: 3, phase: 3, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
-        positions: {
-          "dedra": {x: 100, y: 280},
-          "bak":   {x: 500, y: 350},
-          "morsi": {x: 450, y: 600},
-        }, drawings:
-        [
+        players: {
+          "5": {position: {x: 500, y: 350}, image: "knives"},
+          "13": {position: {x: 100, y: 280}, image: "knives"},
+          "19": {position: {x: 450, y: 600}, image: "knives"},
+        }, drawings: [
             {type:"line", x1:0, y1:150, x2:400, y2:700},
             {type:"line", x1:0, y1:400, x2:350, y2:0},
             {type:"line", x1:0, y1:600, x2:700, y2:600},
             {type:"line", x1:450, y1:0, x2:450, y2:700},
             {type:"line", x1:0, y1:0, x2:700, y2:500},
             {type:"line", x1:150, y1:700, x2:700, y2:150},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
       {time: 3, phase: 3, name: 'Spread', description: 'Positions assignées individuellement',
-        positions:
-        {
-          "azuli": "spread",
-          "kehil": "spread",
-          "shamy": "spread",
-          "dumys": "spread",
-          "cirda": "spread",
-          "dedra": "spread",
-          "stonk": "spread",
-          "mongo": "spread",
-          "zaarg": "spread",
-          "giin": "spread",
-          "laukt": "spread",
-          "kailu": "spread",
-          "faymz": "spread",
-          "brins": "spread",
-          "bak": "spread",
-          "tyttu": "spread",
-          "owist": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
+        groups: {
+          "all": {position: "spread"}
         }
       },
       {time: 3, phase: 3, name: 'Cri', description: "On veut pas prendre de dégâts inutiles ici",
-        drawings :
-        [
-          {type: "circle", x: items["azuli"].positions["spread"].x, y: items["azuli"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["kehil"].positions["spread"].x, y: items["kehil"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["shamy"].positions["spread"].x, y: items["shamy"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["dumys"].positions["spread"].x, y: items["dumys"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["cirda"].positions["spread"].x, y: items["cirda"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["dedra"].positions["spread"].x, y: items["dedra"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["stonk"].positions["spread"].x, y: items["stonk"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["mongo"].positions["spread"].x, y: items["mongo"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["zaarg"].positions["spread"].x, y: items["zaarg"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["giin"].positions["spread"].x, y: items["giin"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["laukt"].positions["spread"].x, y: items["laukt"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["kailu"].positions["spread"].x, y: items["kailu"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["faymz"].positions["spread"].x, y: items["faymz"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["brins"].positions["spread"].x, y: items["brins"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["bak"].positions["spread"].x, y: items["bak"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["tyttu"].positions["spread"].x, y: items["tyttu"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["owist"].positions["spread"].x, y: items["owist"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["lyrie"].positions["spread"].x, y: items["lyrie"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["morsi"].positions["spread"].x, y: items["morsi"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["shakk"].positions["spread"].x, y: items["shakk"].positions["spread"].y, r: 140, color: "grey"},
+        drawings: [
+          {type: "circle", x: players["1"].positions["spread"].x, y: players["1"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["4"].positions["spread"].x, y: players["4"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["6"].positions["spread"].x, y: players["6"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["7"].positions["spread"].x, y: players["7"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["17"].positions["spread"].x, y: players["17"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["19"].positions["spread"].x, y: players["19"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y, r: 140, color: "grey"},
         ]
       },
       {time: 3, phase: 3, name: 'Soaks movement', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
-        positions: {
-          "lyrie": {x: 300, y: 600},
-          "mongo": {x: 230, y: 580},
-          "morsi": {x: 440, y: 600},
-          "shakk": {x: 590, y: 580},
-          "bak": {x: 590, y: 430},
-          "giin": "melee",
-          "faymz": "melee",
-          "dumys": "melee",
-          "zaarg": "melee",
-        }, items: {
-          "shakk": {image: "iceblock"},
-          "morsi": {image: "iceblock"},
-          "bak": {image: "divineshield"},
+        players: {
+          "2": {position: {x: 230, y: 580}},
+          "6": {position: {x: 590, y: 430}, image: "divineshield"},
+          "7": {position: "melee"},
+          "8": {position: "melee"},
+          "9": {position: "melee"},
+          "10": {position: "melee"},
+          "17": {position: {x: 300, y: 600}},
+          "19": {position: {x: 440, y: 600}, image: "iceblock"},
+          "20": {position: {x: 590, y: 580}, image: "iceblock"},
         }, abilities: [
           {id:"soak", name:"Soak", x:210, y: 600},
           {id:"soak", name:"Soak", x:450, y: 620},
@@ -908,310 +684,192 @@
         ],
       },
       {time: 3, phase: 3, name: 'Placement', description: 'On se place pour le veil',
-        positions: {
-          "mongo": "spread",
-          "bak": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
-          "faymz": "spread",
-          "dumys": "spread",
-          "zaarg": "spread",
-          "giin": "spread",
+        players: {
+          "2": {position: "spread"},
+          "6": {position: "spread"},
+          "7": {position: "spread"},
+          "8": {position: "spread"},
+          "9": {position: "spread"},
+          "10": {position: "spread"},
+          "17": {position: "spread"},
+          "19": {position: "spread"},
+          "20": {position: "spread"},
         }
       },
       {time: 3, phase: 3, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
-        positions: {
-          "mongo": "spread",
-          "bak": "spread",
-        }, abilities: [
-          {id: "veil", name: "Veil", x: items["laukt"].positions["spread"].x, y: items["laukt"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["brins"].positions["spread"].x, y: items["brins"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["azuli"].positions["spread"].x, y: items["azuli"].positions["spread"].y},
+        abilities: [
+          {id: "veil", name: "Veil", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y},
         ]
       },
       {time: 3, phase: 3, name: 'Arrow', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "stonk": positions["arrowSimplePrePos"],
-          "azuli": "stacked",
-          "kehil": "stacked",
-          "shamy": "stacked",
-          "dumys": "stacked",
-          "cirda": "stacked",
-          "dedra": "stacked",
-          "mongo": "stacked",
-          "zaarg": "stacked",
-          "giin": "stacked",
-          "laukt": "stacked",
-          "kailu": "stacked",
-          "faymz": "stacked",
-          "brins": "stacked",
-          "bak": "stacked",
-          "tyttu": "stacked",
-          "owist": "stacked",
-          "lyrie": "stacked",
-          "morsi": "stacked",
-          "shakk": "stacked",
-        }, items : {
-          "stonk": {image: "blackarrow", text: "1"},
-        },
+        groups: {
+          "all": {position: positions["stacked"]}
+        }, players: {
+          "4": {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "1"},
+        }
       },
       {time: 3, phase: 3, name: 'Arrow 1', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "stonk": positions["arrowSimplePos"],
-          "morsi": positions["arrowSimplePrePos"],
-        }, items : {
-          "stonk": {image: "blackarrow", text: "1"},
-          "morsi": {image: "blackarrow", text: "2"},
+        players : {
+          "4": {position: positions["arrowSimplePos"], image: "blackarrow", text: "1"},
+          "19": {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "2"},
         },
       },
       {time: 3, phase: 3, name: 'Arrow 2', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "stonk": "stacked",
-          "morsi": positions["arrowSimplePos"],
-          "owist" : positions["arrowSimplePrePos"],
-        }, items : {
-          "morsi": {image: "blackarrow", text: "2"},
-          "owist": {image: "blackarrow", text: "3"},
-        },
+        players: {
+          "4": {position: positions["stacked"]},
+          "19": {position: positions["arrowSimplePos"], image: "blackarrow", text: "2"},
+          "18" : {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "3"},
+        }
       },
       {time: 3, phase: 3, name: 'Arrow 3', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "morsi": "stacked",
-          "owist" : positions["arrowSimplePos"]
-        }, items : {
-          "owist": {image: "blackarrow", text: "3"},
-        },
+        players: {
+          "19": {position: positions["stacked"]},
+          "18" : {position: positions["arrowSimplePos"], image: "blackarrow", text: "3"}
+        }
       },
       {time: 3, phase: 3, name: 'Arrow', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions :
-        {
-          "owist" : "stacked"
+        players: {
+          "18" : {position: positions["stacked"]}
         }
       },
       {time: 2, phase: 3, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
         drawings: [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 350, y: 150}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 350, y: 150}}
+        }, drawings: [
+          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 630, y: 330}
-        },
-        drawings:
-        [
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 630, y: 330}}
+        }, drawings: [
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 350, y: 550}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 350, y: 550}}
+        }, drawings: [
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Stack', description: "En prévision de la furie qui arrive",
-        positions:
-        {
-          "azuli": "stacked",
-          "kehil": "stacked",
-          "shamy": "stacked",
-          "dumys": "stacked",
-          "cirda": "stacked",
-          "dedra": "stacked",
-          "stonk": "dispell",
-          "mongo": "stacked",
-          "zaarg": "stacked",
-          "giin": "stacked",
-          "laukt": "stacked",
-          "kailu": "stacked",
-          "faymz": "stacked",
-          "brins": "stacked",
-          "bak": "stacked",
-          "tyttu": "stacked",
-          "owist": "stacked",
-          "lyrie": "stacked",
-          "morsi": "stacked",
-          "shakk": "stacked",
+        groups: {
+          "all": {position: positions["stacked"]}
+        }, players: {
+          "1": {position: "dispell"},
         }
       },
       {time: 3, phase: 3, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
-        positions: {
-          "stonk": "stacked",
-          "mongo": "dispell",
-        },
-        drawings:
-        [
+        players: {
+          "1": {position: positions["stacked"]},
+          "2": {position: "dispell"},
+        }, drawings: [
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
-        positions: {
-          "mongo": "stacked",
-        },
-        drawings:
-        [
-        {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-        {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+        players: {
+          "2": {position: positions["stacked"]},
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
 
       {time: 3, phase: 3, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
           {id: "fury", name: "Furie", x: 350, y: 350}
-        ],
-        drawings: [
+        ], drawings: [
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Soaks immune', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br><br>Ici il ne faut pas hésiter a utiliser des immunes mobiles, comme la cape d'ombre, bubulle, turtle, pour éviter de ramasser les débuffs de flaques.",
-        positions: {
-          "lyrie": {x: 230, y: 580},
-          "owist": {x: 390, y: 580},
-          "giin": {x: 590, y: 580},
-          "tyttu": {x: 590, y: 430},
-        },
-        abilities : [
+        players: {
+          "7": {position: {x: 590, y: 580}, image: "cloak"},
+          "17": {position: {x: 230, y: 580}, image: "turtle"},
+          "18": {position: {x: 390, y: 580}, image: "turtle"},
+          "16": {position: {x: 590, y: 430}, image: "turtle"},
+        }, abilities : [
           {id:"soak", name:"Soak", x:210, y: 600},
           {id:"soak", name:"Soak", x:410, y: 600},
           {id:"soak", name:"Soak", x:610, y: 600},
           {id:"soak", name:"Soak", x:610, y: 450}
-        ], items: {
-          "lyrie": {image: "turtle"},
-          "owist": {image: "turtle"},
-          "tyttu": {image: "turtle"},
-          "giin": {image: "cloak"},
-        },
-        drawings: [
+        ], drawings: [
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
-        positions: {
-          "lyrie": "stacked",
-          "owist": "stacked",
-          "giin": "stacked",
-          "tyttu": "stacked",
-          "dedra": {x: 100, y: 280},
-          "bak":   {x: 500, y: 350},
-          "morsi": {x: 450, y: 450},
-        }, drawings:
-        [
-            {type:"line", x1:0, y1:150, x2:400, y2:700},
-            {type:"line", x1:0, y1:400, x2:350, y2:0},
-            {type:"line", x1:0, y1:450, x2:700, y2:450},
-            {type:"line", x1:450, y1:0, x2:450, y2:700},
-            {type:"line", x1:0, y1:0, x2:700, y2:500},
-            {type:"line", x1:150, y1:700, x2:700, y2:150},
-            {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-            {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
-      },
-      {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 40, y: 660}
-        },
-        drawings: [
+        players: {
+          "5":  {position: {x: 500, y: 350}, image: "knives"},
+          "7": {position: positions["stacked"]},
+          "13": {position: {x: 100, y: 280}, image: "knives"},
+          "17": {position: positions["stacked"]},
+          "18": {position: positions["stacked"]},
+          "16": {position: positions["stacked"]},
+          "19": {position: {x: 450, y: 450}, image: "knives"},
+        }, drawings: [
+          {type:"line", x1:0, y1:150, x2:400, y2:700},
+          {type:"line", x1:0, y1:400, x2:350, y2:0},
+          {type:"line", x1:0, y1:450, x2:700, y2:450},
+          {type:"line", x1:450, y1:0, x2:450, y2:700},
+          {type:"line", x1:0, y1:0, x2:700, y2:500},
+          {type:"line", x1:150, y1:700, x2:700, y2:150},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 660, y: 660}
-        },
-        drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
+        players: {
+          "1": {position: {x: 40, y: 660}},
+          "5":  {position: "melee"},
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
+        players: {
+          "1": {position: {x: 660, y: 660}}
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"},
           {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Spread', phase: 3, description: 'En prévision du veil',
-      positions:
-        {
-          "azuli": "spread",
-          "kehil": "spread",
-          "shamy": "spread",
-          "dumys": "spread",
-          "cirda": "spread",
-          "dedra": "spread",
-          "stonk": "spread",
-          "mongo": "spread",
-          "zaarg": "spread",
-          "giin": "spread",
-          "laukt": "spread",
-          "kailu": "spread",
-          "faymz": "spread",
-          "brins": "spread",
-          "bak": "spread",
-          "tyttu": "spread",
-          "owist": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
-        },
-        drawings: [
-          {type: "disc", x: 40, y: 660, r: 60, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 60, color: "#400040"},
+        groups: {
+          "all": {position: "spread"}
+        }, drawings: [
+          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 660, y: 660, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Veil', phase: 3, description: 'On veut pas toucher les copains avec le veil',
         positions: {
-          "stonk": "spread"
+          "4": "spread"
         }, abilities: [
-          {id: "veil", name: "Veil", x: items["shakk"].positions["spread"].x, y: items["shakk"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["mongo"].positions["spread"].x, y: items["mongo"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["dedra"].positions["spread"].x, y: items["dedra"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y},
         ]
       },
       {time: 3, phase: 3, name: 'Déplacement', phase: 3, description: 'On se prépare à quitter la plate-forme',
-        positions:
-        {
-          "azuli": {x: 350, y: 100},
-          "kehil": {x: 350, y: 100},
-          "shamy": {x: 350, y: 100},
-          "dumys": {x: 350, y: 100},
-          "cirda": {x: 350, y: 100},
-          "dedra": {x: 350, y: 100},
-          "stonk": {x: 350, y: 100},
-          "mongo": {x: 350, y: 100},
-          "zaarg": {x: 350, y: 100},
-          "giin": {x: 350, y: 100},
-          "laukt": {x: 350, y: 100},
-          "kailu": {x: 350, y: 100},
-          "faymz": {x: 350, y: 100},
-          "brins": {x: 350, y: 100},
-          "bak": {x: 350, y: 100},
-          "tyttu": {x: 350, y: 100},
-          "owist": {x: 350, y: 100},
-          "lyrie": {x: 350, y: 100},
-          "morsi": {x: 350, y: 100},
-          "shakk": {x: 350, y: 100},
+        groups: {
+          "all": {position: positions["preparingNextPlatform"]},
         },
       },
       {time: 3, phase: 3, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
@@ -1220,29 +878,9 @@
         ]
       },
       {time: 3, phase: 3, name: 'Raze', phase: 3, description: "On a une période de grâce à la fin du cast de Raze pour partir", 
-        positions: {
-          "azuli": positions["nextPlatform"],
-          "kehil": positions["nextPlatform"],
-          "shamy": positions["nextPlatform"],
-          "dumys": positions["nextPlatform"],
-          "cirda": positions["nextPlatform"],
-          "dedra": positions["nextPlatform"],
-          "stonk": positions["nextPlatform"],
-          "mongo": positions["nextPlatform"],
-          "zaarg": positions["nextPlatform"],
-          "giin": positions["nextPlatform"],
-          "laukt": positions["nextPlatform"],
-          "kailu": positions["nextPlatform"],
-          "faymz": positions["nextPlatform"],
-          "brins": positions["nextPlatform"],
-          "bak": positions["nextPlatform"],
-          "tyttu": positions["nextPlatform"],
-          "owist": positions["nextPlatform"],
-          "lyrie": positions["nextPlatform"],
-          "morsi": positions["nextPlatform"],
-          "shakk": positions["nextPlatform"],
-        },
-        drawings: [
+        groups: {
+          "all": {position: positions["nextPlatform"]},
+        }, drawings: [
           {type: "disc", x: 350, y: 100, r: 320, color: "#400040"},
         ]
       },
@@ -1250,101 +888,53 @@
 
       //PF 4
       {time: 1, phase: 4, name: '', description: '',
-        teleport:
-        {
-          "azuli": positions["platformStart"],
-          "kehil": positions["platformStart"],
-          "shamy": positions["platformStart"],
-          "dumys": positions["platformStart"],
-          "cirda": positions["platformStart"],
-          "dedra": positions["platformStart"],
-          "stonk": positions["platformStart"],
-          "mongo": positions["platformStart"],
-          "zaarg": positions["platformStart"],
-          "giin": positions["platformStart"],
-          "laukt": positions["platformStart"],
-          "kailu": positions["platformStart"],
-          "faymz": positions["platformStart"],
-          "brins": positions["platformStart"],
-          "bak": positions["platformStart"],
-          "tyttu": positions["platformStart"],
-          "owist": positions["platformStart"],
-          "lyrie": positions["platformStart"],
-          "morsi": positions["platformStart"],
-          "shakk": positions["platformStart"],
+        groups: {
+          "all": {position: positions["stacked"]}
         }
       },      
       {time: 3, phase: 4, name: 'Stack', description: "En prévision de la furie qui arrive",
-        positions: {
-          "azuli": positions["arrowPF4RaidPos"],
-          "kehil": positions["arrowPF4RaidPos"],
-          "shamy": positions["arrowPF4RaidPos"],
-          "dumys": positions["arrowPF4RaidPos"],
-          "cirda": positions["arrowPF4RaidPos"],
-          "dedra": positions["arrowPF4RaidPos"],
-          "stonk": positions["arrowPF4RaidPos"],
-          "mongo": positions["arrowPF4RaidPos"],
-          "zaarg": positions["arrowPF4RaidPos"],
-          "giin": positions["arrowPF4RaidPos"],
-          "laukt": positions["arrowPF4RaidPos"],
-          "kailu": positions["arrowPF4RaidPos"],
-          "faymz": positions["arrowPF4RaidPos"],
-          "brins": positions["arrowPF4RaidPos"],
-          "bak": positions["arrowPF4RaidPos"],
-          "tyttu": positions["arrowPF4RaidPos"],
-          "owist": positions["arrowPF4RaidPos"],
-          "lyrie": positions["arrowPF4RaidPos"],
-          "morsi": positions["arrowPF4RaidPos"],
-          "shakk": positions["arrowPF4RaidPos"],
+        groups: {
+          "all": {position: positions["arrowPF4RaidPos"]},
         }
       },
-
-      {time: 4, phase: 4, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions : {
-          "stonk": positions["arrowPF4Pos"],
-        }, items : {
-          "stonk": {image: "blackarrow", text: "1"},
+      {time: 4, phase: 4, name: 'Arrow simples 1', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        players : {
+          "4": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "1"},
+        }
+      },
+      {time: 4, phase: 4, name: 'Arrow simples 2', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        players : {
+          "4": {position: positions["arrowPF4RaidPos"]},
+          "19": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "2"},
+        }
+      },
+      {time: 4, phase: 4, name: 'Arrow simples 3', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
+        players : {
+          "19": {position: positions["arrowPF4RaidPos"]},
+          "18": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "3"},
         }
       },
       {time: 4, phase: 4, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions : {
-          "stonk": positions["arrowPF4RaidPos"],
-          "morsi": positions["arrowPF4Pos"],
-        }, items : {
-          "morsi": {image: "blackarrow", text: "2"},
-        },
-      },
-      {time: 4, phase: 4, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions : {
-          "morsi": positions["arrowPF4RaidPos"],
-          "owist": positions["arrowPF4Pos"],
-        }, items : {
-          "owist": {image: "blackarrow", text: "3"},
-        },
-      },
-      {time: 4, phase: 4, name: 'Arrow simples', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
-        positions : {
-          "mongo": "dispellP4",
-          "owist": positions["arrowPF4RaidPos"]
+        players : {
+          "2": {position: "dispellP4"},
+          "18": {position: positions["arrowPF4RaidPos"]}
         },
       },
       {time: 1, phase: 4, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
-        positions: {
-          "mongo": positions["arrowPF4RaidPos"],
-        },
-        drawings: [
+        players: {
+          "2": {position: positions["arrowPF4RaidPos"]},
+        }, drawings: [
           {type: "disc", x: 660, y: 40, r: 120, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Furie + Couteaux', description: "Moment dangereux, la il faut éviter de toucher le groupe avec ses couteaux.<br>Il faut également ne pas mourrir, donc utiliser des CDs de survie.",
-        abilities:
-        [
+        abilities: [
           {id: "fury", name: "Furie", x: 350, y: 350}
-        ], positions: {
-          "dedra": {x: 30, y: 280},
-          "bak":   {x: 500, y: 150},
-          "morsi": {x: 200, y: 200},
-          "mongo": positions["arrowPF4RaidPos"],
+        ], players: {
+          "2": positions["arrowPF4RaidPos"],
+          "13": {position: {x: 30, y: 280}, image: "knives"},
+          "5": {position: {x: 500, y: 150}, image: "knives"},
+          "19": {position: {x: 200, y: 200}, image: "knives"},
         }, drawings: [
           {type:"line", x1:30, y1: 280, x2:400, y2:700},
           {type:"line", x1:30, y1: 280, x2:350, y2:0},
@@ -1353,166 +943,120 @@
           {type:"line", x1:0, y1: 200, x2:700, y2:200},
           {type:"line", x1:200, y1: 0, x2:200, y2:700},
           {type: "disc", x: 660, y: 40, r: 120, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
       {time: 3, phase: 4, name: 'Spread', description: 'Positions assignées individuellement',
-        positions: {
-          "azuli": "spread",
-          "kehil": "spread",
-          "shamy": "spread",
-          "dumys": "spread",
-          "cirda": "spread",
-          "dedra": "spread",
-          "stonk": "spread",
-          "mongo": "spread",
-          "zaarg": "spread",
-          "giin":  "spread",
-          "laukt": "spread",
-          "kailu": "spread",
-          "faymz": "spread",
-          "brins": "spread",
-          "bak":   "spread",
-          "tyttu": "spread",
-          "owist": "spread",
-          "lyrie": "spread",
-          "morsi": "spread",
-          "shakk": "spread",
+        groups: {
+          "all": {position: "spread"},
         }, drawings: [
           {type: "disc", x: 660, y: 40, r: 120, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Cri', description: "On veut pas prendre de dégâts inutiles ici",
         drawings : [
-          {type: "circle", x: items["azuli"].positions["spread"].x, y: items["azuli"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["kehil"].positions["spread"].x, y: items["kehil"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["shamy"].positions["spread"].x, y: items["shamy"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["dumys"].positions["spread"].x, y: items["dumys"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["cirda"].positions["spread"].x, y: items["cirda"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["dedra"].positions["spread"].x, y: items["dedra"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["stonk"].positions["spread"].x, y: items["stonk"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["mongo"].positions["spread"].x, y: items["mongo"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["zaarg"].positions["spread"].x, y: items["zaarg"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["giin"].positions["spread"].x, y: items["giin"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["laukt"].positions["spread"].x, y: items["laukt"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["kailu"].positions["spread"].x, y: items["kailu"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["faymz"].positions["spread"].x, y: items["faymz"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["brins"].positions["spread"].x, y: items["brins"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["bak"].positions["spread"].x, y: items["bak"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["tyttu"].positions["spread"].x, y: items["tyttu"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["owist"].positions["spread"].x, y: items["owist"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["lyrie"].positions["spread"].x, y: items["lyrie"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["morsi"].positions["spread"].x, y: items["morsi"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: items["shakk"].positions["spread"].x, y: items["shakk"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
+          {type: "circle", x: players["1"].positions["spread"].x, y: players["1"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["4"].positions["spread"].x, y: players["4"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["6"].positions["spread"].x, y: players["6"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["7"].positions["spread"].x, y: players["7"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["17"].positions["spread"].x, y: players["17"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["19"].positions["spread"].x, y: players["19"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 4, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
-        positions: {
-          "dumys": "melee",
-          "laukt": {x: 670, y: 400},
-          "faymz": "melee",
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
-        ]
-      },
-      {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 350, y: 150}
-        },
-        drawings:
-        [
-          {type: "disc", x: 350, y: 150, r: 60, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
-        ]
-      },
-      {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 630, y: 330}
-        },
-        drawings:
-        [
-          {type: "disc", x: 630, y: 300, r: 60, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
-        ]
-      },
-      {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
-        positions: {
-          "stonk": {x: 350, y: 550}
+        players: {
+          "10": {position: "melee"},
+          "14": {position: {x: 670, y: 400}},
+          "8": {position: "melee"},
         }, drawings: [
-          {type: "disc", x: 350, y: 550, r: 60, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
+          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
+        players: {
+          "1": {position: {x: 350, y: 150}}
+        }, drawings: [
+          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
+        players: {
+          "1": {position: {x: 630, y: 330}}
+        }, drawings: [
+          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+        ]
+      },
+      {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
+        players: {
+          "1": {position: {x: 350, y: 550}}
+        }, drawings: [
+          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Placement', description: 'On se place pour le veil',
-        positions: {
-          "laukt": "spread",
-          "dumys": "spread",
-          "stonk": "spread",
-          "faymz": "spread",
+        players: {
+          "14": {position: "spread"},
+          "10": {position: "spread"},
+          "1": {position: "spread"},
+          "8": {position: "spread"},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
         abilities: [
-          {id: "veil", name: "Veil", x: items["laukt"].positions["spread"].x, y: items["laukt"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["brins"].positions["spread"].x, y: items["brins"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: items["azuli"].positions["spread"].x, y: items["azuli"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y},
+          {id: "veil", name: "Veil", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y},
         ], drawings: [
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ],
       },
       {time: 3, phase: 4, name: 'BL', description: 'Gros dégâts, grosse pyro, grosse bite',
-        positions: {
-          "mongo": "dispellP4",
-          "azuli": positions["arrowPF4RaidPos"],
-          "kehil": positions["arrowPF4RaidPos"],
-          "shamy": positions["arrowPF4RaidPos"],
-          "dumys": positions["arrowPF4RaidPos"],
-          "cirda": positions["arrowPF4RaidPos"],
-          "dedra": positions["arrowPF4RaidPos"],
-          "stonk": positions["arrowPF4RaidPos"],
-          "zaarg": positions["arrowPF4RaidPos"],
-          "giin": positions["arrowPF4RaidPos"],
-          "laukt": positions["arrowPF4RaidPos"],
-          "kailu": positions["arrowPF4RaidPos"],
-          "faymz": positions["arrowPF4RaidPos"],
-          "brins": positions["arrowPF4RaidPos"],
-          "bak": positions["arrowPF4RaidPos"],
-          "tyttu": positions["arrowPF4RaidPos"],
-          "owist": positions["arrowPF4RaidPos"],
-          "lyrie": positions["arrowPF4RaidPos"],
-          "morsi": positions["arrowPF4RaidPos"],
-          "shakk": positions["arrowPF4RaidPos"],
+        groups: {
+          "all": {position: positions["arrowPF4RaidPos"]}
+        }, players: {
+          "2": {position:"dispellP4"},
         }, abilities: [
           {id: "timewarp", name: "timewarp", x: 350, y: 350},
         ], drawings: [
-          {type: "disc", x: 660, y: 40, r: 60, color: "#400040"},
+          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
-        positions: {
-          "mongo": positions["arrowPF4RaidPos"],
-          "stonk": "dispellP4",
+        players: {
+          "2": {position: positions["arrowPF4RaidPos"]},
+          "1": {position: "dispellP4"},
         }, drawings: [
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
-        positions: {
-          "stonk": positions["arrowPF4RaidPos"],
+        players: {
+          "1": {position: positions["arrowPF4RaidPos"]},
         }, drawings: [
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
@@ -1520,13 +1064,11 @@
       },
 
       {time: 4, phase: 4, name: 'Arrow 1 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
-        positions : {
-          "mongo": positions["arrowPF4Pos"],
-          "dedra": {x: 30, y: 280},
-          "bak":   {x: 500, y: 150},
-          "morsi": {x: 200, y: 200},
-        }, items : {
-          "mongo": {image: "blackarrow", text: "1"},
+        players : {
+          "2": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "1"},
+          "13": {position: {x: 30, y: 280}, image: "knives"},
+          "5":   {position: {x: 500, y: 150}, image: "knives"},
+          "19": {position: {x: 200, y: 200}, image: "knives"},
         }, drawings: [
           {type:"line", x1:30, y1: 280, x2:400, y2:700},
           {type:"line", x1:30, y1: 280, x2:350, y2:0},
@@ -1536,18 +1078,15 @@
           {type:"line", x1:200, y1: 0, x2:200, y2:700},
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
       {time: 4, phase: 4, name: 'Arrow 2 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
-        positions : {
-          "mongo": positions["arrowPF4RaidPos"],
-          "azuli": positions["arrowPF4Pos"],
-        }, items : {
-          "azuli": {image: "blackarrow", text: "2"},
+        players : {
+          "2": {position: positions["arrowPF4RaidPos"]},
+          "3": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "2"},
+          "13": {image: "knives"},
+          "5": {image: "knives"},
+          "19": {image: "knives"},
         }, drawings: [
           {type:"line", x1:30, y1: 280, x2:400, y2:700},
           {type:"line", x1:30, y1: 280, x2:350, y2:0},
@@ -1557,18 +1096,15 @@
           {type:"line", x1:200, y1: 0, x2:200, y2:700},
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
       {time: 4, phase: 4, name: 'Arrow 3 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
-        positions : {
-          "azuli": positions["arrowPF4RaidPos"],
-          "owist": positions["arrowPF4Pos"],
-        }, items : {
-          "owist": {image: "blackarrow", text: "3"},
+        players : {
+          "3": {position: positions["arrowPF4RaidPos"]},
+          "18": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "3"},
+          "13": {image: "knives"},
+          "5": {image: "knives"},
+          "19": {image: "knives"},
         }, drawings: [
           {type:"line", x1:30, y1: 280, x2:400, y2:700},
           {type:"line", x1:30, y1: 280, x2:350, y2:0},
@@ -1578,15 +1114,14 @@
           {type:"line", x1:200, y1: 0, x2:200, y2:700},
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
       {time: 4, phase: 4, name: 'Arrow 4 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
-        positions : {
-          "owist": positions["arrowPF4RaidPos"],
+        players : {
+          "18": {position: positions["arrowPF4RaidPos"]},
+          "13": {image: "knives"},
+          "5": {image: "knives"},
+          "19": {image: "knives"},
         }, drawings: [
             {type:"line", x1:30, y1: 280, x2:400, y2:700},
             {type:"line", x1:30, y1: 280, x2:350, y2:0},
@@ -1596,27 +1131,23 @@
             {type:"line", x1:200, y1: 0, x2:200, y2:700},
             {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
             {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-        ], items: {
-          "dedra": {image: "knives"},
-          "bak": {image: "knives"},
-          "morsi": {image: "knives"},
-        }
+        ]
       },
       {time: 3, phase: 4, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
-        positions: {
-          "stonk": {x: 450, y: 660},
-          "dedra": positions["arrowPF4RaidPos"],
-          "bak":   positions["arrowPF4RaidPos"],
-          "morsi": positions["arrowPF4RaidPos"],
+        players: {
+          "1": {position: {x: 450, y: 660}},
+          "13": {position: positions["arrowPF4RaidPos"]},
+          "5": {position: positions["arrowPF4RaidPos"]},
+          "19": {position: positions["arrowPF4RaidPos"]},
         }, drawings:[
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
-        positions: {
-          "stonk": positions["arrowPF4RaidPos"],
-          "mongo": {x: 660, y:450},
+        players: {
+          "1": {position: positions["arrowPF4RaidPos"]},
+          "2": {position: {x: 660, y:450}},
         }, drawings: [
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
@@ -1624,8 +1155,8 @@
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
-        positions: {
-          "mongo": positions["arrowPF4RaidPos"],
+        players: {
+          "2": {position: positions["arrowPF4RaidPos"]},
         },
         drawings: [
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
@@ -1661,7 +1192,7 @@
 
     window.onload = function() {
       rl.setPlan(document.getElementById("plan"));
-      rl.setItems(items);
+      rl.setPlayers(players);
       rl.setAbilities(abilities);
       rl.start();
     };

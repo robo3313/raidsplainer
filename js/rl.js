@@ -3,7 +3,7 @@ function RaidLeading (ctx, time) {
 
     //Objects set by user
     let planImage = null;
-    let items = null;
+    let players = null;
     let abilities = null;
     let events = null;
     let phases = null;
@@ -27,11 +27,11 @@ function RaidLeading (ctx, time) {
         planImage = newPlan;
     }
 
-    _myLibraryObject.setItems = function (newItems) {
-        items = newItems;
-        for (const i in items) {
-            if (items[i].imageId != undefined) {
-                items[i].image = document.getElementById(items[i].imageId);
+    _myLibraryObject.setPlayers = function (newPlayers) {
+        players = newPlayers;
+        for (const i in players) {
+            if (players[i].imageId != undefined) {
+                players[i].image = document.getElementById(players[i].imageId);
             }
         }
     }
@@ -94,7 +94,7 @@ function RaidLeading (ctx, time) {
     function calcEvent(currentTimer) {
         secondsSinceStart = Math.floor(currentTimer / 1000);
         document.getElementById("timer").innerHTML = secondsSinceStart;
-        if (timeSinceLastEvent / 1000 > events[currentEvent].time) {
+        if (timeSinceLastEvent / 1000 > events[currentEvent].time && currentEvent < events.length - 1) {
             timeSinceLastEvent = 0;
             currentEvent += 1;
             triggerEvent(events[currentEvent]);
@@ -104,19 +104,41 @@ function RaidLeading (ctx, time) {
     function triggerEvent(event) {
         document.getElementById("event-title").innerHTML = event.name;
         document.getElementById("event-description").innerHTML = event.description;
-        if (event.positions !== undefined) {
-            for (const i in items) {
-                if (typeof event.positions[i] == "string") {
-                    items[i].target = items[i].positions[event.positions[i]];
-                } else {
-                    items[i].target = event.positions[i];
+        if (event.groups !== undefined) {
+            for (const k in event.groups) {
+                const groupEvent = event.groups[k];
+                for (const i in players) {
+                    if (players[i].groups.includes(k)) {
+                        if (groupEvent.position !== undefined) {
+                            if (typeof groupEvent.position == "string") {
+                                players[i].target = players[i].positions[groupEvent.position];
+                            } else {
+                                players[i].target = groupEvent.position;
+                            }
+                        }
+                        if (groupEvent.teleport !== undefined) {
+                            players[i].x = groupEvent.teleport.x;
+                            players[i].y = groupEvent.teleport.y;
+                        }                        
+                    }
                 }
             }
         }
-        if (event.teleport !== undefined) {
-            for (const i in items) {
-                items[i].x = event.teleport[i].x;
-                items[i].y = event.teleport[i].y;
+
+        if (event.players !== undefined) {
+            for (const i in event.players) {
+                const playerEvent = event.players[i];
+                if (playerEvent.position !== undefined) {
+                    if (typeof playerEvent.position == "string") {
+                        players[i].target = players[i].positions[playerEvent.position];
+                    } else {
+                        players[i].target = playerEvent.position;
+                    }
+                }
+                if (event.teleport !== undefined) {
+                    players[i].x = playerEvent.teleport[i].x;
+                    players[i].y = playerEvent.teleport[i].y;
+                }
             }
         }
         displayPhase();
@@ -153,16 +175,16 @@ function RaidLeading (ctx, time) {
 
     function calcPositions(elapsedTimer) {
         elapsedTimer /= timeConstant;
-        for (const i in items) {
-            if (items[i].target != undefined && items[i].target !== null) {
-              let d = distance(items[i].x, items[i].y, items[i].target.x, items[i].target.y);
-              if (d < items[i].speed * elapsedTimer) {
-                items[i].x = items[i].target.x;
-                items[i].y = items[i].target.y;
-                items[i].target = null;
+        for (const i in players) {
+            if (players[i].target != undefined && players[i].target !== null) {
+              let d = distance(players[i].x, players[i].y, players[i].target.x, players[i].target.y);
+              if (d < players[i].speed * elapsedTimer) {
+                players[i].x = players[i].target.x;
+                players[i].y = players[i].target.y;
+                players[i].target = null;
               } else {
-                items[i].x += items[i].speed * elapsedTimer * (items[i].target.x - items[i].x) / d;
-                items[i].y += items[i].speed * elapsedTimer * (items[i].target.y - items[i].y) / d;
+                players[i].x += players[i].speed * elapsedTimer * (players[i].target.x - players[i].x) / d;
+                players[i].y += players[i].speed * elapsedTimer * (players[i].target.y - players[i].y) / d;
               }
             }
         }
@@ -193,19 +215,19 @@ function RaidLeading (ctx, time) {
         }
         let image;
         let text;
-        for (const i in items) {
-            if (event.items !== undefined && event.items[i] !== undefined && event.items[i].image !== undefined) {
-                image = abilities[event.items[i].image].image;
+        for (const i in players) {
+            if (event.players !== undefined && event.players[i] !== undefined && event.players[i].image !== undefined) {
+                image = abilities[event.players[i].image].image;
             } else {
-                image = items[i].image;
+                image = players[i].image;
             }
-            if (event.items !== undefined && event.items[i] !== undefined && event.items[i].text !== undefined) {
-                text = event.items[i].text;
+            if (event.players !== undefined && event.players[i] !== undefined && event.players[i].text !== undefined) {
+                text = event.players[i].text;
             } else {
-                text = i;
+                text = players[i].name.substring(0, 5);
             }
-            ctx.drawImage(image, items[i].x - items[i].image.width / 2, items[i].y - items[i].image.height / 2);
-            writeText(ctx, text, items[i].x, items[i].y);
+            ctx.drawImage(image, players[i].x - players[i].image.width / 2, players[i].y - players[i].image.height / 2);
+            writeText(ctx, text, players[i].x, players[i].y);
         }
     }
 
