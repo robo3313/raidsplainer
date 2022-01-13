@@ -671,13 +671,14 @@
       {time: 3, phase: 3, name: 'Soaks movement', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
         players: {
           "2": {position: {x: 230, y: 580}},
-          "6": {position: {x: 590, y: 430}, image: "divineshield"},
+          "5": {position: {x: 590, y: 430}, image: "divineshield"},
+          "6": {position: "melee"},
           "7": {position: "melee"},
-          "8": {position: "melee"},
+          "8": {position: {x: 440, y: 600}},
           "9": {position: "melee"},
           "10": {position: "melee"},
           "17": {position: {x: 300, y: 600}},
-          "19": {position: {x: 440, y: 600}, image: "iceblock"},
+          "19": {position: "melee"},
           "20": {position: {x: 590, y: 580}, image: "iceblock"},
         }, abilities: [
           {id:"soak", name:"Soak", position: {x:210, y: 600}},
@@ -689,6 +690,7 @@
       {time: 3, phase: 3, name: 'Placement', description: 'On se place pour le veil',
         players: {
           "2": {position: "spread"},
+          "5": {position: "spread"},
           "6": {position: "spread"},
           "7": {position: "spread"},
           "8": {position: "spread"},
