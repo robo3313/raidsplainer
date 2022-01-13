@@ -55,7 +55,6 @@ function RaidLeading (ctx, time) {
             }
             checkEvent(events[i]);
         }
-        console.log(warnings);
     }
 
     _myLibraryObject.setPhases = function (newPhases) {
@@ -204,11 +203,11 @@ function RaidLeading (ctx, time) {
                 const drawing = event.drawings[i];
                 const color = drawing.color !== undefined ? drawing.color : "black";
                 if (drawing.type === "disc") {
-                    drawDisc(ctx, drawing.x, drawing.y, drawing.r, color);
+                    drawDisc(ctx, drawing.position.x, drawing.position.y, drawing.r, color);
                 } else if (drawing.type === "circle") {
-                    drawCircle(ctx, drawing.x, drawing.y, drawing.r, color);
+                    drawCircle(ctx, drawing.position.x, drawing.position.y, drawing.r, color);
                 } else if (drawing.type === "line") {
-                    drawLine(ctx, drawing.x1, drawing.y1, drawing.x2, drawing.y2, color);
+                    drawLine(ctx, drawing.startPosition.x, drawing.startPosition.y, drawing.endPosition.x, drawing.endPosition.y, color);
                 }
             }
         }
@@ -294,6 +293,12 @@ function RaidLeading (ctx, time) {
             if (!recognizedProps.includes(prop)) {
                 warnings.push('Unrecognized prop : '+prop+' in event :'+event.name);
             }
+            if (event[prop].time === undefined) {
+                warnings.push('Missing prop : "time" in event :'+event.name);
+            }
+            if (event[prop].time === undefined) {
+                warnings.push('Missing prop : "name" in event :'+event);
+            }
             for (const i in event[prop]) {
                 if (prop === "players") {
                     checkPlayerProps(event[prop][i], event);
@@ -310,39 +315,69 @@ function RaidLeading (ctx, time) {
         if (player.position !== undefined) {
             checkPositionProp(player.position, event, "players");
         }
-        if (player.position !== undefined) {
-            checkPositionProp(player.position, event, "players");
-        }
+        //TODO : Check images and text
     }
 
     function checkAbilitiesProps(ability, event) {
         if (ability.id === undefined) {
             warnings.push('Missing property "id" for ability in event : '+event.name);
+        } else if (typeof ability.id !== 'string') {
+            warnings.push('Wrong property "id" for ability in event : '+event.name);
         }
         if (ability.name === undefined) {
             warnings.push('Missing property "name" for ability in event : '+event.name);
+        } else if (typeof ability.name !== 'string') {
+            warnings.push('Wrong property "string" for ability in event : '+event.name);
         }
-        if (ability.name === undefined) {
-            warnings.push('Missing property "positio"n for ability in event : '+event.name);
-        }
-        //checkPositionProp(ability.position, event, "abilities");
+        assertPositionProp(ability.position, event, "ability");
     }
 
     function checkDrawingsProps(drawing, event) {
         if (drawing.type === undefined) {
             warnings.push('Missing property "type" for drawing in event : '+event.name);
+        } else {
+            if (drawing.type === "disc" || drawing.type === "circle") {
+                assertPositionProp(drawing.position, event, "drawing");
+                assertRadiusProp(drawing.r, event, 'drawing');
+                checkColorProp(drawing.color, event, "drawing");
+            } else if (drawing.type === "line") {
+                assertPositionProp(drawing.startPosition, event, "drawing (must be startPosition)");
+                assertPositionProp(drawing.endPosition, event, "drawing (must be endPosition)");
+            } else {
+                warnings.push('Unknown drawing type "'+drawing.type+'" in event : '+event.name);
+            }
         }
-        /*if (drawing.position === undefined) {
-            warnings.push('Missing property "position" for drawing in event : '+event.name);
-        }*/
-        /*if (drawing.position !== undefined) {
-            checkPositionProp(drawing.position, event, "drawings");
-        }*/
     }
 
     function checkPositionProp(prop, event, tag) {
-        if ((prop['x'] === undefined || prop['y'] === undefined) && typeof prop !== "string") {
-            warnings.push('Wrong position for property : '+tag+' in event :'+event.name);
+        if (typeof prop === 'object') {
+            if (prop['x'] === undefined || prop['y'] === undefined) {
+                warnings.push('Wrong position for property : '+tag+' in event : '+event.name);
+            }
+        } else if (tag !== "players" || typeof prop !== "string") {
+            warnings.push('Wrong position for property : '+tag+' in event : '+event.name);
+        }
+    }
+
+    function assertPositionProp(prop, event, tag) {
+        if (prop === undefined) {
+            warnings.push('Missing "position" for property "'+tag+'" in event: '+event.name);
+        } else {
+            checkPositionProp(prop, event, tag);
+        }
+    }
+
+    function assertRadiusProp(prop, event, tag) {
+        if (prop === undefined) {
+            warnings.push('Missing property "r" for '+tag+' in event "'+event.name+'"');
+        } else if (typeof prop !== 'number') {
+            warnings.push('Wrong property "r" for "'+tag+'" in event +'+event.name+'"');
+        }
+    }
+
+    function checkColorProp(prop, event, tag) {
+        if (prop !== undefined && typeof prop != "string") {
+            warnings.push('Wrong position for property : '+tag+' in event : '+event.name);
         }
     }
 

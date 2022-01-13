@@ -237,33 +237,33 @@
         players: {
           "14": {position: {x: 670, y: 400}},
         }, drawings: [
-          {type: "disc", x: positions["pool1"].x, y: positions["pool1"].y, r: poolRadius, color: "#400040"},
-          {type: "disc", x: positions["pool2"].x, y: positions["pool2"].y, r: poolRadius, color: "#400040"},
-          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool1"], r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool2"], r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool3"], r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
         players: {
           "2": {position: positions["pool1"]},
         }, drawings: [
-          {type: "disc", x: positions["pool1"].x, y: positions["pool1"].y, r: poolRadius, color: "#400040"},
-          {type: "disc", x: positions["pool2"].x, y: positions["pool2"].y, r: poolRadius, color: "#400040"},
-          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool1"], r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool2"], r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool3"], r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
         players: {
           "2": {position: positions["pool2"]},
         }, drawings: [
-          {type: "disc", x: positions["pool2"].x, y: positions["pool2"].y, r: poolRadius, color: "#400040"},
-          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool2"], r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool3"], r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 1, name: 'Clear Plate-forme de Mongoliste', description: 'Le placement des flaques est aléatoire',
         players: {
           "2": {position: positions["pool3"]},
         }, drawings: [
-          {type: "disc", x: positions["pool3"].x, y: positions["pool3"].y, r: poolRadius, color: "#400040"},
+          {type: "disc", position: positions["pool3"], r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 1, name: 'Spread', description: "Les melees se placent.<br>Les rangeds se replacent si besoin.<br>Positions assignées individuellement",
@@ -297,53 +297,53 @@
           "2": {position: "dispell"},
           "4": {position: positions["stacked"]},
         }, drawings: [
-          {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
       {time: 4, phase: 1, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste.<br>Vu le timing cela arrivera très probablement pendant la furie",
         players: {
           "2": {position: positions["stacked"]},
         }, drawings: [
-          {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 4, phase: 1, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
           {id: "fury", name: "Furie", position: positions["fury"]}
         ], drawings: [
-          {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 1, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
         groups: {
           "all": {position: positions["preparingNextPlatform"]}
         }, drawings: [
-          {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 1, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         abilities: [
           {id: "massdispell", name:"Mass Dispell", position: positions["preparingNextPlatform"]},
         ], drawings: [
-            {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
-            {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-            {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+            {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
+            {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
+            {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
           ]
       },
       {time: 1, phase: 1, name: 'Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
         groups: {
           "all": {position: positions["nextPlatform"]}
         }, drawings: [
-          {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
 
@@ -399,12 +399,12 @@
           "5": {position: {x: 500, y: 350}, image: "knives"},
           "19": {position: {x: 450, y: 600}, image: "knives"},
         }, drawings: [
-          {type:"line", x1:0, y1:150, x2:400, y2:700},
-          {type:"line", x1:0, y1:400, x2:350, y2:0},
-          {type:"line", x1:0, y1:600, x2:700, y2:600},
-          {type:"line", x1:450, y1:0, x2:450, y2:700},
-          {type:"line", x1:0, y1:0, x2:700, y2:500},
-          {type:"line", x1:150, y1:700, x2:700, y2:150},
+          {type: "line", startPosition: {x: 0, y: 150}, endPosition: {x: 400, y: 700}},
+          {type: "line", startPosition: {x: 0, y: 400}, endPosition: {x: 350, y: 0}},
+          {type: "line", startPosition: {x: 0, y: 600}, endPosition: {x: 700, y: 600}},
+          {type: "line", startPosition: {x: 450, y: 0}, endPosition: {x: 450, y: 700}},
+          {type: "line", startPosition: {x: 0, y: 0}, endPosition: {x: 700, y: 500}},
+          {type: "line", startPosition: {x:150, y:700}, endPosition: {x: 700, y: 150}},
         ]
       },
       {time: 3, phase: 2, name: 'Spread', description: 'Positions assignées individuellement',
@@ -414,33 +414,33 @@
       },
       {time: 3, phase: 2, name: 'Cri', description: "On veut pas prendre de dégâts inutiles ici",
         drawings : [
-          {type: "circle", x: players["1"].positions["spread"].x, y: players["1"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["4"].positions["spread"].x, y: players["4"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["6"].positions["spread"].x, y: players["6"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["7"].positions["spread"].x, y: players["7"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["17"].positions["spread"].x, y: players["17"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["19"].positions["spread"].x, y: players["19"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", position: players["1"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["2"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["3"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["4"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["5"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["6"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["7"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["8"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["9"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["10"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["11"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["12"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["13"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["14"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["15"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["16"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["17"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["18"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["19"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["20"].positions["spread"], r: 140, color: "grey"},
         ],
       },
       {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
         abilities: [
-          {id: "veil", name: "Veil", position: players["12"].positions["spread"].x},
-          {id: "veil", name: "Veil", position: players["18"].positions["spread"].x},
-          {id: "veil", name: "Veil", position: players["11"].positions["spread"].x},
+          {id: "veil", name: "Veil", position: players["12"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["18"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["11"].positions["spread"]},
         ]
       },
       {time: 5, phase: 2, name: 'Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
@@ -451,8 +451,8 @@
           "12": {position: {x: 580, y: 70}},
           "14": {position: {x: 620, y: 240}},
         }, abilities : [
-          {id:"soak", name:"Soak", x:610, y: 40},
-          {id:"soak", name:"Soak", x:660, y: 220}
+          {id:"soak", name:"Soak", position: {x: 610, y: 40}},
+          {id:"soak", name:"Soak", position: {x: 660, y: 220}}
         ]
       },
       {time: 2, phase: 2, name: "Dispell Stonks", description : "Un healer dispell Stonks avant la Furie<br> Les joueurs qui ont fait le soak se stack",
@@ -461,7 +461,7 @@
           "12": {position: positions["stacked"]},
           "14": {position: positions["stacked"]},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
 
@@ -469,42 +469,42 @@
         abilities: [
           {id: "fury", name: "Furie", position: positions["fury"]}
         ], drawings: [
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
         drawings: [
-          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 150}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 350, y: 150}}
         }, drawings: [
-          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 150}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 630, y: 330}}
         }, drawings: [
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
       {time: 2, phase: 2, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 350, y: 550}}
         }, drawings: [
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
         ]
       },
       {time: 3, phase: 2, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
@@ -514,13 +514,13 @@
           "13": {position: {x: 100, y: 280}, image: "knives"},
           "19": {position: {x: 450, y: 600}, image: "knives"},
         }, drawings: [
-          {type: "line", x1:0, y1:150, x2:400, y2:700},
-          {type: "line", x1:0, y1:400, x2:350, y2:0},
-          {type: "line", x1:0, y1:600, x2:700, y2:600},
-          {type: "line", x1:450, y1:0, x2:450, y2:700},
-          {type: "line", x1:0, y1:0, x2:700, y2:500},
-          {type: "line", x1:150, y1:700, x2:700, y2:150},
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"},
+          {type: "line", startPosition: {x: 0, y: 150}, endPosition: {x:400, y:700}},
+          {type: "line", startPosition: {x: 0, y: 400}, endPosition: {x:350, y:0}},
+          {type: "line", startPosition: {x: 0, y: 600}, endPosition: {x:700, y:600}},
+          {type: "line", startPosition: {x: 450, y: 0}, endPosition: {x:450, y:700}},
+          {type: "line", startPosition: {x: 0, y: 0}, endPosition: {x:700, y:500}},
+          {type: "line", startPosition: {x:150, y:700}, endPosition: {x:700, y:150}},
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 2, name: 'Arrow + Soaks', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
@@ -528,7 +528,7 @@
           "2": {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "1"},
           "5": {position: "melee"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 3, phase: 2, name: 'Arrow 1 ', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
@@ -536,7 +536,7 @@
           "2": {position: positions["arrowSimplePos"], image: "blackarrow", text: "1"},
           "15": {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "2"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 3, phase: 2, name: 'Arrow 2 ', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
@@ -545,7 +545,7 @@
           "15": {position: positions["arrowSimplePos"], image: "blackarrow", text: "2"},
           "5" : {position: positions["arrowSimplePrePos"], image: "blackarrow", text: "3"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 3, phase: 2, name: 'Arrow 3 ', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
@@ -553,21 +553,21 @@
           "15": {position: "spread"},
           "5" : {position: positions["arrowSimplePos"], image: "blackarrow", text: "3"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 3, phase: 2, name: 'Arrow', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         players: {
           "5" : {position: "spread"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 3, phase: 2, name: 'Spread', description: 'Positions assignées individuellement',
         groups: {
           "all": {position: "spread"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"}
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"}
         ]
       },
       {time: 5, phase: 2, name: 'Soaks', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
@@ -575,8 +575,8 @@
           "12": {position: {x: 580, y: 70}},
           "14": {position: {x: 620, y: 240}},
         }, abilities : [
-          {id:"soak", name:"Soak", x:610, y: 40},
-          {id:"soak", name:"Soak", x:660, y: 220}
+          {id:"soak", name:"Soak", position: {x:610, y: 40}},
+          {id:"soak", name:"Soak", position: {x:660, y: 220}}
         ]
       },
       {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
@@ -603,7 +603,7 @@
         groups: {
           "all": {position: positions["nextPlatform"]}
         }, drawings: [
-          {type: "disc", x: 350, y: 100, r: 300, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 100}, r: 300, color: "#400040"},
         ]
       },
 
@@ -630,12 +630,12 @@
           "13": {position: {x: 100, y: 280}, image: "knives"},
           "19": {position: {x: 450, y: 600}, image: "knives"},
         }, drawings: [
-            {type:"line", x1:0, y1:150, x2:400, y2:700},
-            {type:"line", x1:0, y1:400, x2:350, y2:0},
-            {type:"line", x1:0, y1:600, x2:700, y2:600},
-            {type:"line", x1:450, y1:0, x2:450, y2:700},
-            {type:"line", x1:0, y1:0, x2:700, y2:500},
-            {type:"line", x1:150, y1:700, x2:700, y2:150},
+          {type: "line", startPosition: {x: 0, y: 150}, endPosition: {x:400, y:700}},
+          {type: "line", startPosition: {x: 0, y: 400}, endPosition: {x:350, y:0}},
+          {type: "line", startPosition: {x: 0, y: 600}, endPosition: {x:700, y:600}},
+          {type: "line", startPosition: {x: 450, y: 0}, endPosition: {x:450, y:700}},
+          {type: "line", startPosition: {x: 0, y: 0}, endPosition: {x:700, y:500}},
+          {type: "line", startPosition: {x:150, y:700}, endPosition: {x:700, y:150}},
         ]
       },
       {time: 3, phase: 3, name: 'Spread', description: 'Positions assignées individuellement',
@@ -645,26 +645,26 @@
       },
       {time: 3, phase: 3, name: 'Cri', description: "On veut pas prendre de dégâts inutiles ici",
         drawings: [
-          {type: "circle", x: players["1"].positions["spread"].x, y: players["1"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["4"].positions["spread"].x, y: players["4"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["6"].positions["spread"].x, y: players["6"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["7"].positions["spread"].x, y: players["7"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["17"].positions["spread"].x, y: players["17"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["19"].positions["spread"].x, y: players["19"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y, r: 140, color: "grey"},
+          {type: "circle", position: players["1"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["2"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["3"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["4"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["5"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["6"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["7"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["8"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["9"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["10"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["11"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["12"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["13"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["14"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["15"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["16"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["17"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["18"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["19"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["20"].positions["spread"], r: 140, color: "grey"},
         ]
       },
       {time: 3, phase: 3, name: 'Soaks movement', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
@@ -738,33 +738,33 @@
       },
       {time: 2, phase: 3, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
         drawings: [
-          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 150}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 350, y: 150}}
         }, drawings: [
-          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 150}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 630, y: 330}}
         }, drawings: [
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 350, y: 550}}
         }, drawings: [
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Stack', description: "En prévision de la furie qui arrive",
@@ -779,24 +779,24 @@
           "1": {position: positions["stacked"]},
           "2": {position: "dispell"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
         players: {
           "2": {position: positions["stacked"]},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
 
       {time: 3, phase: 3, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
-          {id: "fury", name: "Furie", x: 350, y: 350}
+          {id: "fury", name: "Furie", position: {x: 350, y: 350}}
         ], drawings: [
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Soaks immune', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br><br>Ici il ne faut pas hésiter a utiliser des immunes mobiles, comme la cape d'ombre, bubulle, turtle, pour éviter de ramasser les débuffs de flaques.",
@@ -806,13 +806,13 @@
           "18": {position: {x: 390, y: 580}, image: "turtle"},
           "16": {position: {x: 590, y: 430}, image: "turtle"},
         }, abilities : [
-          {id:"soak", name:"Soak", x:210, y: 600},
-          {id:"soak", name:"Soak", x:410, y: 600},
-          {id:"soak", name:"Soak", x:610, y: 600},
-          {id:"soak", name:"Soak", x:610, y: 450}
+          {id:"soak", name:"Soak", position: {x:210, y: 600}},
+          {id:"soak", name:"Soak", position: {x:410, y: 600}},
+          {id:"soak", name:"Soak", position: {x:610, y: 600}},
+          {id:"soak", name:"Soak", position: {x:610, y: 450}}
         ], drawings: [
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
@@ -825,14 +825,14 @@
           "16": {position: positions["stacked"]},
           "19": {position: {x: 450, y: 450}, image: "knives"},
         }, drawings: [
-          {type:"line", x1:0, y1:150, x2:400, y2:700},
-          {type:"line", x1:0, y1:400, x2:350, y2:0},
-          {type:"line", x1:0, y1:450, x2:700, y2:450},
-          {type:"line", x1:450, y1:0, x2:450, y2:700},
-          {type:"line", x1:0, y1:0, x2:700, y2:500},
-          {type:"line", x1:150, y1:700, x2:700, y2:150},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "line", startPosition: {x: 0, y: 150}, endPosition: {x:400, y:700}},
+          {type: "line", startPosition: {x: 0, y: 400}, endPosition: {x:350, y:0}},
+          {type: "line", startPosition: {x: 0, y: 600}, endPosition: {x:700, y:600}},
+          {type: "line", startPosition: {x: 450, y: 0}, endPosition: {x:450, y:700}},
+          {type: "line", startPosition: {x: 0, y: 0}, endPosition: {x:700, y:500}},
+          {type: "line", startPosition: {x:150, y:700}, endPosition: {x:700, y:150}},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
@@ -840,24 +840,24 @@
           "1": {position: {x: 40, y: 660}},
           "5":  {position: "melee"},
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 2, phase: 3, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 660, y: 660}}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Spread', phase: 3, description: 'En prévision du veil',
         groups: {
           "all": {position: "spread"}
         }, drawings: [
-          {type: "disc", x: 40, y: 660, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 660, y: 660, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 660}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 3, name: 'Veil', phase: 3, description: 'On veut pas toucher les copains avec le veil',
@@ -881,7 +881,7 @@
         groups: {
           "all": {position: positions["nextPlatform"]},
         }, drawings: [
-          {type: "disc", x: 350, y: 100, r: 320, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 100}, r: 320, color: "#400040"},
         ]
       },
 
@@ -924,7 +924,7 @@
         players: {
           "2": {position: positions["arrowPF4RaidPos"]},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: 120, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 120, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Furie + Couteaux', description: "Moment dangereux, la il faut éviter de toucher le groupe avec ses couteaux.<br>Il faut également ne pas mourrir, donc utiliser des CDs de survie.",
@@ -936,45 +936,45 @@
           "5": {position: {x: 500, y: 150}, image: "knives"},
           "19": {position: {x: 200, y: 200}, image: "knives"},
         }, drawings: [
-          {type:"line", x1:30, y1: 280, x2:400, y2:700},
-          {type:"line", x1:30, y1: 280, x2:350, y2:0},
-          {type:"line", x1:150, y1: 0, x2: 700, y2: 250},
-          {type:"line", x1:0, y1: 650, x2: 650, y2: 0},
-          {type:"line", x1:0, y1: 200, x2:700, y2:200},
-          {type:"line", x1:200, y1: 0, x2:200, y2:700},
-          {type: "disc", x: 660, y: 40, r: 120, color: "#400040"},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x:400, y: 700}},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x:350, y: 0}},
+          {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x:700, y: 250}},
+          {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x:700, y: 200}},
+          {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x:200, y: 700}},
+          {type: "line", startPosition: {x:150, y:700}, endPosition: {x:700, y:150}},
+          {type: "disc", position: {x: 660, y: 40}, r: 120, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Spread', description: 'Positions assignées individuellement',
         groups: {
           "all": {position: "spread"},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: 120, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 120, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Cri', description: "On veut pas prendre de dégâts inutiles ici",
         drawings : [
-          {type: "circle", x: players["1"].positions["spread"].x, y: players["1"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["4"].positions["spread"].x, y: players["4"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["6"].positions["spread"].x, y: players["6"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["7"].positions["spread"].x, y: players["7"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["17"].positions["spread"].x, y: players["17"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["19"].positions["spread"].x, y: players["19"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "circle", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y, r: 140, color: "grey"},
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "circle", position: players["1"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["2"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["3"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["4"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["5"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["6"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["7"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["8"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["9"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["10"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["11"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["12"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["13"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["14"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["15"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["16"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["17"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["18"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["19"].positions["spread"], r: 140, color: "grey"},
+          {type: "circle", position: players["20"].positions["spread"], r: 140, color: "grey"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 4, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
@@ -983,37 +983,37 @@
           "14": {position: {x: 670, y: 400}},
           "8": {position: "melee"},
         }, drawings: [
-          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 150}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 350, y: 150}}
         }, drawings: [
-          {type: "disc", x: 350, y: 150, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 150}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 630, y: 330}}
         }, drawings: [
-          {type: "disc", x: 630, y: 300, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 630, y: 300}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 2, phase: 4, name: 'Clear Plate-forme de Stonks', description: 'Le placement des flaques est aléatoire',
         players: {
           "1": {position: {x: 350, y: 550}}
         }, drawings: [
-          {type: "disc", x: 350, y: 550, r: poolRadius, color: "#400040"},
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 350, y: 550}, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Placement', description: 'On se place pour le veil',
@@ -1023,7 +1023,7 @@
           "1": {position: "spread"},
           "8": {position: "spread"},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
@@ -1032,7 +1032,7 @@
           {id: "veil", name: "Veil", position: players["5"].positions["spread"]},
           {id: "veil", name: "Veil", position: players["3"].positions["spread"]},
         ], drawings: [
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position :{x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ],
       },
       {time: 3, phase: 4, name: 'BL', description: 'Gros dégâts, grosse pyro, grosse bite',
@@ -1043,7 +1043,7 @@
         }, abilities: [
           {id: "timewarp", name: "timewarp", position: {x: 350, y: 350}},
         ], drawings: [
-          {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: poolRadius, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
@@ -1051,15 +1051,15 @@
           "2": {position: positions["arrowPF4RaidPos"]},
           "1": {position: "dispellP4"},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
         players: {
           "1": {position: positions["arrowPF4RaidPos"]},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
 
@@ -1070,14 +1070,14 @@
           "5":   {position: {x: 500, y: 150}, image: "knives"},
           "19": {position: {x: 200, y: 200}, image: "knives"},
         }, drawings: [
-          {type:"line", x1:30, y1: 280, x2:400, y2:700},
-          {type:"line", x1:30, y1: 280, x2:350, y2:0},
-          {type:"line", x1:150, y1: 0, x2: 700, y2: 250},
-          {type:"line", x1:0, y1: 650, x2: 650, y2: 0},
-          {type:"line", x1:0, y1: 200, x2:700, y2:200},
-          {type:"line", x1:200, y1: 0, x2:200, y2:700},
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 400, y: 700}},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 350, y: 0}},
+          {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x: 700, y: 250}},
+          {type: "line", startPosition: {x: 0, y: 650}, endPosition: {x: 650, y: 0}},
+          {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x: 700, y: 200}},
+          {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x: 200, y: 700}},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 4, phase: 4, name: 'Arrow 2 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
@@ -1088,14 +1088,14 @@
           "5": {image: "knives"},
           "19": {image: "knives"},
         }, drawings: [
-          {type:"line", x1:30, y1: 280, x2:400, y2:700},
-          {type:"line", x1:30, y1: 280, x2:350, y2:0},
-          {type:"line", x1:150, y1: 0, x2: 700, y2: 250},
-          {type:"line", x1:0, y1: 650, x2: 650, y2: 0},
-          {type:"line", x1:0, y1: 200, x2:700, y2:200},
-          {type:"line", x1:200, y1: 0, x2:200, y2:700},
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 400, y: 700}},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 350, y: 0}},
+          {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x: 700, y: 250}},
+          {type: "line", startPosition: {x: 0, y: 650}, endPosition: {x: 650, y: 0}},
+          {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x: 700, y: 200}},
+          {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x: 200, y: 700}},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 4, phase: 4, name: 'Arrow 3 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
@@ -1106,14 +1106,14 @@
           "5": {image: "knives"},
           "19": {image: "knives"},
         }, drawings: [
-          {type:"line", x1:30, y1: 280, x2:400, y2:700},
-          {type:"line", x1:30, y1: 280, x2:350, y2:0},
-          {type:"line", x1:150, y1: 0, x2: 700, y2: 250},
-          {type:"line", x1:0, y1: 650, x2: 650, y2: 0},
-          {type:"line", x1:0, y1: 200, x2:700, y2:200},
-          {type:"line", x1:200, y1: 0, x2:200, y2:700},
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+        {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 400, y: 700}},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 350, y: 0}},
+          {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x: 700, y: 250}},
+          {type: "line", startPosition: {x: 0, y: 650}, endPosition: {x: 650, y: 0}},
+          {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x: 700, y: 200}},
+          {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x: 200, y: 700}},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 4, phase: 4, name: 'Arrow 4 + Couteaux', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment.<br>Si besoin on peut marcher dans la flaque et demander un dispell juste après",
@@ -1123,14 +1123,14 @@
           "5": {image: "knives"},
           "19": {image: "knives"},
         }, drawings: [
-            {type:"line", x1:30, y1: 280, x2:400, y2:700},
-            {type:"line", x1:30, y1: 280, x2:350, y2:0},
-            {type:"line", x1:150, y1: 0, x2: 700, y2: 250},
-            {type:"line", x1:0, y1: 650, x2: 650, y2: 0},
-            {type:"line", x1:0, y1: 200, x2:700, y2:200},
-            {type:"line", x1:200, y1: 0, x2:200, y2:700},
-            {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-            {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+            {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 400, y: 700}},
+            {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 350, y: 0}},
+            {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x: 700, y: 250}},
+            {type: "line", startPosition: {x: 0, y: 650}, endPosition: {x: 650, y: 0}},
+            {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x: 700, y: 200}},
+            {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x: 200, y: 700}},
+            {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+            {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
@@ -1140,8 +1140,8 @@
           "5": {position: positions["arrowPF4RaidPos"]},
           "19": {position: positions["arrowPF4RaidPos"]},
         }, drawings:[
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Stonks', description : "Un healer dispell Stonks, il se stack.<br>",
@@ -1149,9 +1149,9 @@
           "1": {position: positions["arrowPF4RaidPos"]},
           "2": {position: {x: 660, y:450}},
         }, drawings: [
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 450, y: 660, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 450, y: 660}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Dispell Mongoliste', description : "Un healer dispell Mongoliste, il se stack.<br>",
@@ -1159,29 +1159,29 @@
           "2": {position: positions["arrowPF4RaidPos"]},
         },
         drawings: [
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 450, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 450, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 450, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 450}, r: 240, color: "#400040"},
         ]
       },
       {time: 3, phase: 4, name: 'Furie + Mass dispell', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
-          {id: "massdispell", name:"Mass Dispell", positions: {x: 65, y: 65}},
-          {id: "fury", name: "Furie", positions: {x: 350, y: 350}}
+          {id: "massdispell", name:"Mass Dispell", position: {x: 65, y: 65}},
+          {id: "fury", name: "Furie", position: {x: 350, y: 350}}
         ], drawings: [
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 450, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 450, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 450, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 450}, r: 240, color: "#400040"},
         ]
       },
-      {time: 10, name: 'Plate-forme 4 : The end', description: "Tuer ou être tué.<br>On doit utiliser des immunes pour gratter quelques secondes, le temps qu'elle finisse ses animations",
+      {time: 10, phase: 4, name: 'End', description: "Tuer ou être tué.<br>On doit utiliser des immunes pour gratter quelques secondes, le temps qu'elle finisse ses animations",
         drawings: [
-          {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
-          {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 450, y: 660, r: 240, color: "#400040"},
-          {type: "disc", x: 660, y: 450, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 40}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 450, y: 660}, r: 240, color: "#400040"},
+          {type: "disc", position: {x: 660, y: 450}, r: 240, color: "#400040"},
         ]
       },
     ];
