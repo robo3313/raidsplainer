@@ -138,7 +138,7 @@
                 "melee": {"x": 400, "y": 400}
             }
         },
-        "6": {"name":"Bak", "x": 200, "y": 350, "speed": 30, "imageId": "paladin", "groups": "melee healer all",
+        "6": {"name":"Abrams", "x": 200, "y": 350, "speed": 30, "imageId": "demonhunter", "groups": "melee dps all",
             "positions": {
                 "spread": {"x": 670, "y": 490},
                 "melee": {"x": 400, "y": 350}
@@ -188,7 +188,7 @@
                 "spread": {"x": 670, "y": 310}
             }
         },
-        "15": {"name":"Kailu", "x": 350, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged dps all",
+        "15": {"name":"Kailu", "x": 350, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged healer all",
             "positions": {
                 "spread": {"x": 30, "y": 490}
             }
@@ -208,9 +208,10 @@
                 "spread": {"x": 350, "y": 670}
             }
         },
-        "19": {"name":"Morsiat", "x": 350, "y": 350, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
+        "19": {"name":"Suprah", "x": 350, "y": 350, "speed": 30, "imageId": "warrior", "groups": "melee dps all",
             "positions": {
-                "spread": {"x": 510, "y": 575}
+                "spread": {"x": 510, "y": 575},
+                "melee": {"x": 300, "y": 350}
             }
         },
         "20": {"name":"Shakkaliste", "x": 350, "y": 400, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
@@ -233,7 +234,7 @@
           "4": {position: {x: 400, y: -50}},
         }
       },
-      {time: 2, phase: 1, name: 'Flaques', description: 'Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
+      {time: 2, phase: 1, name: 'Flaques', description: 'On évite les impacts violets, ils font très mal.<br>Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
         players: {
           "14": {position: {x: 670, y: 400}},
         }, drawings: [
@@ -889,7 +890,7 @@
       //PF 4
       {time: 1, phase: 4, name: '', description: '',
         groups: {
-          "all": {position: positions["stacked"]}
+          "all": {teleport: positions["platformStart"]},
         }
       },      
       {time: 3, phase: 4, name: 'Stack', description: "En prévision de la furie qui arrive",
@@ -899,12 +900,12 @@
       },
       {time: 4, phase: 4, name: 'Arrow simples 1', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         players : {
-          "4": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "1"},
+          "1": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "1"},
         }
       },
       {time: 4, phase: 4, name: 'Arrow simples 2', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
         players : {
-          "4": {position: positions["arrowPF4RaidPos"]},
+          "1": {position: positions["arrowPF4RaidPos"]},
           "19": {position: positions["arrowPF4Pos"], image: "blackarrow", text: "2"},
         }
       },
@@ -936,12 +937,12 @@
           "5": {position: {x: 500, y: 150}, image: "knives"},
           "19": {position: {x: 200, y: 200}, image: "knives"},
         }, drawings: [
-          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x:400, y: 700}},
-          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x:350, y: 0}},
-          {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x:700, y: 250}},
-          {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x:700, y: 200}},
-          {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x:200, y: 700}},
-          {type: "line", startPosition: {x:150, y:700}, endPosition: {x:700, y:150}},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 400, y: 700}},
+          {type: "line", startPosition: {x: 30, y: 280}, endPosition: {x: 350, y: 0}},
+          {type: "line", startPosition: {x: 150, y: 0}, endPosition: {x: 700, y: 250}},
+          {type: "line", startPosition: {x: 0, y: 200}, endPosition: {x: 700, y: 200}},
+          {type: "line", startPosition: {x: 200, y: 0}, endPosition: {x: 200, y: 700}},
+          {type: "line", startPosition: {x:0, y: 650}, endPosition: {x: 650, y:0}},
           {type: "disc", position: {x: 660, y: 40}, r: 120, color: "#400040"},
         ]
       },
