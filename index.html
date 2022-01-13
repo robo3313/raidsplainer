@@ -92,7 +92,9 @@
       "arrowSimplePrePos" : {x: 350, y:20},
       "arrowSimplePos" : {x: 350, y:-50},
       "arrowPF4RaidPos": {x:30, y: 30},
-      "arrowPF4Pos": {x: 670, y:670}
+      "arrowPF4Pos": {x: 670, y:670},
+      
+      "fury": {x: 350, y: 350},
     };
 
     const phases = {
@@ -276,9 +278,9 @@
         players: {
           "1": {position: {x: -100, y: 660}},
         }, abilities: [
-          {id: "veil", name: "Veil", x: players["15"].positions["spread"].x, y: players["15"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["9"].positions["spread"].x, y: players["9"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["8"].positions["spread"].x, y: players["8"].positions["spread"].y},
+          {id: "veil", name: "Veil", position: players["15"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["9"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["8"].positions["spread"]},
         ]
       },
       {time: 3, phase: 1, name: 'Stack + placement Stonks & Shamyaleau', description: 'Pour simplifier le heal des veils et de la furie.<br>Shamyaleau se place coin intérieur, Stonks coin côté',
@@ -310,7 +312,7 @@
       },
       {time: 4, phase: 1, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
-          {id: "fury", name: "Furie", x: 350, y: 350}
+          {id: "fury", name: "Furie", position: positions["fury"]}
         ], drawings: [
           {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
@@ -328,7 +330,7 @@
       },
       {time: 3, phase: 1, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         abilities: [
-          {id: "massdispell", name:"Mass Dispell", x: positions["preparingNextPlatform"].x, y: positions["preparingNextPlatform"].y},
+          {id: "massdispell", name:"Mass Dispell", position: positions["preparingNextPlatform"]},
         ], drawings: [
             {type: "disc", x: 40, y: 40, r: 240, color: "#400040"},
             {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
@@ -436,9 +438,9 @@
       },
       {time: 3, phase: 2, name: "Veil", description: 'On veut pas toucher les copains avec le veil',
         abilities: [
-          {id: "veil", name: "Veil", x: players["12"].positions["spread"].x, y: players["12"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["18"].positions["spread"].x, y: players["18"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["11"].positions["spread"].x, y: players["11"].positions["spread"].y},
+          {id: "veil", name: "Veil", position: players["12"].positions["spread"].x},
+          {id: "veil", name: "Veil", position: players["18"].positions["spread"].x},
+          {id: "veil", name: "Veil", position: players["11"].positions["spread"].x},
         ]
       },
       {time: 5, phase: 2, name: 'Soaks simples & Stacking', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
@@ -465,7 +467,7 @@
 
       {time: 2, phase: 2, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
-          {id: "fury", name: "Furie", x: 350, y: 350}
+          {id: "fury", name: "Furie", position: positions["fury"]}
         ], drawings: [
           {type: "disc", x: 40, y: 660, r: 360, color: "#400040"},
         ]
@@ -582,9 +584,9 @@
           "12": {position: "spread"},
           "14": {position: "spread"}
         }, abilities: [
-          {id: "veil", name: "Veil", x: players["16"].positions["spread"].x, y: players["16"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["10"].positions["spread"].x, y: players["10"].positions["spread"].y},
+          {id: "veil", name: "Veil", position: players["16"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["13"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["10"].positions["spread"]},
         ]
       },
       {time: 3, phase: 2, name: 'Déplacement', description: 'On se prépare à quitter la plate-forme',
@@ -594,7 +596,7 @@
       },
       {time: 3, phase: 2, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         abilities: [
-          {id: "massdispell", name:"Mass Dispell", x: positions["preparingNextPlatform"].x, y: positions["preparingNextPlatform"].y},
+          {id: "massdispell", name:"Mass Dispell", position: positions["preparingNextPlatform"]},
         ]
       },
       {time: 2, phase: 2, name: 'Raze', description: "On a une période de grâce à la fin du cast de Raze pour partir", 
@@ -619,7 +621,7 @@
 
       {time: 3, phase: 3, name: 'Furie', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
-          {id: "fury", name: "Furie", x: 350, y: 350}
+          {id: "fury", name: "Furie", position: positions["fury"]}
         ],
       },
       {time: 3, phase: 3, name: 'Couteaux', description: "C'est surtout aux joueurs qui ont les couteaux de s'écarter.<br>Ils doivent cependant s'arrêter 2 secondes avant que les couteaux partent pour laisser le temps au reste du raid de se déplacer si besoin.",
@@ -677,10 +679,10 @@
           "19": {position: {x: 440, y: 600}, image: "iceblock"},
           "20": {position: {x: 590, y: 580}, image: "iceblock"},
         }, abilities: [
-          {id:"soak", name:"Soak", x:210, y: 600},
-          {id:"soak", name:"Soak", x:450, y: 620},
-          {id:"soak", name:"Soak", x:610, y: 600},
-          {id:"soak", name:"Soak", x:610, y: 450}
+          {id:"soak", name:"Soak", position: {x:210, y: 600}},
+          {id:"soak", name:"Soak", position: {x:450, y: 620}},
+          {id:"soak", name:"Soak", position: {x:610, y: 600}},
+          {id:"soak", name:"Soak", position: {x:610, y: 450}}
         ],
       },
       {time: 3, phase: 3, name: 'Placement', description: 'On se place pour le veil',
@@ -698,9 +700,9 @@
       },
       {time: 3, phase: 3, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
         abilities: [
-          {id: "veil", name: "Veil", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y},
+          {id: "veil", name: "Veil", position: players["14"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["5"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["3"].positions["spread"]},
         ]
       },
       {time: 3, phase: 3, name: 'Arrow', description: "Ici il faut juste partir et revenir bien à la suite, au bon moment",
@@ -859,12 +861,10 @@
         ]
       },
       {time: 3, phase: 3, name: 'Veil', phase: 3, description: 'On veut pas toucher les copains avec le veil',
-        positions: {
-          "4": "spread"
-        }, abilities: [
-          {id: "veil", name: "Veil", x: players["20"].positions["spread"].x, y: players["20"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["2"].positions["spread"].x, y: players["2"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["13"].positions["spread"].x, y: players["13"].positions["spread"].y},
+        abilities: [
+          {id: "veil", name: "Veil", position: players["20"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["2"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["13"].positions["spread"]},
         ]
       },
       {time: 3, phase: 3, name: 'Déplacement', phase: 3, description: 'On se prépare à quitter la plate-forme',
@@ -874,7 +874,7 @@
       },
       {time: 3, phase: 3, name: 'Raze & Dispell de masse', description: "Le dispell de masse permet de s'assurer qu'on emporte pas de débuff sur la plate-forme suivante, il existe une WA pour savoir quand il est lancé",
         abilities: [
-          {id: "massdispell", name:"Mass Dispell", x: positions["preparingNextPlatform"].x, y: positions["preparingNextPlatform"].y},
+          {id: "massdispell", name:"Mass Dispell", position: positions["preparingNextPlatform"]},
         ]
       },
       {time: 3, phase: 3, name: 'Raze', phase: 3, description: "On a une période de grâce à la fin du cast de Raze pour partir", 
@@ -929,7 +929,7 @@
       },
       {time: 3, phase: 4, name: 'Furie + Couteaux', description: "Moment dangereux, la il faut éviter de toucher le groupe avec ses couteaux.<br>Il faut également ne pas mourrir, donc utiliser des CDs de survie.",
         abilities: [
-          {id: "fury", name: "Furie", x: 350, y: 350}
+          {id: "fury", name: "Furie", position: positions["fury"]}
         ], players: {
           "2": positions["arrowPF4RaidPos"],
           "13": {position: {x: 30, y: 280}, image: "knives"},
@@ -1028,9 +1028,9 @@
       },
       {time: 3, phase: 4, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
         abilities: [
-          {id: "veil", name: "Veil", x: players["14"].positions["spread"].x, y: players["14"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["5"].positions["spread"].x, y: players["5"].positions["spread"].y},
-          {id: "veil", name: "Veil", x: players["3"].positions["spread"].x, y: players["3"].positions["spread"].y},
+          {id: "veil", name: "Veil", position: players["14"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["5"].positions["spread"]},
+          {id: "veil", name: "Veil", position: players["3"].positions["spread"]},
         ], drawings: [
           {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ],
@@ -1041,7 +1041,7 @@
         }, players: {
           "2": {position:"dispellP4"},
         }, abilities: [
-          {id: "timewarp", name: "timewarp", x: 350, y: 350},
+          {id: "timewarp", name: "timewarp", position: {x: 350, y: 350}},
         ], drawings: [
           {type: "disc", x: 660, y: 40, r: poolRadius, color: "#400040"},
         ]
@@ -1167,10 +1167,9 @@
       },
       {time: 3, phase: 4, name: 'Furie + Mass dispell', description: "A la FIN du cast de la furie, personne ne doit avoir de débuff magique, tous les joueurs qui peuvent dispell la magie doivent surveiller le raid pendant la furie et si besoin, dispell un joueur avec un debuff 1 seconde avant la fin du cast, sinon c'est wipe",
         abilities: [
-          {id: "massdispell", name:"Mass Dispell", x: 65, y: 65},
-          {id: "fury", name: "Furie", x: 350, y: 350}
-        ],
-        drawings: [
+          {id: "massdispell", name:"Mass Dispell", positions: {x: 65, y: 65}},
+          {id: "fury", name: "Furie", positions: {x: 350, y: 350}}
+        ], drawings: [
           {type: "disc", x: 660, y: 40, r: 240, color: "#400040"},
           {type: "disc", x: 40, y: 660, r: 240, color: "#400040"},
           {type: "disc", x: 450, y: 660, r: 240, color: "#400040"},

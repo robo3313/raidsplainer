@@ -18,6 +18,10 @@ function RaidLeading (ctx, time) {
     let secondsSinceStart = Math.floor(currentTimer / 1000);
     let timeSinceLastEvent = 0;
 
+    const warnings = [];
+    const recognizedProps = ['time', 'phase', 'name', 'description', 'groups', 'players', 'drawings', 'abilities'];
+    const recognizedPlayersProps = ["position", "image", "text"];
+    const recognizedAbilitiesProps = ["id", "name", "position"];
 
     //Internal js shenanigans
     let interval = null;
@@ -49,7 +53,9 @@ function RaidLeading (ctx, time) {
             if (events[i].phase !== undefined) {
                 phases[events[i].phase].events.push(i);
             }
+            checkEvent(events[i]);
         }
+        console.log(warnings);
     }
 
     _myLibraryObject.setPhases = function (newPhases) {
@@ -209,8 +215,8 @@ function RaidLeading (ctx, time) {
         if (event.abilities !== undefined) {
             for (const i in event.abilities) {            
                 const ability = event.abilities[i];
-                ctx.drawImage(abilities[ability.id].image, ability.x - abilities[ability.id].image.width / 2, ability.y - abilities[ability.id].image.height / 2);
-                writeText(ctx, ability.name, ability.x, ability.y + abilities[ability.id].image.height / 2);
+                ctx.drawImage(abilities[ability.id].image, ability.position.x - abilities[ability.id].image.width / 2, ability.position.y - abilities[ability.id].image.height / 2);
+                writeText(ctx, ability.name, ability.position.x, ability.position.y + abilities[ability.id].image.height / 2);
             }
         }
         let image;
@@ -281,6 +287,63 @@ function RaidLeading (ctx, time) {
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.fillText(text, x, y);
+    }
+
+    function checkEvent(event) {
+        for (const prop in event) {
+            if (!recognizedProps.includes(prop)) {
+                warnings.push('Unrecognized prop : '+prop+' in event :'+event.name);
+            }
+            for (const i in event[prop]) {
+                if (prop === "players") {
+                    checkPlayerProps(event[prop][i], event);
+                } else if (prop === "abilities") {
+                    checkAbilitiesProps(event[prop][i], event);
+                } else if (prop === "drawings") {
+                    checkDrawingsProps(event[prop][i], event);
+                }
+            }
+        }
+    }
+
+    function checkPlayerProps(player, event) {
+        if (player.position !== undefined) {
+            checkPositionProp(player.position, event, "players");
+        }
+        if (player.position !== undefined) {
+            checkPositionProp(player.position, event, "players");
+        }
+    }
+
+    function checkAbilitiesProps(ability, event) {
+        if (ability.id === undefined) {
+            warnings.push('Missing property "id" for ability in event : '+event.name);
+        }
+        if (ability.name === undefined) {
+            warnings.push('Missing property "name" for ability in event : '+event.name);
+        }
+        if (ability.name === undefined) {
+            warnings.push('Missing property "positio"n for ability in event : '+event.name);
+        }
+        //checkPositionProp(ability.position, event, "abilities");
+    }
+
+    function checkDrawingsProps(drawing, event) {
+        if (drawing.type === undefined) {
+            warnings.push('Missing property "type" for drawing in event : '+event.name);
+        }
+        /*if (drawing.position === undefined) {
+            warnings.push('Missing property "position" for drawing in event : '+event.name);
+        }*/
+        /*if (drawing.position !== undefined) {
+            checkPositionProp(drawing.position, event, "drawings");
+        }*/
+    }
+
+    function checkPositionProp(prop, event, tag) {
+        if ((prop['x'] === undefined || prop['y'] === undefined) && typeof prop !== "string") {
+            warnings.push('Wrong position for property : '+tag+' in event :'+event.name);
+        }
     }
 
     return _myLibraryObject;
