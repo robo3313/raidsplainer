@@ -156,7 +156,7 @@
                 "melee": {"x": 350, "y": 400}
             }
         },
-        "9": {"name":"Zaarg", "x": 300, "y": 200, "speed": 30, "imageId": "warrior", "groups": "melee dps all",
+        "9": {"name":"Zarga", "x": 300, "y": 200, "speed": 30, "imageId": "warrior", "groups": "melee dps all",
             "positions": {
                 "spread": {"x": 510, "y": 210},
                 "melee": {"x": 400, "y": 300}
@@ -168,7 +168,7 @@
                 "melee": {"x": 350, "y": 300}
             }
         },
-        "11": {"name":"Kehilde", "x": 350, "y": 250, "speed": 30, "imageId": "warlock", "groups": "ranged dps all",
+        "11": {"name":"Joestarr", "x": 350, "y": 250, "speed": 30, "imageId": "warlock", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 190, "y": 20}
             }
@@ -198,20 +198,21 @@
                 "spread": {"x": 30, "y": 670}
             }
         },
-        "17": {"name":"Lyriel", "x": 300, "y": 300, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+        "17": {"name":"Grabuge", "x": 300, "y": 300, "speed": 30, "imageId": "monk", "groups": "melee dps all",
             "positions": {
-                "spread": {"x": 190, "y": 575}
+                "spread": {"x": 190, "y": 575},
+                "melee": {"x": 300, "y": 350}
             }
         },
-        "18": {"name":"Owiste", "x": 300, "y": 400, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+        "18": {"name":"Lyriel", "x": 300, "y": 400, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
             "positions": {
-                "spread": {"x": 350, "y": 670}
+                "spread": {"x": 350, "y": 670},
+                "melee": {"x": 300, "y": 350}
             }
         },
         "19": {"name":"Morsiat", "x": 350, "y": 350, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
             "positions": {
-                "spread": {"x": 510, "y": 575},
-                "melee": {"x": 300, "y": 350}
+                "spread": {"x": 510, "y": 575}
             }
         },
         "20": {"name":"Shakkaliste", "x": 350, "y": 400, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
@@ -671,14 +672,14 @@
       {time: 3, phase: 3, name: 'Soaks movement', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
         players: {
           "2": {position: {x: 230, y: 580}},
-          "5": {position: {x: 590, y: 430}, image: "divineshield"},
-          "6": {position: "melee"},
+          "5": {position: "melee"},
+          "6": {position: {x: 590, y: 430}, image: "divineshield"},
           "7": {position: "melee"},
-          "8": {position: {x: 440, y: 600}},
           "9": {position: "melee"},
           "10": {position: "melee"},
-          "17": {position: {x: 300, y: 600}},
-          "19": {position: "melee"},
+          "17": {position: "melee"},
+          "18": {position: {x: 300, y: 600}},
+          "19": {position: {x: 440, y: 600}, image: "iceblock"},
           "20": {position: {x: 590, y: 580}, image: "iceblock"},
         }, abilities: [
           {id:"soak", name:"Soak", position: {x:210, y: 600}},
@@ -804,10 +805,10 @@
       },
       {time: 3, phase: 3, name: 'Soaks immune', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br><br>Ici il ne faut pas hésiter a utiliser des immunes mobiles, comme la cape d'ombre, bubulle, turtle, pour éviter de ramasser les débuffs de flaques.",
         players: {
+          "6": {position: {x: 590, y: 430}, image: "divineshield"},
           "7": {position: {x: 590, y: 580}, image: "cloak"},
-          "17": {position: {x: 230, y: 580}, image: "turtle"},
-          "18": {position: {x: 390, y: 580}, image: "turtle"},
-          "16": {position: {x: 590, y: 430}, image: "turtle"},
+          "16": {position: {x: 230, y: 580}, image: "turtle"},
+          "17": {position: {x: 390, y: 580}, image: "turtle"},
         }, abilities : [
           {id:"soak", name:"Soak", position: {x:210, y: 600}},
           {id:"soak", name:"Soak", position: {x:410, y: 600}},
