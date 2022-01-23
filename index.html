@@ -62,6 +62,7 @@
       "veil": {},
       "soak": {},
       "blackarrow": {},
+      "knives": {},
 
       "timewarp": {},
       "massdispell": {},
@@ -69,7 +70,6 @@
       "divineshield": {},
       "cloak": {},
       "turtle": {},
-      "knives": {},
     }
     const poolRadius = 60;
     const smallPoolRadius = 120;
@@ -93,6 +93,10 @@
       "arrowSimplePos" : {x: 350, y:-50},
       "arrowPF4RaidPos": {x:30, y: 30},
       "arrowPF4Pos": {x: 670, y:670},
+      "soak1": {x: 60, y: 300},
+      "soak2": {x: 60, y: 480},
+      "soak3": {x: 60, y: 660},
+      "soak4": {x: 180, y: 660},
       
       "fury": {x: 350, y: 350},
     };
@@ -126,19 +130,18 @@
                 "spread": {"x": 30, "y": 130}
             }
         },
-        "4": {"name":"Shamyaleau", "x": 250, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged healer all",
+        "4": {"name":"Kailu", "x": 250, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged healer all",
             "positions": {
-                "spread": {"x": 510, "y": 20},
-                "dispell": {"x":40, "y":40}
+                "spread": {"x": 510, "y": 20}
             }
         },
-        "5": {"name":"Abrams", "x": 200, "y": 400, "speed": 30, "imageId": "demonhunter", "groups": "melee dps all",
+        "5": {"name":"Faymz", "x": 200, "y": 400, "speed": 30, "imageId": "deathknight", "groups": "melee dps all",
             "positions": {
                 "spread": {"x": 510, "y": 390},
-                "melee": {"x": 400, "y": 400}
+                "melee": {"x": 400, "y": 350}
             }
         },
-        "6": {"name":"Bak", "x": 200, "y": 350, "speed": 30, "imageId": "paladin", "groups": "melee healer all",
+        "6": {"name":"Lyriel", "x": 200, "y": 350, "speed": 30, "imageId": "hunter", "groups": "ranged healer all",
             "positions": {
                 "spread": {"x": 670, "y": 490},
                 "melee": {"x": 400, "y": 350}
@@ -147,10 +150,10 @@
         "7": {"name":"Giin",  "x": 300, "y": 250, "speed": 30, "imageId": "rogue", "groups": "melee dps all",
             "positions": {
                 "spread": {"x": 190, "y": 390},
-                "melee": {"x": 300, "y": 400}
+                "melee": {"x": 300, "y": 350}
             }
         },
-        "8": {"name":"Faymz", "x": 250, "y": 350, "speed": 30, "imageId": "deathknight", "groups": "melee dps all",
+        "8": {"name":"Bak", "x": 250, "y": 350, "speed": 30, "imageId": "paladin", "groups": "melee dps all",
             "positions": {
                 "spread": {"x": 350, "y": 490},
                 "melee": {"x": 350, "y": 400}
@@ -168,7 +171,7 @@
                 "melee": {"x": 350, "y": 300}
             }
         },
-        "11": {"name":"Joestarr", "x": 350, "y": 250, "speed": 30, "imageId": "warlock", "groups": "ranged dps all",
+        "11": {"name":"Kehilde", "x": 350, "y": 250, "speed": 30, "imageId": "warlock", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 190, "y": 20}
             }
@@ -178,7 +181,7 @@
                 "spread": {"x": 670, "y": 130}
             }
         },
-        "13": {"name":"Dedramomo", "x": 350, "y": 300, "speed": 30, "imageId": "priest", "groups": "ranged dps all",
+        "13": {"name":"Tyttuss", "x": 350, "y": 300, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
             "positions":{
                 "spread": {"x": 30, "y": 310}
             }
@@ -188,34 +191,35 @@
                 "spread": {"x": 670, "y": 310}
             }
         },
-        "15": {"name":"Kailu", "x": 350, "y": 200, "speed": 30, "imageId": "shaman", "groups": "ranged healer all",
+        "15": {"name":"Morsiat", "x": 350, "y": 200, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 30, "y": 490}
             }
         },
-        "16": {"name":"Tyttuss", "x": 300, "y": 350, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+        "16": {"name":"Shakkaliste", "x": 300, "y": 350, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 30, "y": 670}
             }
         },
-        "17": {"name":"Grabuge", "x": 300, "y": 300, "speed": 30, "imageId": "monk", "groups": "melee dps all",
+        "17": {"name":"Owiste", "x": 300, "y": 300, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 190, "y": 575},
-                "melee": {"x": 300, "y": 350}
+                "melee": {"x": 300, "y": 400}
             }
         },
-        "18": {"name":"Lyriel", "x": 300, "y": 400, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+        "18": {"name":"Shamyaleau", "x": 300, "y": 400, "speed": 30, "imageId": "shaman", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 350, "y": 670},
-                "melee": {"x": 300, "y": 350}
+                "dispell": {"x":40, "y":40}
             }
         },
-        "19": {"name":"Morsiat", "x": 350, "y": 350, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
+        "19": {"name":"Brinsop", "x": 350, "y": 350, "speed": 30, "imageId": "paladin", "groups": "melee healer all",
             "positions": {
-                "spread": {"x": 510, "y": 575}
+                "spread": {"x": 510, "y": 575},
+                "melee": {"x": 400, "y": 400}
             }
         },
-        "20": {"name":"Shakkaliste", "x": 350, "y": 400, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
+        "20": {"name":"Dedramomo", "x": 350, "y": 400, "speed": 30, "imageId": "priest", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 670, "y": 670}
             }
@@ -232,7 +236,7 @@
         },
         players: {
           "1": {position: {x: -100, y: -50}},
-          "4": {position: {x: 400, y: -50}},
+          "18": {position: {x: 400, y: -50}},
         }
       },
       {time: 2, phase: 1, name: 'Flaques', description: 'On évite les impacts violets, ils font très mal.<br>Le placement des flaques est aléatoire.<br>On fait attention a pas se prendre / marcher dans les flaques violettes.<br>Stonks et Shamyaleau partent nettoyer les plateformes 3, 4 et 2',
@@ -290,14 +294,14 @@
           "all": {position: positions["stacked"]}
         }, players: {
           "1": {position: "dispell"},
-          "4": {position: "dispell"},
+          "18": {position: "dispell"},
         }
       },
       {time: 3, phase: 1, name: 'Dispell Stonks & Shamyaleau', description : "3 se dispell, un healer dispell Stonks, ils se stack.<br>Mongoliste se place coin extérieur.",
         players: {
           "1": {position: positions["stacked"]},
           "2": {position: "dispell"},
-          "4": {position: positions["stacked"]},
+          "18": {position: positions["stacked"]},
         }, drawings: [
           {type: "disc", position: {x: 40, y: 40}, r: 240, color: "#400040"},
           {type: "disc", position: {x: 40, y: 660}, r: 360, color: "#400040"},
@@ -670,35 +674,24 @@
         ]
       },
       {time: 3, phase: 3, name: 'Soaks movement', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br>",
-        players: {
-          "2": {position: {x: 230, y: 580}},
-          "5": {position: "melee"},
-          "8": {position: {x: 590, y: 430}},
-          "7": {position: "melee"},
-          "9": {position: "melee"},
-          "10": {position: "melee"},
-          "17": {position: "melee"},
-          "19": {position: {x: 440, y: 600}, image: "iceblock"},
-          "20": {position: {x: 590, y: 580}, image: "iceblock"},
+        groups: {
+          "melee": {position: "melee"}
+        }, players: {
+          "2": {position: {x: positions["soak1"].x +20, y: positions["soak1"].y}},
+          "15": {position: {x: positions["soak2"].x + 20, y: positions["soak2"].y - 20}, image: "iceblock"},
+          "16": {position: {x: positions["soak3"].x + 20, y: positions["soak3"].y - 20}, image: "iceblock"},
+          "18": {position: {x: positions["soak4"].x + 15, y: positions["soak4"].y - 20}},
+          "13": {position: {x: positions["soak1"].x, y: positions["soak1"].y + 90}},
         }, abilities: [
-          {id:"soak", name:"Soak", position: {x:210, y: 600}},
-          {id:"soak", name:"Soak", position: {x:450, y: 620}},
-          {id:"soak", name:"Soak", position: {x:610, y: 600}},
-          {id:"soak", name:"Soak", position: {x:610, y: 450}}
+          {id:"soak", name:"Soak", position: positions["soak1"]},
+          {id:"soak", name:"Soak", position: positions["soak2"]},
+          {id:"soak", name:"Soak", position: positions["soak3"]},
+          {id:"soak", name:"Soak", position: positions["soak4"]}
         ],
       },
       {time: 3, phase: 3, name: 'Placement', description: 'On se place pour le veil',
-        players: {
-          "2": {position: "spread"},
-          "5": {position: "spread"},
-          "6": {position: "spread"},
-          "7": {position: "spread"},
-          "8": {position: "spread"},
-          "9": {position: "spread"},
-          "10": {position: "spread"},
-          "17": {position: "spread"},
-          "19": {position: "spread"},
-          "20": {position: "spread"},
+        groups: {
+          "all": {position: "spread"}
         }
       },
       {time: 3, phase: 3, name: 'Veil', description: 'On veut pas toucher les copains avec le veil',
@@ -804,15 +797,15 @@
       },
       {time: 3, phase: 3, name: 'Soaks immune', description: "Il est obligatoire de soak, sinon c'est wipe.<br>Des joueurs seront assignés mais ce n'est pas interdit de backup.<br><br>Ici il ne faut pas hésiter a utiliser des immunes mobiles, comme la cape d'ombre, bubulle, turtle, pour éviter de ramasser les débuffs de flaques.",
         players: {
-          "6": {position: {x: 590, y: 430}, image: "divineshield"},
-          "7": {position: {x: 590, y: 580}, image: "cloak"},
-          "16": {position: {x: 230, y: 580}, image: "turtle"},
-          "18": {position: {x: 390, y: 580}, image: "turtle"},
+          "7": {position: {x: positions["soak1"].x + 20, y: positions["soak1"].y}, image: "cloak"},
+          "13": {position: {x: positions["soak2"].x + 20, y: positions["soak2"].y - 10}, image: "turtle"},
+          "17": {position: {x: positions["soak3"].x + 20, y: positions["soak3"].y - 20}, image: "turtle"},
+          "6": {position: {x: positions["soak4"].x + 20, y: positions["soak4"].y - 20}, image: "turtle"},
         }, abilities : [
-          {id:"soak", name:"Soak", position: {x:210, y: 600}},
-          {id:"soak", name:"Soak", position: {x:410, y: 600}},
-          {id:"soak", name:"Soak", position: {x:610, y: 600}},
-          {id:"soak", name:"Soak", position: {x:610, y: 450}}
+          {id:"soak", name:"Soak", position: positions["soak1"]},
+          {id:"soak", name:"Soak", position: positions["soak2"]},
+          {id:"soak", name:"Soak", position: positions["soak3"]},
+          {id:"soak", name:"Soak", position: positions["soak4"]}
         ], drawings: [
           {type: "disc", position: {x: 40, y: 660}, r: 240, color: "#400040"},
           {type: "disc", position: {x: 660, y: 660}, r: 240, color: "#400040"},
