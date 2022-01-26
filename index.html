@@ -191,7 +191,7 @@
                 "spread": {"x": 670, "y": 310}
             }
         },
-        "15": {"name":"Morsiat", "x": 350, "y": 200, "speed": 30, "imageId": "mage", "groups": "ranged dps all",
+        "15": {"name":"Owiste", "x": 350, "y": 200, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 30, "y": 490}
             }
@@ -201,7 +201,7 @@
                 "spread": {"x": 30, "y": 670}
             }
         },
-        "17": {"name":"Owiste", "x": 300, "y": 300, "speed": 30, "imageId": "hunter", "groups": "ranged dps all",
+        "17": {"name":"Grabuge", "x": 300, "y": 300, "speed": 30, "imageId": "monk", "groups": "ranged dps all",
             "positions": {
                 "spread": {"x": 190, "y": 575},
                 "melee": {"x": 300, "y": 400}
@@ -213,7 +213,7 @@
                 "dispell": {"x":40, "y":40}
             }
         },
-        "19": {"name":"Brinsop", "x": 350, "y": 350, "speed": 30, "imageId": "paladin", "groups": "melee healer all",
+        "19": {"name":"Abrams", "x": 350, "y": 350, "speed": 30, "imageId": "demonhunter", "groups": "melee dps all",
             "positions": {
                 "spread": {"x": 510, "y": 575},
                 "melee": {"x": 400, "y": 400}
@@ -678,10 +678,11 @@
           "melee": {position: "melee"}
         }, players: {
           "2": {position: {x: positions["soak1"].x +20, y: positions["soak1"].y}},
-          "15": {position: {x: positions["soak2"].x + 20, y: positions["soak2"].y - 20}, image: "iceblock"},
+          "17": {position: {x: positions["soak2"].x + 20, y: positions["soak2"].y - 20}},
           "16": {position: {x: positions["soak3"].x + 20, y: positions["soak3"].y - 20}, image: "iceblock"},
           "18": {position: {x: positions["soak4"].x + 15, y: positions["soak4"].y - 20}},
           "13": {position: {x: positions["soak1"].x, y: positions["soak1"].y + 90}},
+          "15": {position: {x: positions["soak2"].x, y: positions["soak2"].y + 90}},
         }, abilities: [
           {id:"soak", name:"Soak", position: positions["soak1"]},
           {id:"soak", name:"Soak", position: positions["soak2"]},
@@ -799,7 +800,7 @@
         players: {
           "7": {position: {x: positions["soak1"].x + 20, y: positions["soak1"].y}, image: "cloak"},
           "13": {position: {x: positions["soak2"].x + 20, y: positions["soak2"].y - 10}, image: "turtle"},
-          "17": {position: {x: positions["soak3"].x + 20, y: positions["soak3"].y - 20}, image: "turtle"},
+          "15": {position: {x: positions["soak3"].x + 20, y: positions["soak3"].y - 20}, image: "turtle"},
           "6": {position: {x: positions["soak4"].x + 20, y: positions["soak4"].y - 20}, image: "turtle"},
         }, abilities : [
           {id:"soak", name:"Soak", position: positions["soak1"]},
